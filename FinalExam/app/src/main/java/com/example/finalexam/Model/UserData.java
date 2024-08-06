@@ -1,64 +1,32 @@
 package com.example.finalexam.Model;
 
-import java.util.List;
-
 public class UserData {
     private String msg;
     private String name;
     private String account;
     private String passwords;
-    private int freezingStatus;//0为正常，1为冻结
-    private int onlineStatus;//0为在线，1为离线
-    private String releasePasswords;
 
+    //返回信息
     public String getMsg() {
         return msg;
     }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
+    //获取账号
     public String getAccount() {
         return account;
     }
-
-    public void setAccount(String account) {
-        this.account = account;
+    //创建账号
+    public void setAccount(String account) {this.account = account;}
+    //获取名称
+    public String getName() {
+        return name;
     }
-
-    public int getFreezingStatus() {
-        return freezingStatus;
+    //设置名称
+    public void setName(String name) {
+        this.name = name;
     }
-
-    public void setFreezingStatus(int freezingStatus) {
-        this.freezingStatus = freezingStatus;
-    }
-
-    public int getOnlineStatus() {
-        return onlineStatus;
-    }
-
-    public void setOnlineStatus(int onlineStatus) {
-        this.onlineStatus = onlineStatus;
-    }
+    //重置密码
     public void setPasswords(String passwords) {
         this.passwords = passwords;
     }
 
-    public String getReleasePasswords() {
-        return releasePasswords;
-    }
-
-    public void setReleasePasswords(String releasePasswords) {
-        this.releasePasswords = releasePasswords;
-    }
 }
