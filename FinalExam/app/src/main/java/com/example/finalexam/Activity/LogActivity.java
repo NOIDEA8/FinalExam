@@ -69,7 +69,7 @@ public class LogActivity extends AppCompatActivity implements UserDataShowInterf
             if (accountStr.isEmpty() || passwordStr.isEmpty()) {
                 Toast.makeText(this, "请输入", Toast.LENGTH_SHORT).show();
             }else{
-                UserPresenter.getInstance(this).log(accountStr,passwordStr);//这里进去是从后台拿数据，拿到后调用自己的log方法
+                UserPresenter.getInstance(this).log(this,accountStr,passwordStr);//这里进去是从后台拿数据，拿到后调用自己的log方法
             }
         });
         toRegister.setOnClickListener(v -> {
@@ -88,7 +88,8 @@ public class LogActivity extends AppCompatActivity implements UserDataShowInterf
 
     //用在管理员登陆碎片，当碎片获得所输入的密码后将会来到这里
     public void setManagerPassword(String password){
-        ManagerPresenter.getInstance(this).log(password);
+        //后台说复用接口，管理员登陆的时候就传一个admin进去
+        ManagerPresenter.getInstance(this).log(this,"admin",password);
     }
 
 
@@ -116,7 +117,7 @@ public class LogActivity extends AppCompatActivity implements UserDataShowInterf
             Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this,UserDesktop.class));
             Log.d(TAG,UserPresenter.getInstance(this).getUserName());
-            Log.d(TAG,"in register:finish()活动");
+            Log.d(TAG,"in userLog:finish()活动");
             finish();//这一套下来要是能到达这一步的话应该Presenter的Userdata应该是有值的
             //这里的finish是为了自动结束活动到主页面
         }
@@ -147,6 +148,15 @@ public class LogActivity extends AppCompatActivity implements UserDataShowInterf
 
         } else if (STATUS == ManagerPresenter.STATUS_SUCCESS) {
             Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this,ManagerDesktop.class));
+            Log.d(TAG,"in userLog:finish()活动");
+            finish();//这一套下来要是能到达这一步的话应该Presenter的Userdata应该是有值的
+            //这里的finish是为了自动结束活动到主页面
         }
+    }
+
+    @Override
+    public void updateManagerData(int STATUS) {
+
     }
 }

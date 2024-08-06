@@ -3,7 +3,7 @@ package com.example.finalexam.Model;
 import java.util.List;
 
 public class UserData {
-    private String msg;
+    private String msg="success";
     private String name="用户";
     private String account;
     private String passwords;

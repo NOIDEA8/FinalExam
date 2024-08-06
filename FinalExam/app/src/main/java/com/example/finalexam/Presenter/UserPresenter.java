@@ -1,6 +1,8 @@
 package com.example.finalexam.Presenter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -37,8 +39,13 @@ public class UserPresenter {
         presenter.activity = activity;
         return presenter;
     }
+
+
+    //记录登陆状态
+
+
     //登录请求
-    public void log(String account,String password){
+    public void log(Context context,String account,String password){
         Log.d(TAG, "requestLog: 登录请求");
         Log.d(TAG, "account = " + account + ", password = " + password);
         Retrofit retrofit = new Retrofit.Builder()
@@ -56,6 +63,7 @@ public class UserPresenter {
                 UserData tempData = response.body();
                 if (tempData == null) {
                     activity.userLog(STATUS_ACCOUNT_NOT_EXIST);
+                    SPPresenter.accordLoggedStatus(context, false);
                 } else if ("accountNotExist".equals(tempData.getMsg())){
                     activity.userLog(STATUS_ACCOUNT_NOT_EXIST);
                 } else if ("passwordIncorrect".equals(tempData.getMsg())){
@@ -64,6 +72,9 @@ public class UserPresenter {
                     activity.userLog(STATUS_ACCOUNT_FROZEN);
                 } else {
                     userData = tempData;
+                    SPPresenter.accordAccount(context, account);
+                    SPPresenter.accordPassword(context, password);
+                    SPPresenter.accordLoggedStatus(context, true);
                     Log.d(TAG,"useData已在log方法中赋值");
                     activity.userLog(STATUS_SUCCESS);
                 }
@@ -101,6 +112,10 @@ public class UserPresenter {
                 else if ("accountAlreadyExist".equals(tempData.getMsg()))
                     activity.userRegister(STATUS_ACCOUNT_ALREADY_EXIST);
                 else {
+
+                    SPPresenter.accordAccount(context, account);
+                    SPPresenter.accordPassword(context, password);
+                    SPPresenter.accordLoggedStatus(context, true);
                     userData = tempData;
 
                     userData.setAccount(account);//？
@@ -117,6 +132,35 @@ public class UserPresenter {
         });
     }
 
+    public void updateUserData(Context context) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        UserApi userApi = retrofit.create(UserApi.class);
+
+        Log.d(TAG, "update msg = " + userData.getMsg());
+        Call<UserData> dataCall = userApi.updateData(userData.getMsg(), userData);
+
+        dataCall.enqueue(new Callback<UserData>() {
+            @Override
+            public void onResponse(@NonNull Call<UserData> call, @NonNull Response<UserData> response) {
+                UserData tempData = response.body();
+                if (tempData == null) activity.updateUserData(STATUS_UPDATE_ERROR);
+                else if ("updateError".equals(tempData.getMsg()))
+                    activity.updateUserData(STATUS_UPDATE_ERROR);
+                else {
+                    activity.updateUserData(STATUS_SUCCESS);
+                    Log.d(TAG, "update success");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<UserData> call, @NonNull Throwable throwable) {
+                activity.updateUserData(STATUS_NO_INTERNET);
+            }
+        });
+    }
 
 
 
@@ -126,7 +170,7 @@ public class UserPresenter {
         String name=null;
         if(userData==null){
             Log.d(TAG,"Presenter返回的userData为null，此处新建一个空的返回");
-            name="";
+            name="Presenter返回的userData为null，此处新建一个空的返回";
         }else{
             name=userData.getName();
             Log.d(TAG,"返回的是userData中的数据");
