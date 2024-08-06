@@ -6,6 +6,8 @@ public class ProjectData {
     private String name;
     private String url;
     private String Introduction;
+    private int totalVisit;
+    private int dayVisit;
     private List<UserData> releaserList;
     private List<UserData> monitorList;
 
@@ -31,6 +33,14 @@ public class ProjectData {
 
     public void setIntroduction(String introduction) {
         Introduction = introduction;
+    }
+
+    public int getTotalVisit() {
+        return totalVisit;
+    }
+
+    public int getDayVisit() {
+        return dayVisit;
     }
 
     public List<UserData> getReleaserList() {

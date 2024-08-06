@@ -1,8 +1,11 @@
 package com.example.finalexam.Activity;
 
+import android.animation.PropertyValuesHolder;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -11,21 +14,30 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.example.finalexam.Fragment.ManagerLogFragment;
+import com.example.finalexam.Helper.ManagerDataShowInterface;
 import com.example.finalexam.Helper.UserDataShowInterface;
+import com.example.finalexam.Presenter.ManagerPresenter;
 import com.example.finalexam.Presenter.UserPresenter;
 import com.example.finalexam.R;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Objects;
 
-public class LogActivity extends AppCompatActivity implements UserDataShowInterface {
+public class LogActivity extends AppCompatActivity implements UserDataShowInterface, ManagerDataShowInterface {
 
     private static final String TAG = "LogActivity";
     private TextInputEditText account;
     private TextInputEditText password;
+    private ManagerLogFragment managerLogFragment;
     private TextView toRegister;
     private Button logButton;
+    private ImageView logo;
+    private int clickToManager=0;
+    private int totalClick=5;//5次进入管理员口令界面
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +57,9 @@ public class LogActivity extends AppCompatActivity implements UserDataShowInterf
         password = findViewById(R.id.log_password);
         logButton = findViewById(R.id.log_button);
         toRegister = findViewById(R.id.toRegister);
+        logo=findViewById(R.id.log_logo);
+
+        managerLogFragment=new ManagerLogFragment(this);
     }
 
     private void initListener() {
@@ -60,11 +75,21 @@ public class LogActivity extends AppCompatActivity implements UserDataShowInterf
         toRegister.setOnClickListener(v -> {
             startActivity(new Intent(this, RegisterActivity.class));
         });
+        logo.setOnClickListener(v->{
+            clickToManager++;
+
+            if(clickToManager==totalClick){
+                managerLogFragment.show(getSupportFragmentManager(),"managerLog");
+                clickToManager=0;
+            }
+        });
     }
 
 
-
-
+    //用在管理员登陆碎片，当碎片获得所输入的密码后将会来到这里
+    public void setManagerPassword(String password){
+        ManagerPresenter.getInstance(this).log(password);
+    }
 
 
 
@@ -78,7 +103,7 @@ public class LogActivity extends AppCompatActivity implements UserDataShowInterf
 
 //非本地调用的方法
     @Override
-    public void log(int STATUS) {
+    public void userLog(int STATUS) {
         if(STATUS==UserPresenter.STATUS_NO_INTERNET){
             Toast.makeText(this,"无网络，稍后重试",Toast.LENGTH_SHORT).show();
         } else if (STATUS==UserPresenter.STATUS_ACCOUNT_NOT_EXIST) {
@@ -90,11 +115,15 @@ public class LogActivity extends AppCompatActivity implements UserDataShowInterf
         } else if (STATUS==UserPresenter.STATUS_SUCCESS) {
             Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this,UserDesktop.class));
+            Log.d(TAG,UserPresenter.getInstance(this).getUserName());
+            Log.d(TAG,"in register:finish()活动");
+            finish();//这一套下来要是能到达这一步的话应该Presenter的Userdata应该是有值的
+            //这里的finish是为了自动结束活动到主页面
         }
     }
 
     @Override
-    public void register(int STATUS) {
+    public void userRegister(int STATUS) {
 
     }
 
@@ -106,5 +135,18 @@ public class LogActivity extends AppCompatActivity implements UserDataShowInterf
     @Override
     public void updateUserImage(int STATUS) {
 
+    }
+
+    @Override
+    public void managerLog(int STATUS) {
+        if(STATUS==ManagerPresenter.STATUS_NO_INTERNET){
+            Toast.makeText(this,"无网络，稍后重试",Toast.LENGTH_SHORT).show();
+
+        }else if(STATUS==ManagerPresenter.STATUS_PASSWORD_INCORRECT){
+            Toast.makeText(this,"口令错误，请检查后再登录",Toast.LENGTH_SHORT).show();
+
+        } else if (STATUS == ManagerPresenter.STATUS_SUCCESS) {
+            Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
+        }
     }
 }

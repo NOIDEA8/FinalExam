@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activity.LogActivity">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/log_tittle_layout"
         android:layout_width="match_parent"
@@ -17,7 +18,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_weight="2">
-
         <ImageView
             android:id="@+id/log_logo"
             android:layout_width="match_parent"
@@ -145,5 +145,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/log_button" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,7 @@
 package com.example.finalexam.Activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -57,12 +58,12 @@ public class RegisterActivity extends AppCompatActivity implements UserDataShowI
 
     //非本地调用的方法
     @Override
-    public void log(int STATUS) {
+    public void userLog(int STATUS) {
 
     }
 
     @Override
-    public void register(int STATUS) {
+    public void userRegister(int STATUS) {
         if(STATUS==UserPresenter.STATUS_ACCOUNT_OR_PASSWORD_NOT_SATISFIABLE){
             Toast.makeText(this,"账号和密码均不少于8位数",Toast.LENGTH_SHORT).show();
         } else if (STATUS==UserPresenter.STATUS_PASSWORDS_INCONSISTENT) {
@@ -73,7 +74,8 @@ public class RegisterActivity extends AppCompatActivity implements UserDataShowI
             Toast.makeText(this,"账号已存在，换一个试试",Toast.LENGTH_SHORT).show();
         } else if(STATUS==UserPresenter.STATUS_SUCCESS){
             Toast.makeText(this,"注册成功",Toast.LENGTH_SHORT).show();
-            finish();
+            Log.d(TAG,"in register:finish()活动");
+            finish();//这里的finish是为了自动结束活动到登录页面
         }
     }
 

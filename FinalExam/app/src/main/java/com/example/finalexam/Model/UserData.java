@@ -1,10 +1,14 @@
 package com.example.finalexam.Model;
 
+import java.util.List;
+
 public class UserData {
     private String msg;
-    private String name;
+    private String name="用户";
     private String account;
     private String passwords;
+    private List<ProjectData> releasedProject;
+    private List<ProjectData> monitoredProject;
 
     //返回信息
     public String getMsg() {
@@ -29,4 +33,19 @@ public class UserData {
         this.passwords = passwords;
     }
 
+    public List<ProjectData> getMonitoredProject() {
+        return monitoredProject;
+    }
+
+    public void setMonitoredProject(List<ProjectData> monitoredProject) {
+        this.monitoredProject = monitoredProject;
+    }
+
+    public List<ProjectData> getReleasedProject() {
+        return releasedProject;
+    }
+
+    public void setReleasedProject(List<ProjectData> releasedProject) {
+        this.releasedProject = releasedProject;
+    }
 }

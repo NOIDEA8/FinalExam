@@ -55,33 +55,33 @@ public class UserPresenter {
             public void onResponse(@NonNull Call<UserData> call, @NonNull Response<UserData> response) {
                 UserData tempData = response.body();
                 if (tempData == null) {
-                    activity.log(STATUS_ACCOUNT_NOT_EXIST);
+                    activity.userLog(STATUS_ACCOUNT_NOT_EXIST);
                 } else if ("accountNotExist".equals(tempData.getMsg())){
-                    activity.log(STATUS_ACCOUNT_NOT_EXIST);
+                    activity.userLog(STATUS_ACCOUNT_NOT_EXIST);
                 } else if ("passwordIncorrect".equals(tempData.getMsg())){
-                    activity.log(STATUS_PASSWORD_INCORRECT);
+                    activity.userLog(STATUS_PASSWORD_INCORRECT);
                 } else if ("accountFrozen".equals(tempData.getMsg())) {
-                    activity.log(STATUS_ACCOUNT_FROZEN);
+                    activity.userLog(STATUS_ACCOUNT_FROZEN);
                 } else {
                     userData = tempData;
                     Log.d(TAG,"useData已在log方法中赋值");
-                    activity.log(STATUS_SUCCESS);
+                    activity.userLog(STATUS_SUCCESS);
                 }
             }
             @Override
             public void onFailure(@NonNull Call<UserData> call, @NonNull Throwable throwable) {
                 Log.d(TAG, throwable.toString());
-                activity.log(STATUS_NO_INTERNET);
+                activity.userLog(STATUS_NO_INTERNET);
             }
         });
     }
 
     public void register(Context context, String account, String password, String passwordAgain) {
         if (account.length() < 8 || password.length() < 8 || passwordAgain.length() < 8) {
-            activity.register(STATUS_ACCOUNT_OR_PASSWORD_NOT_SATISFIABLE);
+            activity.userRegister(STATUS_ACCOUNT_OR_PASSWORD_NOT_SATISFIABLE);
             return;
         } else if (!password.equals(passwordAgain)) {
-            activity.register(STATUS_PASSWORDS_INCONSISTENT);
+            activity.userRegister(STATUS_PASSWORDS_INCONSISTENT);
             return;
         }
 
@@ -97,22 +97,22 @@ public class UserPresenter {
             @Override
             public void onResponse(@NonNull Call<UserData> call, @NonNull Response<UserData> response) {
                 UserData tempData = response.body();
-                if (tempData == null) activity.register(STATUS_NO_INTERNET);
+                if (tempData == null) activity.userRegister(STATUS_NO_INTERNET);
                 else if ("accountAlreadyExist".equals(tempData.getMsg()))
-                    activity.register(STATUS_ACCOUNT_ALREADY_EXIST);
+                    activity.userRegister(STATUS_ACCOUNT_ALREADY_EXIST);
                 else {
                     userData = tempData;
 
                     userData.setAccount(account);//？
                     userData.setPasswords(password);//？？
                     Log.d(TAG,"useData已在request方法中赋值，虽然我觉得没必要，但是先保留");
-                    activity.register(STATUS_SUCCESS);
+                    activity.userRegister(STATUS_SUCCESS);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<UserData> call, @NonNull Throwable throwable) {
-                activity.register(STATUS_NO_INTERNET);
+                activity.userRegister(STATUS_NO_INTERNET);
             }
         });
     }
