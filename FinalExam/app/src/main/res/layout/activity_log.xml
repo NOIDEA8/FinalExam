@@ -86,7 +86,6 @@
                 android:id="@+id/log_account"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:digits="0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"
                 android:gravity="center"
                 android:hint="输入账号" />
 

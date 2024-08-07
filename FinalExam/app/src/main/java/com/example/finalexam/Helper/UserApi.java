@@ -1,36 +1,20 @@
 package com.example.finalexam.Helper;
 
-import com.example.finalexam.Model.UserData;
+import com.example.finalexam.Model.DataModel;
+import com.example.finalexam.Model.InfoUser;
 
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.Header;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.Part;
 
 public interface UserApi {
-    @FormUrlEncoded
+
     @POST("user/log")
-    Call<UserData> log(@Field("account") String account,
-                       @Field("password") String password);
+    Call<InfoUser> log(@Body DataModel dataModel);
 
-    @FormUrlEncoded
+
     @POST("user/register")
-    Call<UserData> register(@Field("account") String account,
-                            @Field("password") String password);
-
-
-    @POST("user/updateData")
-    Call<UserData> updateData(@Header("token") String token,
-                              @Body UserData body);
-
-    @Multipart
-    @POST("user/image")
-    Call<UserData> updateImage(@Header("token") String token, @Part("account") RequestBody body, @Part MultipartBody.Part head, @Part MultipartBody.Part background);
+    Call<InfoUser> register(@Body DataModel dataModel);
 
 }

@@ -8,8 +8,8 @@ public class ProjectData {
     private String Introduction;
     private int totalVisit;
     private int dayVisit;
-    private List<UserData> releaserList;
-    private List<UserData> monitorList;
+    private List<DataModel> releaserList;
+    private List<DataModel> monitorList;
 
     public String getName() {
         return name;
@@ -43,19 +43,19 @@ public class ProjectData {
         return dayVisit;
     }
 
-    public List<UserData> getReleaserList() {
+    public List<DataModel> getReleaserList() {
         return releaserList;
     }
 
-    public void setReleaserList(List<UserData> releaserList) {
+    public void setReleaserList(List<DataModel> releaserList) {
         this.releaserList = releaserList;
     }
 
-    public List<UserData> getMonitorList() {
+    public List<DataModel> getMonitorList() {
         return monitorList;
     }
 
-    public void setMonitorList(List<UserData> monitorList) {
+    public void setMonitorList(List<DataModel> monitorList) {
         this.monitorList = monitorList;
     }
 }

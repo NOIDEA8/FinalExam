@@ -1,6 +1,5 @@
 package com.example.finalexam.Activity;
 
-import android.animation.PropertyValuesHolder;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,13 +13,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.finalexam.Fragment.ManagerLogFragment;
 import com.example.finalexam.Helper.ManagerDataShowInterface;
 import com.example.finalexam.Helper.UserDataShowInterface;
-import com.example.finalexam.Presenter.ManagerPresenter;
 import com.example.finalexam.Presenter.UserPresenter;
 import com.example.finalexam.R;
 import com.google.android.material.textfield.TextInputEditText;
@@ -69,7 +65,7 @@ public class LogActivity extends AppCompatActivity implements UserDataShowInterf
             if (accountStr.isEmpty() || passwordStr.isEmpty()) {
                 Toast.makeText(this, "请输入", Toast.LENGTH_SHORT).show();
             }else{
-                UserPresenter.getInstance(this).log(this,accountStr,passwordStr);//这里进去是从后台拿数据，拿到后调用自己的log方法
+                UserPresenter.getInstance(this).userLog(this,accountStr,passwordStr);//这里进去是从后台拿数据，拿到后调用自己的log方法
             }
         });
         toRegister.setOnClickListener(v -> {
@@ -89,7 +85,7 @@ public class LogActivity extends AppCompatActivity implements UserDataShowInterf
     //用在管理员登陆碎片，当碎片获得所输入的密码后将会来到这里
     public void setManagerPassword(String password){
         //后台说复用接口，管理员登陆的时候就传一个admin进去
-        ManagerPresenter.getInstance(this).log(this,"admin",password);
+        UserPresenter.getInstance(this).userLog(this,"admin",password);
     }
 
 
@@ -116,7 +112,6 @@ public class LogActivity extends AppCompatActivity implements UserDataShowInterf
         } else if (STATUS==UserPresenter.STATUS_SUCCESS) {
             Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this,UserDesktop.class));
-            Log.d(TAG,UserPresenter.getInstance(this).getUserName());
             Log.d(TAG,"in userLog:finish()活动");
             finish();//这一套下来要是能到达这一步的话应该Presenter的Userdata应该是有值的
             //这里的finish是为了自动结束活动到主页面
@@ -138,21 +133,10 @@ public class LogActivity extends AppCompatActivity implements UserDataShowInterf
 
     }
 
+
     @Override
     public void managerLog(int STATUS) {
-        if(STATUS==ManagerPresenter.STATUS_NO_INTERNET){
-            Toast.makeText(this,"无网络，稍后重试",Toast.LENGTH_SHORT).show();
 
-        }else if(STATUS==ManagerPresenter.STATUS_PASSWORD_INCORRECT){
-            Toast.makeText(this,"口令错误，请检查后再登录",Toast.LENGTH_SHORT).show();
-
-        } else if (STATUS == ManagerPresenter.STATUS_SUCCESS) {
-            Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this,ManagerDesktop.class));
-            Log.d(TAG,"in userLog:finish()活动");
-            finish();//这一套下来要是能到达这一步的话应该Presenter的Userdata应该是有值的
-            //这里的finish是为了自动结束活动到主页面
-        }
     }
 
     @Override

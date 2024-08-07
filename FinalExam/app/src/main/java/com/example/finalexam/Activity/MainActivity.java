@@ -12,7 +12,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.finalexam.Helper.ManagerDataShowInterface;
 import com.example.finalexam.Helper.UserDataShowInterface;
-import com.example.finalexam.Presenter.ManagerPresenter;
 import com.example.finalexam.Presenter.SPPresenter;
 import com.example.finalexam.Presenter.UserPresenter;
 import com.example.finalexam.R;
@@ -31,7 +30,7 @@ public class MainActivity extends AppCompatActivity  implements UserDataShowInte
         });
 
         UserPresenter userPresenter = UserPresenter.getInstance(this);
-        ManagerPresenter managerPresenter = ManagerPresenter.getInstance(this);
+
 
         new Thread(new Runnable() {
             @Override
@@ -53,12 +52,8 @@ public class MainActivity extends AppCompatActivity  implements UserDataShowInte
                 } else {
                     String account = SPPresenter.getAccount(MainActivity.this);
                     String password = SPPresenter.getPassword(MainActivity.this);
+                    userPresenter.userLog(MainActivity.this,account,password);
 
-                    if(account.equals("admin")){
-                        managerPresenter.log(MainActivity.this,account,password);
-                    }else{
-                        userPresenter.log(MainActivity.this,account,password);
-                    }
                 }
             }
         }).start();
@@ -77,7 +72,6 @@ public class MainActivity extends AppCompatActivity  implements UserDataShowInte
                 UserPresenter.getInstance(this).getWaterToday().clear();
                 UserPresenter.getInstance(this).setWaterDrink(0);
             }*/
-            UserPresenter.getInstance(this).updateUserData(this);
         }
     }
 
@@ -88,11 +82,7 @@ public class MainActivity extends AppCompatActivity  implements UserDataShowInte
 
     @Override
     public void updateUserData(int STATUS) {
-        if(STATUS == UserPresenter.STATUS_SUCCESS)
-            Toast.makeText(this, "数据同步成功", Toast.LENGTH_SHORT).show();
-        else Toast.makeText(this, "数据同步失败", Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(MainActivity.this, UserDesktop.class));
-        finish();
+
     }
 
     @Override
@@ -102,28 +92,11 @@ public class MainActivity extends AppCompatActivity  implements UserDataShowInte
 
     @Override
     public void managerLog(int STATUS) {
-        if (STATUS == ManagerPresenter.STATUS_NO_INTERNET) {
-            Toast.makeText(this, "网络异常，请检查网络后重试", Toast.LENGTH_SHORT).show();
-            SPPresenter.accordLoggedStatus(this, false);
-            startActivity(new Intent(MainActivity.this, LogActivity.class));
-            finish();
-        } else if (STATUS == ManagerPresenter.STATUS_SUCCESS) {
-            Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
-        /*    if (UserPresenter.getInstance(this).isNextDay(this)) {
-                UserPresenter.getInstance(this).getWaterToday().clear();
-                UserPresenter.getInstance(this).setWaterDrink(0);
-            }*/
-            ManagerPresenter.getInstance(this).updateManagerData(this);
-        }
+
     }
 
     @Override
     public void updateManagerData(int STATUS) {
-        if(STATUS == ManagerPresenter.STATUS_SUCCESS)
-            Toast.makeText(this, "数据同步成功", Toast.LENGTH_SHORT).show();
-        else Toast.makeText(this, "数据同步失败", Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(MainActivity.this, ManagerDesktop.class));
-        finish();
-    }
 
+    }
 }

@@ -1,15 +1,14 @@
 package com.example.finalexam.Presenter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.example.finalexam.Helper.UserApi;
 import com.example.finalexam.Helper.UserDataShowInterface;
-import com.example.finalexam.Model.UserData;
+import com.example.finalexam.Model.InfoUser;
+import com.example.finalexam.Model.DataModel;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,10 +18,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class UserPresenter {
     private static final String TAG = "UserPresenter";
-    private String baseUrl="http://47.113.224.195:31112/";
+    private String baseUrl="http://47.113.224.195:31110/";
     public UserDataShowInterface activity;
     private static UserPresenter presenter=new UserPresenter();
-    private UserData userData;
+    private DataModel user =new DataModel();
+
     public static final int STATUS_SUCCESS = 100;
     public static final int STATUS_NO_INTERNET = 0;
     public static final int STATUS_ACCOUNT_NOT_EXIST = 11;
@@ -40,12 +40,8 @@ public class UserPresenter {
         return presenter;
     }
 
-
-    //记录登陆状态
-
-
     //登录请求
-    public void log(Context context,String account,String password){
+    public void userLog(Context context, String account, String password){
         Log.d(TAG, "requestLog: 登录请求");
         Log.d(TAG, "account = " + account + ", password = " + password);
         Retrofit retrofit = new Retrofit.Builder()
@@ -55,32 +51,40 @@ public class UserPresenter {
         UserApi userApi = retrofit.create(UserApi.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
-        Call<UserData> dataCall = userApi.log(account, password);
+        DataModel transmitData=new DataModel();
+        transmitData.setUsername(account);
+        transmitData.setPassword(password);
 
-        dataCall.enqueue(new Callback<UserData>() {
+        Call<InfoUser> dataCall = userApi.log(transmitData);
+        transmitData=null;
+
+        dataCall.enqueue(new Callback<InfoUser>() {
             @Override
-            public void onResponse(@NonNull Call<UserData> call, @NonNull Response<UserData> response) {
-                UserData tempData = response.body();
-                if (tempData == null) {
+            public void onResponse(@NonNull Call<InfoUser> call, @NonNull Response<InfoUser> response) {
+                InfoUser info = response.body();
+                if(info==null){
+                    activity.userLog(STATUS_NO_INTERNET);
+                } else if (info.getMsg().equals("账号不存在")) {
                     activity.userLog(STATUS_ACCOUNT_NOT_EXIST);
-                    SPPresenter.accordLoggedStatus(context, false);
-                } else if ("accountNotExist".equals(tempData.getMsg())){
-                    activity.userLog(STATUS_ACCOUNT_NOT_EXIST);
-                } else if ("passwordIncorrect".equals(tempData.getMsg())){
-                    activity.userLog(STATUS_PASSWORD_INCORRECT);
-                } else if ("accountFrozen".equals(tempData.getMsg())) {
+                } else if (info.getMsg().equals("账号被冻结")) {
                     activity.userLog(STATUS_ACCOUNT_FROZEN);
-                } else {
-                    userData = tempData;
+                } else if (info.getMsg().equals("密码错误")) {
+                    activity.userLog(STATUS_PASSWORD_INCORRECT);
+                }else {
+                    DataModel tempData=info.getData();
                     SPPresenter.accordAccount(context, account);
                     SPPresenter.accordPassword(context, password);
                     SPPresenter.accordLoggedStatus(context, true);
+                    user.setUsername(account);
+                    user.setPassword(password);
+                    user.setUserId(tempData.getUserId());
                     Log.d(TAG,"useData已在log方法中赋值");
                     activity.userLog(STATUS_SUCCESS);
                 }
+
             }
             @Override
-            public void onFailure(@NonNull Call<UserData> call, @NonNull Throwable throwable) {
+            public void onFailure(@NonNull Call<InfoUser> call, @NonNull Throwable throwable) {
                 Log.d(TAG, throwable.toString());
                 activity.userLog(STATUS_NO_INTERNET);
             }
@@ -102,79 +106,34 @@ public class UserPresenter {
                 .build();
         UserApi userApi = retrofit.create(UserApi.class);
 
-        Call<UserData> dataCall = userApi.register(account, password);
+        DataModel transmitData=new DataModel();
+        transmitData.setUsername(account);
+        transmitData.setPassword(password);
 
-        dataCall.enqueue(new Callback<UserData>() {
+        Call<InfoUser> dataCall = userApi.register(transmitData);
+        transmitData=null;
+
+        dataCall.enqueue(new Callback<InfoUser>() {
             @Override
-            public void onResponse(@NonNull Call<UserData> call, @NonNull Response<UserData> response) {
-                UserData tempData = response.body();
-                if (tempData == null) activity.userRegister(STATUS_NO_INTERNET);
-                else if ("accountAlreadyExist".equals(tempData.getMsg()))
-                    activity.userRegister(STATUS_ACCOUNT_ALREADY_EXIST);
+            public void onResponse(@NonNull Call<InfoUser> call, @NonNull Response<InfoUser> response) {
+                InfoUser info = response.body();
+                if (info == null) activity.userRegister(STATUS_NO_INTERNET);
+                else if(info.getData()==null) activity.userRegister(STATUS_ACCOUNT_ALREADY_EXIST);
                 else {
-
                     SPPresenter.accordAccount(context, account);
                     SPPresenter.accordPassword(context, password);
                     SPPresenter.accordLoggedStatus(context, true);
-                    userData = tempData;
-
-                    userData.setAccount(account);//？
-                    userData.setPasswords(password);//？？
-                    Log.d(TAG,"useData已在request方法中赋值，虽然我觉得没必要，但是先保留");
+                    user.setUsername(account);
+                    user.setPassword(password);
                     activity.userRegister(STATUS_SUCCESS);
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<UserData> call, @NonNull Throwable throwable) {
+            public void onFailure(@NonNull Call<InfoUser> call, @NonNull Throwable throwable) {
                 activity.userRegister(STATUS_NO_INTERNET);
             }
         });
     }
 
-    public void updateUserData(Context context) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        UserApi userApi = retrofit.create(UserApi.class);
-
-        Log.d(TAG, "update msg = " + userData.getMsg());
-        Call<UserData> dataCall = userApi.updateData(userData.getMsg(), userData);
-
-        dataCall.enqueue(new Callback<UserData>() {
-            @Override
-            public void onResponse(@NonNull Call<UserData> call, @NonNull Response<UserData> response) {
-                UserData tempData = response.body();
-                if (tempData == null) activity.updateUserData(STATUS_UPDATE_ERROR);
-                else if ("updateError".equals(tempData.getMsg()))
-                    activity.updateUserData(STATUS_UPDATE_ERROR);
-                else {
-                    activity.updateUserData(STATUS_SUCCESS);
-                    Log.d(TAG, "update success");
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<UserData> call, @NonNull Throwable throwable) {
-                activity.updateUserData(STATUS_NO_INTERNET);
-            }
-        });
-    }
-
-
-
-
-
-    public String getUserName(){
-        String name=null;
-        if(userData==null){
-            Log.d(TAG,"Presenter返回的userData为null，此处新建一个空的返回");
-            name="Presenter返回的userData为null，此处新建一个空的返回";
-        }else{
-            name=userData.getName();
-            Log.d(TAG,"返回的是userData中的数据");
-        }
-        return name;
-    }
 }
