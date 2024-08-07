@@ -31,7 +31,7 @@ public class ProjectShowFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view= inflater.inflate(R.layout.fragment_job_show, container, false);
+        view= inflater.inflate(R.layout.fragment_project, container, false);
 
         return view;
     }

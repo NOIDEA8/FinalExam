@@ -156,7 +156,6 @@ public class UserPresenter {
         UserApi userApi = retrofit.create(UserApi.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
-        Call<InfoShowAllProject> getAllProjectForUser()//问参数什么意思
     }
 
 
