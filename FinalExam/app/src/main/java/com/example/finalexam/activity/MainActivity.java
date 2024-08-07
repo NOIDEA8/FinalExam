@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements UserDataShowInter
 
 
         new Thread(() -> {
-            if (SPPresenter.isLogged(MainActivity.this) == false) {//SPPresenter为工具类保存原有打开shareprefrence的读取操作
+            if (!SPPresenter.isLogged(MainActivity.this)) {//SPPresenter为工具类保存原有打开shareprefrence的读取操作
                 new Thread(() -> {
                     try {
                         Thread.sleep(1000);
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements UserDataShowInter
                 userPresenter.updataData();//预计是有网更新，无网toast
 
                 // userPresenter.userLog(MainActivity.this,account,password);
-                if (account == "admin") {
+                if ("admin".equals(account)) {
                     startActivity(new Intent(MainActivity.this, ManagerDesktop.class));
                 } else {
                     startActivity(new Intent(MainActivity.this, UserDesktop.class));
