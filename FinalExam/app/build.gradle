@@ -29,10 +29,6 @@ android {
 }
 
 dependencies {
-    implementation 'com.squareup.retrofit2:retrofit:2.6.3'
-    implementation 'com.squareup.retrofit2:converter-gson:2.6.3'
-    implementation 'com.google.code.gson:gson:2.8.0'
-    implementation "androidx.viewpager2:viewpager2:1.0.0"
     implementation libs.appcompat
     implementation libs.material
     implementation libs.activity
@@ -40,6 +36,10 @@ dependencies {
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
+
+    implementation 'com.squareup.retrofit2:retrofit:2.6.3'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.3'
+    implementation 'com.google.code.gson:gson:2.8.0'
 
     implementation files("./libs/monitor-debug.aar")
 }

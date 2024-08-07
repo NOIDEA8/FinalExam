@@ -15,7 +15,7 @@ import com.example.finalexam.presenter.SPPresenter;
 import com.example.finalexam.presenter.UserPresenter;
 import com.example.finalexam.R;
 
-public class MainActivity extends AppCompatActivity  implements UserDataShowInterface, ManagerDataShowInterface {
+public class MainActivity extends AppCompatActivity implements UserDataShowInterface, ManagerDataShowInterface {
     private static final String TAG = "MainActivity";
     private UserPresenter userPresenter = UserPresenter.getInstance(this);
 
@@ -31,46 +31,31 @@ public class MainActivity extends AppCompatActivity  implements UserDataShowInte
         });
 
 
-
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if (SPPresenter.isLogged(MainActivity.this)==false) {//SPPresenter为工具类保存原有打开shareprefrence的读取操作
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            } finally {
-                                startActivity(new Intent(MainActivity.this, LogActivity.class));
-                                finish();
-                            }
-                        }
-                    }).start();
-                } else {
-                    String account = SPPresenter.getUserName(MainActivity.this);
-                    String password = SPPresenter.getPassword(MainActivity.this);
-
-
-
-                    userPresenter.updataData();//预计是有网更新，无网toast
-
-
-
-
-
-                   // userPresenter.userLog(MainActivity.this,account,password);
-                    if (account == "admin") {
-                        startActivity(new Intent(MainActivity.this,ManagerDesktop.class));
-                    }else{
-                        startActivity(new Intent(MainActivity.this,UserDesktop.class));
-
+        new Thread(() -> {
+            if (SPPresenter.isLogged(MainActivity.this) == false) {//SPPresenter为工具类保存原有打开shareprefrence的读取操作
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    } finally {
+                        startActivity(new Intent(MainActivity.this, LogActivity.class));
+                        finish();
                     }
-                    finish();
+                }).start();
+            } else {
+                String account = SPPresenter.getUserName(MainActivity.this);
+                String password = SPPresenter.getPassword(MainActivity.this);
+
+                userPresenter.updataData();//预计是有网更新，无网toast
+
+                // userPresenter.userLog(MainActivity.this,account,password);
+                if (account == "admin") {
+                    startActivity(new Intent(MainActivity.this, ManagerDesktop.class));
+                } else {
+                    startActivity(new Intent(MainActivity.this, UserDesktop.class));
                 }
+                finish();
             }
         }).start();
 
