@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,13 +17,13 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHold
 
     private static final String TAG = "ItemAdapter";
 
-    private List<ProjectData> itemList;
+    private List<ProjectData> list;
 
     private Context context;
 
-    public ProjectAdapter(Context context, List<ProjectData> itemList) {
+    public ProjectAdapter(Context context, List<ProjectData> list) {
         this.context = context;
-        this.itemList = itemList;
+        this.list = list;
     }
 
     @NonNull
@@ -39,20 +40,20 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHold
 
     @Override
     public int getItemCount() {
-        if (itemList == null) return 0;
-        return itemList.size();
+        if (list == null) return 0;
+        return list.size();
     }
 
-    public class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ItemHolder extends RecyclerView.ViewHolder {
+        public TextView projectName;
+        public TextView userName;
+        public TextView userColor;
 
         public ItemHolder(@NonNull View itemView) {
             super(itemView);
-
-        }
-
-        @Override
-        public void onClick(View v) {
-
+            projectName = itemView.findViewById(R.id.project_name);
+            userName = itemView.findViewById(R.id.project_user_name);
+            userColor = itemView.findViewById(R.id.project_user_color);
         }
     }
 
