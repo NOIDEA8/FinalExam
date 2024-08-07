@@ -64,9 +64,7 @@ public class RegisterActivity extends AppCompatActivity implements UserDataShowI
 
     @Override
     public void userRegister(int STATUS) {
-        if(STATUS==UserPresenter.STATUS_ACCOUNT_OR_PASSWORD_NOT_SATISFIABLE){
-            Toast.makeText(this,"账号和密码均不少于8位数",Toast.LENGTH_SHORT).show();
-        } else if (STATUS==UserPresenter.STATUS_PASSWORDS_INCONSISTENT) {
+        if (STATUS==UserPresenter.STATUS_PASSWORDS_INCONSISTENT) {
             Toast.makeText(this,"两次输入的密码不一致",Toast.LENGTH_SHORT).show();
         } else if (STATUS==UserPresenter.STATUS_NO_INTERNET){
             Toast.makeText(this,"无网络，稍后重试",Toast.LENGTH_SHORT).show();

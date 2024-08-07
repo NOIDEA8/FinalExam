@@ -69,7 +69,7 @@ public class UserPresenter {
                     activity.userLog(STATUS_PASSWORD_INCORRECT);
                 }else {
                     DataModel tempData=info.getData();
-                    SPPresenter.accordAccount(context, account);
+                    SPPresenter.accordUsername(context, account);
                     SPPresenter.accordPassword(context, password);
                     SPPresenter.accordLoggedStatus(context, true);
                     user.setUsername(account);
@@ -89,10 +89,7 @@ public class UserPresenter {
     }
 
     public void register(Context context, String account, String password, String passwordAgain) {
-        if (account.length() < 8 || password.length() < 8 || passwordAgain.length() < 8) {
-            activity.userRegister(STATUS_ACCOUNT_OR_PASSWORD_NOT_SATISFIABLE);
-            return;
-        } else if (!password.equals(passwordAgain)) {
+        if (!password.equals(passwordAgain)) {
             activity.userRegister(STATUS_PASSWORDS_INCONSISTENT);
             return;
         }
@@ -133,4 +130,7 @@ public class UserPresenter {
         });
     }
 
+    public void updataData(){
+
+    }
 }

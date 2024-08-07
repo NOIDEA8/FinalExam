@@ -16,10 +16,10 @@ public class SPPresenter {//SPPresenter为工具类保存原有打开shareprefre
         }
         return false;
     }
-    //获取账号
-    public static String getAccount(Context context) {
+    //获取账号名
+    public static String getUserName(Context context) {
         SharedPreferences sp = context.getSharedPreferences("User", Context.MODE_PRIVATE);
-        return sp.getString("account", null);
+        return sp.getString("username", null);
     }
     //获取密码
     public static String getPassword(Context context) {
@@ -34,10 +34,10 @@ public class SPPresenter {//SPPresenter为工具类保存原有打开shareprefre
         ed.commit();
     }
     //记录账号
-    public static void accordAccount(Context context, String account) {
+    public static void accordUsername(Context context, String username) {
         SharedPreferences sp = context.getSharedPreferences("User", Context.MODE_PRIVATE);
         @SuppressLint("CommitPrefEdits") SharedPreferences.Editor ed = sp.edit();
-        ed.putString("account", account);
+        ed.putString("username", username);
         ed.commit();
     }
     //记录密码
