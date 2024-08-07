@@ -31,7 +31,7 @@ public class UserPresenter {
     public static final int STATUS_PASSWORD_INCORRECT = 21;
     public static final int STATUS_PASSWORDS_INCONSISTENT = 22;
     public static final int STATUS_ACCOUNT_OR_PASSWORD_NOT_SATISFIABLE = 23;
-    public static final int STATUS_UPDATE_ERROR = 31;
+    public static final int STATUS_UPDATE_ERROR = 31;///
 
 
    //获取唯一present
