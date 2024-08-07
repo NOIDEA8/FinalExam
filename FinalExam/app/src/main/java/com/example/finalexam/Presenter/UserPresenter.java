@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 
 import com.example.finalexam.Helper.UserApi;
 import com.example.finalexam.Helper.UserDataShowInterface;
-import com.example.finalexam.Model.InfoUser;
+import com.example.finalexam.Model.InfoData;
 import com.example.finalexam.Model.DataModel;
 
 import retrofit2.Call;
@@ -51,17 +51,14 @@ public class UserPresenter {
         UserApi userApi = retrofit.create(UserApi.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
-        DataModel transmitData=new DataModel();
-        transmitData.setUsername(account);
-        transmitData.setPassword(password);
 
-        Call<InfoUser> dataCall = userApi.log(transmitData);
-        transmitData=null;
+        Call<InfoData> dataCall = userApi.log(account,password);
 
-        dataCall.enqueue(new Callback<InfoUser>() {
+
+        dataCall.enqueue(new Callback<InfoData>() {
             @Override
-            public void onResponse(@NonNull Call<InfoUser> call, @NonNull Response<InfoUser> response) {
-                InfoUser info = response.body();
+            public void onResponse(@NonNull Call<InfoData> call, @NonNull Response<InfoData> response) {
+                InfoData info = response.body();
                 if(info==null){
                     activity.userLog(STATUS_NO_INTERNET);
                 } else if (info.getMsg().equals("账号不存在")) {
@@ -84,7 +81,7 @@ public class UserPresenter {
 
             }
             @Override
-            public void onFailure(@NonNull Call<InfoUser> call, @NonNull Throwable throwable) {
+            public void onFailure(@NonNull Call<InfoData> call, @NonNull Throwable throwable) {
                 Log.d(TAG, throwable.toString());
                 activity.userLog(STATUS_NO_INTERNET);
             }
@@ -110,27 +107,27 @@ public class UserPresenter {
         transmitData.setUsername(account);
         transmitData.setPassword(password);
 
-        Call<InfoUser> dataCall = userApi.register(transmitData);
+        Call<InfoData> dataCall = userApi.register(transmitData);
         transmitData=null;
 
-        dataCall.enqueue(new Callback<InfoUser>() {
+        dataCall.enqueue(new Callback<InfoData>() {
             @Override
-            public void onResponse(@NonNull Call<InfoUser> call, @NonNull Response<InfoUser> response) {
-                InfoUser info = response.body();
+            public void onResponse(@NonNull Call<InfoData> call, @NonNull Response<InfoData> response) {
+                InfoData info = response.body();
                 if (info == null) activity.userRegister(STATUS_NO_INTERNET);
                 else if(info.getData()==null) activity.userRegister(STATUS_ACCOUNT_ALREADY_EXIST);
                 else {
-                    SPPresenter.accordAccount(context, account);
+                  /*  SPPresenter.accordAccount(context, account);
                     SPPresenter.accordPassword(context, password);
                     SPPresenter.accordLoggedStatus(context, true);
                     user.setUsername(account);
-                    user.setPassword(password);
+                    user.setPassword(password);*/
                     activity.userRegister(STATUS_SUCCESS);
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<InfoUser> call, @NonNull Throwable throwable) {
+            public void onFailure(@NonNull Call<InfoData> call, @NonNull Throwable throwable) {
                 activity.userRegister(STATUS_NO_INTERNET);
             }
         });

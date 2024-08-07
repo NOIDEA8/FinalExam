@@ -1,6 +1,6 @@
 package com.example.finalexam.Model;
 
-public class InfoUser {
+public class InfoData {
     private int code;
     private String msg;
     private DataModel data;
