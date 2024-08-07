@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".QGApplication.QGApplication"
+        android:name=".qgapplication.QGApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -21,19 +21,19 @@
         android:theme="@style/Theme.FinalExam"
         tools:targetApi="31">
         <activity
-            android:name=".Activity.RegisterActivity"
+            android:name=".activity.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.ManagerDesktop"
+            android:name=".activity.ManagerDesktop"
             android:exported="false" />
         <activity
-            android:name=".Activity.UserDesktop"
+            android:name=".activity.UserDesktop"
             android:exported="false" />
         <activity
-            android:name=".Activity.LogActivity"
+            android:name=".activity.LogActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.MainActivity"
+            android:name=".activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

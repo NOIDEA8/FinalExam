@@ -1,4 +1,4 @@
-package com.example.finalexam.Activity;
+package com.example.finalexam.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,10 +9,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.finalexam.Helper.ManagerDataShowInterface;
-import com.example.finalexam.Helper.UserDataShowInterface;
-import com.example.finalexam.Presenter.SPPresenter;
-import com.example.finalexam.Presenter.UserPresenter;
+import com.example.finalexam.helper.ManagerDataShowInterface;
+import com.example.finalexam.helper.UserDataShowInterface;
+import com.example.finalexam.presenter.SPPresenter;
+import com.example.finalexam.presenter.UserPresenter;
 import com.example.finalexam.R;
 
 public class MainActivity extends AppCompatActivity  implements UserDataShowInterface, ManagerDataShowInterface {

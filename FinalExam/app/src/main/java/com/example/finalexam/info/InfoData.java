@@ -1,9 +1,11 @@
-package com.example.finalexam.Model;
+package com.example.finalexam.info;
+
+import com.example.finalexam.model.UserData;
 
 public class InfoData {
     private int code;
     private String msg;
-    private DataModel data;
+    private UserData data;
 
     public int getCode() {
         return code;
@@ -13,7 +15,7 @@ public class InfoData {
         return msg;
     }
 
-    public DataModel getData() {
+    public UserData getData() {
         return data;
     }
 }

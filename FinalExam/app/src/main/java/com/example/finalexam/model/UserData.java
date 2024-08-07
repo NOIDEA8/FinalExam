@@ -1,6 +1,6 @@
-package com.example.finalexam.Model;
+package com.example.finalexam.model;
 
-public class DataModel {
+public class UserData {
 
     private String username;//这个就是账号
     private String password;

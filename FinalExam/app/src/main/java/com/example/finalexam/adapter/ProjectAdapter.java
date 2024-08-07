@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.finalexam.Model.ProjectData;
+import com.example.finalexam.model.ProjectData;
 import com.example.finalexam.R;
 
 import java.util.List;

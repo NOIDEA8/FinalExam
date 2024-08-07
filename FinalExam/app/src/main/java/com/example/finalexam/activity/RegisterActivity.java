@@ -1,4 +1,4 @@
-package com.example.finalexam.Activity;
+package com.example.finalexam.activity;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -11,8 +11,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.finalexam.Helper.UserDataShowInterface;
-import com.example.finalexam.Presenter.UserPresenter;
+import com.example.finalexam.helper.UserDataShowInterface;
+import com.example.finalexam.presenter.UserPresenter;
 import com.example.finalexam.R;
 import com.google.android.material.textfield.TextInputEditText;
 

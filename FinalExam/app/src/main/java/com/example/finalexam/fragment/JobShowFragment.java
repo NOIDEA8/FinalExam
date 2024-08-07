@@ -1,4 +1,4 @@
-package com.example.finalexam.Fragment;
+package com.example.finalexam.fragment;
 
 import android.os.Bundle;
 

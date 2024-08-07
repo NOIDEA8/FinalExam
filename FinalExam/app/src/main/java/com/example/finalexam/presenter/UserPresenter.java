@@ -1,14 +1,14 @@
-package com.example.finalexam.Presenter;
+package com.example.finalexam.presenter;
 
 import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.finalexam.Helper.UserApi;
-import com.example.finalexam.Helper.UserDataShowInterface;
-import com.example.finalexam.Model.InfoData;
-import com.example.finalexam.Model.DataModel;
+import com.example.finalexam.helper.UserApi;
+import com.example.finalexam.helper.UserDataShowInterface;
+import com.example.finalexam.info.InfoData;
+import com.example.finalexam.model.UserData;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -21,7 +21,7 @@ public class UserPresenter {
     private String baseUrl="http://47.113.224.195:31110/";
     public UserDataShowInterface activity;
     private static UserPresenter presenter=new UserPresenter();
-    private DataModel user =new DataModel();
+    private UserData user =new UserData();//一个用户一个presenter
 
     public static final int STATUS_SUCCESS = 100;
     public static final int STATUS_NO_INTERNET = 0;
@@ -68,7 +68,7 @@ public class UserPresenter {
                 } else if (info.getMsg().equals("密码错误")) {
                     activity.userLog(STATUS_PASSWORD_INCORRECT);
                 }else {
-                    DataModel tempData=info.getData();
+                    UserData tempData=info.getData();
                     SPPresenter.accordUsername(context, account);
                     SPPresenter.accordPassword(context, password);
                     SPPresenter.accordLoggedStatus(context, true);
@@ -100,7 +100,7 @@ public class UserPresenter {
                 .build();
         UserApi userApi = retrofit.create(UserApi.class);
 
-        DataModel transmitData=new DataModel();
+        UserData transmitData=new UserData();
         transmitData.setUsername(account);
         transmitData.setPassword(password);
 

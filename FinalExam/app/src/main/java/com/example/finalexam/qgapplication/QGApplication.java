@@ -1,4 +1,4 @@
-package com.example.finalexam.QGApplication;
+package com.example.finalexam.qgapplication;
 
 import android.app.Application;
 
