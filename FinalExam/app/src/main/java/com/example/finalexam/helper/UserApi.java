@@ -1,8 +1,10 @@
 package com.example.finalexam.helper;
 
 import com.example.finalexam.model.UserData;
-import com.example.finalexam.info.InfoData;
+import com.example.finalexam.info.InfoUser;
 import com.example.finalexam.info.InfoProjectList;
+
+import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -16,12 +18,12 @@ public interface UserApi {
 
     @FormUrlEncoded
     @POST("login")
-    Call<InfoData> log(@Field("username") String username,
+    Call<InfoUser> log(@Field("username") String username,
                        @Field("password") String password);
 
 
     @POST("user/register")
-    Call<InfoData> register(@Body UserData dataModel);
+    Call<InfoUser> register(@Body JSONObject jsonObject);
 
     @FormUrlEncoded
     @GET("user/showSelfProjects")
@@ -35,4 +37,6 @@ public interface UserApi {
     @GET("user/myApplicationOnMonitorProject")
     Call<InfoProjectList> getOnMonitorProject(@Query("userId") int useId);
 
+    @GET("user/myApplicationProject")
+    Call<InfoProjectList> myApplicationProject(@Query("userId") int UserId);
 }

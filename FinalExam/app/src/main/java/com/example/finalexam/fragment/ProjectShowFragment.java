@@ -12,12 +12,12 @@ import android.view.ViewGroup;
 import com.example.finalexam.R;
 
 
-public class JobShowFragment extends Fragment {
+public class ProjectShowFragment extends Fragment {
 
    private View view;
    private RecyclerView projectsShow;
 
-    public JobShowFragment() {
+    public ProjectShowFragment() {
 
     }
 

@@ -2,10 +2,41 @@ package com.example.finalexam.model;
 
 public class UserData {
 
-    private String username;//这个就是账号
+    private int enabled;//0未冻结、1冻结?
+    private String online;
     private String password;
-    private String token;
-    private String userId;//操作必要
+    private String registerTime;
+    private String username;//这个就是账号
+    private int userId;//操作必要
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public int getEnabled() {
+        return enabled;
+    }
+
+    public String getOnline() {
+        return online;
+    }
+
+    public String getRegisterTime() {
+        return registerTime;
+    }
 
     public String getUsername() {
         return username;
@@ -23,19 +54,11 @@ public class UserData {
         this.password = password;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 }

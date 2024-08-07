@@ -124,17 +124,6 @@ public class LogActivity extends AppCompatActivity implements UserDataShowInterf
     }
 
     @Override
-    public void updateUserData(int STATUS) {
-
-    }
-
-    @Override
-    public void updateUserImage(int STATUS) {
-
-    }
-
-
-    @Override
     public void managerLog(int STATUS) {
 
     }

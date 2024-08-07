@@ -1,11 +1,14 @@
 package com.example.finalexam.info;
 
+import com.example.finalexam.model.ProjectData;
 import com.example.finalexam.model.UserData;
 
-public class InfoData {
+import java.util.List;
+
+public class InfoUserList {
     private int code;
     private String msg;
-    private UserData data;
+    private List<UserData> data;
 
     public int getCode() {
         return code;
@@ -15,7 +18,7 @@ public class InfoData {
         return msg;
     }
 
-    public UserData getData() {
+    public List<UserData> getData() {
         return data;
     }
 }

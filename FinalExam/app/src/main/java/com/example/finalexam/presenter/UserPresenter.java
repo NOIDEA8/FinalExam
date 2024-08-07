@@ -1,14 +1,23 @@
 package com.example.finalexam.presenter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.example.finalexam.helper.UserApi;
 import com.example.finalexam.helper.UserDataShowInterface;
-import com.example.finalexam.info.InfoData;
+import com.example.finalexam.info.InfoProjectList;
+import com.example.finalexam.info.InfoShowAllProject;
+import com.example.finalexam.info.InfoUser;
+import com.example.finalexam.model.ProjectData;
 import com.example.finalexam.model.UserData;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,6 +31,11 @@ public class UserPresenter {
     public UserDataShowInterface activity;
     private static UserPresenter presenter=new UserPresenter();
     private UserData user =new UserData();//一个用户一个presenter
+    private List<ProjectData> allProject;
+
+
+
+
 
     public static final int STATUS_SUCCESS = 100;
     public static final int STATUS_NO_INTERNET = 0;
@@ -52,13 +66,13 @@ public class UserPresenter {
         Log.d(TAG, "baseUrl = " + baseUrl);
 
 
-        Call<InfoData> dataCall = userApi.log(account,password);
+        Call<InfoUser> dataCall = userApi.log(account,password);
 
 
-        dataCall.enqueue(new Callback<InfoData>() {
+        dataCall.enqueue(new Callback<InfoUser>() {
             @Override
-            public void onResponse(@NonNull Call<InfoData> call, @NonNull Response<InfoData> response) {
-                InfoData info = response.body();
+            public void onResponse(@NonNull Call<InfoUser> call, @NonNull Response<InfoUser> response) {
+                InfoUser info = response.body();
                 if(info==null){
                     activity.userLog(STATUS_NO_INTERNET);
                 } else if (info.getMsg().equals("账号不存在")) {
@@ -81,7 +95,7 @@ public class UserPresenter {
 
             }
             @Override
-            public void onFailure(@NonNull Call<InfoData> call, @NonNull Throwable throwable) {
+            public void onFailure(@NonNull Call<InfoUser> call, @NonNull Throwable throwable) {
                 Log.d(TAG, throwable.toString());
                 activity.userLog(STATUS_NO_INTERNET);
             }
@@ -100,17 +114,21 @@ public class UserPresenter {
                 .build();
         UserApi userApi = retrofit.create(UserApi.class);
 
-        UserData transmitData=new UserData();
-        transmitData.setUsername(account);
-        transmitData.setPassword(password);
+        JSONObject jsonObject=new JSONObject();
+        try {
+            jsonObject.put("username", account);
+            jsonObject.put("password", password);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-        Call<InfoData> dataCall = userApi.register(transmitData);
-        transmitData=null;
+        Call<InfoUser> dataCall = userApi.register(jsonObject);
+        jsonObject=null;
 
-        dataCall.enqueue(new Callback<InfoData>() {
+        dataCall.enqueue(new Callback<InfoUser>() {
             @Override
-            public void onResponse(@NonNull Call<InfoData> call, @NonNull Response<InfoData> response) {
-                InfoData info = response.body();
+            public void onResponse(@NonNull Call<InfoUser> call, @NonNull Response<InfoUser> response) {
+                InfoUser info = response.body();
                 if (info == null) activity.userRegister(STATUS_NO_INTERNET);
                 else if(info.getData()==null) activity.userRegister(STATUS_ACCOUNT_ALREADY_EXIST);
                 else {
@@ -124,13 +142,64 @@ public class UserPresenter {
             }
 
             @Override
-            public void onFailure(@NonNull Call<InfoData> call, @NonNull Throwable throwable) {
+            public void onFailure(@NonNull Call<InfoUser> call, @NonNull Throwable throwable) {
                 activity.userRegister(STATUS_NO_INTERNET);
             }
         });
     }
 
-    public void updataData(){
+    public void allProject(){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        UserApi userApi = retrofit.create(UserApi.class);
+        Log.d(TAG, "baseUrl = " + baseUrl);
 
+        Call<InfoShowAllProject> getAllProjectForUser()//问参数什么意思
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //获取登录状态，已登录则返回true
+    public boolean isLogged(Context context) {
+        try {
+            SharedPreferences sp = context.getSharedPreferences("User", Context.MODE_PRIVATE);
+            return sp.getBoolean("isLogged", false);
+        } catch (Exception e) {
+
+        }
+        return false;
+    }
+    //获取账号名
+    public String getUserName(Context context) {
+        SharedPreferences sp = context.getSharedPreferences("User", Context.MODE_PRIVATE);
+        return sp.getString("username", null);
+    }
+    //获取密码
+    public String getPassword(Context context) {
+        SharedPreferences sp = context.getSharedPreferences("User", Context.MODE_PRIVATE);
+        return sp.getString("password", "null");
     }
 }

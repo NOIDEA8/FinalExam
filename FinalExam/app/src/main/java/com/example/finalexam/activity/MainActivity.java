@@ -2,6 +2,8 @@ package com.example.finalexam.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +20,8 @@ import com.example.finalexam.R;
 public class MainActivity extends AppCompatActivity  implements UserDataShowInterface, ManagerDataShowInterface {
     private static final String TAG = "MainActivity";
     private UserPresenter userPresenter = UserPresenter.getInstance(this);
+    private String userName;
+    private String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +40,7 @@ public class MainActivity extends AppCompatActivity  implements UserDataShowInte
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if (SPPresenter.isLogged(MainActivity.this)==false) {//SPPresenter为工具类保存原有打开shareprefrence的读取操作
+                if (userPresenter.isLogged(MainActivity.this)==false) {//SPPresenter为工具类保存原有打开shareprefrence的读取操作
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -51,25 +55,10 @@ public class MainActivity extends AppCompatActivity  implements UserDataShowInte
                         }
                     }).start();
                 } else {
-                    String account = SPPresenter.getUserName(MainActivity.this);
-                    String password = SPPresenter.getPassword(MainActivity.this);
+                    userName = userPresenter.getUserName(MainActivity.this);
+                    password = userPresenter.getPassword(MainActivity.this);
 
-
-
-                    userPresenter.updataData();//预计是有网更新，无网toast
-
-
-
-
-
-                   // userPresenter.userLog(MainActivity.this,account,password);
-                    if (account == "admin") {
-                        startActivity(new Intent(MainActivity.this,ManagerDesktop.class));
-                    }else{
-                        startActivity(new Intent(MainActivity.this,UserDesktop.class));
-
-                    }
-                    finish();
+                    userPresenter.userLog(MainActivity.this,userName,password);
                 }
             }
         }).start();
@@ -78,7 +67,19 @@ public class MainActivity extends AppCompatActivity  implements UserDataShowInte
 
     @Override
     public void userLog(int STATUS) {
-
+        if(STATUS==UserPresenter.STATUS_NO_INTERNET){
+            Toast.makeText(this,"无网络，稍后重试",Toast.LENGTH_SHORT).show();
+        } else if (STATUS==UserPresenter.STATUS_ACCOUNT_FROZEN) {
+            Toast.makeText(this,"账号被冻结，请联系管理员",Toast.LENGTH_SHORT).show();
+        } else if (STATUS==UserPresenter.STATUS_SUCCESS) {
+            Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
+            if (userName == "admin") {
+                startActivity(new Intent(MainActivity.this,ManagerDesktop.class));
+            }else{
+                startActivity(new Intent(MainActivity.this,UserDesktop.class));
+            }
+            finish();
+        }
     }
 
     @Override
@@ -86,15 +87,6 @@ public class MainActivity extends AppCompatActivity  implements UserDataShowInte
 
     }
 
-    @Override
-    public void updateUserData(int STATUS) {
-
-    }
-
-    @Override
-    public void updateUserImage(int STATUS) {
-
-    }
 
     @Override
     public void managerLog(int STATUS) {

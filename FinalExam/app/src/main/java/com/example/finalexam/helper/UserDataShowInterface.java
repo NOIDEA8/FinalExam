@@ -8,8 +8,5 @@ public interface UserDataShowInterface {
 
     void userRegister(int STATUS);
 
-    void updateUserData(int STATUS);
-
-    void updateUserImage(int STATUS);
 
 }

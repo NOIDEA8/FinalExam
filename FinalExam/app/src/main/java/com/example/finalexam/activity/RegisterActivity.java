@@ -77,13 +77,5 @@ public class RegisterActivity extends AppCompatActivity implements UserDataShowI
         }
     }
 
-    @Override
-    public void updateUserData(int STATUS) {
 
-    }
-
-    @Override
-    public void updateUserImage(int STATUS) {
-
-    }
 }
