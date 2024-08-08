@@ -1,10 +1,10 @@
 package com.example.finalexam.model;
 
 public class ProjectData {
-    private String applyTime;
-    private String applicationStatus;
-    private String applicationType;
-    private String createTime;
+    private String applyTime;//申请时间
+    private String applicationStatus;//审核、待审核
+    private String applicationType;//这个项目是更新还是发布
+    private String createTime;//申请通过时间
     private String creator;
     private String description;
     private String projectName;

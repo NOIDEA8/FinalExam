@@ -90,6 +90,11 @@ public class MainActivity extends AppCompatActivity  implements UserDataShowInte
     }
 
     @Override
+    public void userListResult(int STATUS) {
+
+    }
+
+    @Override
     public void projectPublishResult(int STATUS) {
 
     }
@@ -101,6 +106,11 @@ public class MainActivity extends AppCompatActivity  implements UserDataShowInte
 
     @Override
     public void projectDetail(int STATUS) {
+
+    }
+
+    @Override
+    public void updata(int STATUS) {
 
     }
 
