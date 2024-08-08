@@ -120,6 +120,11 @@ public class LogActivity extends AppCompatActivity implements UserDataShowInterf
     }
 
     @Override
+    public void userListResult(int STATUS) {
+
+    }
+
+    @Override
     public void projectPublishResult(int STATUS) {
 
     }
@@ -131,6 +136,11 @@ public class LogActivity extends AppCompatActivity implements UserDataShowInterf
 
     @Override
     public void projectDetail(int STATUS) {
+
+    }
+
+    @Override
+    public void updata(int STATUS) {
 
     }
 

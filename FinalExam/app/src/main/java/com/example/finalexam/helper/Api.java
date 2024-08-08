@@ -69,7 +69,7 @@ public interface Api {
     Call<InfoUser> deleteProject(@Body JSONObject jsonObject);
 
     //获取不同冻结状态的项目
-    @GET("admin/pagedQueryPublishedProject")//这里网址问题,他们那边有拼写错误
+    @GET("admin/pagedQueryPublishedProject")
     Call<InfoShowAllProject> getFrezonOrNotProject(@Query("projectStatus") int projectStatus);//0冻结，1未冻结
 
     //获取不同审核状态的项目
@@ -80,5 +80,18 @@ public interface Api {
     @POST("admin/verifyApplication")
     Call<InfoUser> verifyApplication(@Body JSONObject jsonObject);
 
+    //获得单个用户的信息，InfoUser不是任意的
+    @POST("admin/showUserDetailedInfo")
+    Call<InfoUser> userDetail(@Query("userId")int userId);
+
+    //冻结用户，InfoUser是任意的
+    //参数是userId、freezeHour
+    @POST("admin/freezeUser")
+    Call<InfoUser> freezeUser(@Body JSONObject jsonObject);
+
+    //冻结项目，InfoUser是任意的
+    //参数是projectId、freezeHour
+    @POST("admin/freezeProject")
+    Call<InfoUser> freezeProject(@Body JSONObject jsonObject);
 
 }

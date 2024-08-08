@@ -81,6 +81,11 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
     }
 
     @Override
+    public void userListResult(int STATUS) {
+
+    }
+
+    @Override
     public void projectPublishResult(int STATUS) {
 
     }
@@ -100,6 +105,11 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
 
     @Override
     public void projectDetail(int STATUS) {
+
+    }
+
+    @Override
+    public void updata(int STATUS) {
 
     }
 }
