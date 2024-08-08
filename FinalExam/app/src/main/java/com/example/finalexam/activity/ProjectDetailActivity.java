@@ -91,6 +91,11 @@ public class ProjectDetailActivity extends AppCompatActivity implements UserData
     }
 
     @Override
+    public void freeze(int STATUS) {
+
+    }
+
+    @Override
     public void userLog(int STATUS) {
 
     }
@@ -102,6 +107,16 @@ public class ProjectDetailActivity extends AppCompatActivity implements UserData
 
     @Override
     public void userListResult(int STATUS) {
+
+    }
+
+    @Override
+    public void userDetail(int STATUS) {
+
+    }
+
+    @Override
+    public void verify(int STATUS) {
 
     }
 
