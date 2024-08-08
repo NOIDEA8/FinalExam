@@ -39,9 +39,6 @@ public interface Api {
     @GET("user/myApplicationOnMonitorProject")
     Call<InfoProjectList> getApplyingProject(@Query("userId") int useId);
 
-    @GET("user/myApplicationProject")
-    Call<InfoProjectList> myApplicationProject(@Query("userId") int UserId);
-
     @GET("project/showAllProjectForUser")
     Call<InfoShowAllProject> getAllProjectForUser(@Query("page") int page, @Query("pagesize") int pageSize) ;//page为零拿所有
 

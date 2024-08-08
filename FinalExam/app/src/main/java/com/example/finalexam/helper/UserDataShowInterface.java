@@ -7,8 +7,8 @@ public interface UserDataShowInterface {
     void userLog(int STATUS);
 
     void userRegister(int STATUS);
+    void projectPublishResult(int STATUS);
     void projectListResult(int STATUS);
-
     void projectDetail(int STATUS);
 
 }

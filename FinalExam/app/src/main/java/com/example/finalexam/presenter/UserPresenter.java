@@ -51,9 +51,11 @@ public class UserPresenter {
     public static final int STATUS_PASSWORD_INCORRECT = 21;
     public static final int STATUS_PASSWORDS_INCONSISTENT = 22;
     public static final int STATUS_NO_PROJECT_DETAIL= 31;
+    public static final int STATUS_NO_DATA= 32;
 
 
-   //获取唯一present
+
+    //获取唯一present
     public static UserPresenter getInstance(UserDataShowInterface activity) {
         presenter.activity = activity;
         return presenter;
@@ -174,6 +176,9 @@ public class UserPresenter {
                 if(info==null){
                     projectList =new ArrayList<>();
                     activity.projectListResult(STATUS_NO_INTERNET);
+                } else if (info.getData()==null) {
+                    projectList =new ArrayList<>();
+                    activity.projectListResult(STATUS_NO_DATA);
                 } else{
                     projectList =info.getData().getList();
                     activity.projectListResult(STATUS_SUCCESS);
@@ -221,7 +226,7 @@ public class UserPresenter {
             }
         });
     }
-
+    //获取自己的项目（自己为发布者）
     public void fetchSelfProjects(){
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
@@ -239,6 +244,9 @@ public class UserPresenter {
                 if(info==null){
                     projectList=new ArrayList<>();
                     activity.projectListResult(STATUS_NO_INTERNET);
+                }else if (info.getData()==null) {
+                    projectList =new ArrayList<>();
+                    activity.projectListResult(STATUS_NO_DATA);
                 } else{
                     projectList=info.getData();
                     activity.projectListResult(STATUS_SUCCESS);
@@ -252,7 +260,7 @@ public class UserPresenter {
             }
         });
     }
-
+    //获取自己监控的项目
     public void fetchMonitorProjects(){
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
@@ -270,6 +278,9 @@ public class UserPresenter {
                 if(info==null){
                     projectList=new ArrayList<>();
                     activity.projectListResult(STATUS_NO_INTERNET);
+                }else if (info.getData()==null) {
+                    projectList =new ArrayList<>();
+                    activity.projectListResult(STATUS_NO_DATA);
                 } else{
                     projectList=info.getData();
                     activity.projectListResult(STATUS_SUCCESS);
@@ -283,8 +294,76 @@ public class UserPresenter {
             }
         });
     }
+    //获取正在申请的项目
+    public void fetchApplyingProjects(){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        Api api = retrofit.create(Api.class);
+        Log.d(TAG, "baseUrl = " + baseUrl);
+
+        Call<InfoProjectList> dataCall = api.getApplyingProject(user.getUserId());
+        dataCall.enqueue(new Callback<InfoProjectList>() {
+            UserDataShowInterface activity = UserPresenter.this.activity;
+            @Override
+            public void onResponse(Call<InfoProjectList> call, Response<InfoProjectList> response) {
+                InfoProjectList info= response.body();
+                if(info==null){
+                    projectList=new ArrayList<>();
+                    activity.projectListResult(STATUS_NO_INTERNET);
+                } else if (info.getData()==null) {
+                    projectList =new ArrayList<>();
+                    activity.projectListResult(STATUS_NO_DATA);
+                } else{
+                    projectList=info.getData();
+                    activity.projectListResult(STATUS_SUCCESS);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<InfoProjectList> call, Throwable t) {
+                projectList=new ArrayList<>();
+                activity.projectListResult(STATUS_NO_INTERNET);
+            }
+        });
+    }
+    //自己发布项目
+    public void pushProject(String projectName,String description,int userId,String projectUrl,String projectPassword){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        Api api = retrofit.create(Api.class);
+        Log.d(TAG, "baseUrl = " + baseUrl);
 
 
+        JSONObject jsonObject = new JSONObject();
+        //项目名、项目描述、发布者id、项目url、项目口令
+        try {
+            jsonObject.put("projectName", projectName);
+            jsonObject.put("description", description);
+            jsonObject.put("userId", userId);
+            jsonObject.put("projectUrl", projectUrl);
+            jsonObject.put("projectPassword", projectPassword);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Call<InfoUser> dataCall=api.publishProject(jsonObject);
+        dataCall.enqueue(new Callback<InfoUser>() {
+            UserDataShowInterface activity = UserPresenter.this.activity;
+            @Override
+            public void onResponse(Call<InfoUser> call, Response<InfoUser> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<InfoUser> call, Throwable t) {
+
+            }
+        });
+    }
 
 
 
@@ -320,6 +399,10 @@ public class UserPresenter {
     public String getPassword(Context context) {
         SharedPreferences sp = context.getSharedPreferences("User", Context.MODE_PRIVATE);
         return sp.getString("password", "null");
+    }
+    //获取user的id
+    public int getUserId(){
+        return user.getUserId();
     }
 
     //先调用相应接口再调用这个方法
