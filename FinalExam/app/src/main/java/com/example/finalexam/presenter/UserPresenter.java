@@ -527,11 +527,13 @@ class ReceivedCookiesInterceptor implements Interceptor {
                 Log.i("ReceivedCookiesInterceptor", "拦截的cookie是："+header);
                 cookies.add(header);
             }
-            //保存的sharepreference文件名为cookieData
-            SharedPreferences sharedPreferences = context.getSharedPreferences("cookieData", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putStringSet("cookie", cookies);
-            editor.commit();
+            if (context!=null) {
+                //保存的sharepreference文件名为cookieData
+                SharedPreferences sharedPreferences = context.getSharedPreferences("cookieData", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putStringSet("cookie", cookies);
+                editor.commit();
+            }
         }
 
         return originalResponse;
@@ -548,10 +550,12 @@ class AddCookiesInterceptor implements Interceptor {
     public okhttp3.Response intercept(Chain chain) throws IOException {
 
         Request.Builder builder = chain.request().newBuilder();
-        HashSet<String> perferences = (HashSet) context.getSharedPreferences("cookieData", Context.MODE_PRIVATE).getStringSet("cookie", null);
-        if (perferences != null) {
-            for (String cookie : perferences) {
-                builder.addHeader("Cookie", cookie);
+        if (context!=null) {
+            HashSet<String> perferences = (HashSet) context.getSharedPreferences("cookieData", Context.MODE_PRIVATE).getStringSet("cookie", null);
+            if (perferences != null) {
+                for (String cookie : perferences) {
+                    builder.addHeader("Cookie", cookie);
+                }
             }
         }
         return chain.proceed(builder.build());
