@@ -6,12 +6,7 @@ public interface UserDataShowInterface {
     //TODO 以下四个方法均为回调方法，如果需要使用，可以查看UserPresenter
 
     void applyMonitorPermission(int STATUS);
-
-    void userLog(int STATUS);
-
-    void userRegister(int STATUS);
-
-    void userListResult(int STATUS);
+    void freeze(int STATUS);
 
     void projectPublishResult(int STATUS);
 
@@ -20,5 +15,13 @@ public interface UserDataShowInterface {
     void projectDetail(int STATUS);
 
     void updata(int STATUS);
+    void userLog(int STATUS);
+
+    void userRegister(int STATUS);
+
+    void userListResult(int STATUS);
+
+    void userDetail(int STATUS);
+    void verify(int STATUS);
 
 }

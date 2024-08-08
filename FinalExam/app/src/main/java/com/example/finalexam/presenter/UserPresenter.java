@@ -1,5 +1,6 @@
 package com.example.finalexam.presenter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -23,6 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -41,6 +43,7 @@ public class UserPresenter {
     private UserData user =new UserData();//一个用户一个presenter
     private List<ProjectData> projectList;
     private List<UserData> userList;
+    private UserData userDetail;
     private ProjectData projectDetail;
     private Context context;//接cookie用
 
@@ -48,8 +51,9 @@ public class UserPresenter {
     private static final int PROJECT_ACTIVE=1;
     private static final int PROJECT_PROCESSING=0;
     private static final int PROJECT_ACCEPTED=1;
-    private static final int PROJECT_REJECTED=1;
 
+    private static final int PASS_REVIEW=1;
+    private static final int REJECT_REVIEW=2;
     public static final int STATUS_SUCCESS = 100;
     public static final int STATUS_FAILED = 101;//发布项目他返回的code可能是不成功的那个，暂且写着
     public static final int STATUS_NO_INTERNET = 102;
@@ -712,11 +716,164 @@ public class UserPresenter {
             }
         });
     }
+    //对项目进行审核
+    public void verifyApplication(int projectId, int reviewResult, String rejectResason){//applicationId、status(1通过2拒绝）、rejectResason
+        OkHttpClient adder = new OkHttpClient.Builder()
+                .addInterceptor(new AddCookiesInterceptor(context))
+                .build();
 
-    public void verifyApplication(){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(adder)
+                .build();
+        Api api = retrofit.create(Api.class);
 
+        JSONObject jsonObject=new JSONObject();
+        try {
+            jsonObject.put("applicationId",projectId);
+            jsonObject.put("status",reviewResult);
+            jsonObject.put("rejectResason",rejectResason);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Call<InfoUser> dataCall=api.verifyApplication(jsonObject);
+
+        dataCall.enqueue(new Callback<InfoUser>() {
+            UserDataShowInterface activity = UserPresenter.this.activity;
+            @Override
+            public void onResponse(Call<InfoUser> call, Response<InfoUser> response) {
+                InfoUser info=response.body();
+                if(info==null){
+                    activity.verify(STATUS_NO_INTERNET);
+                } else if (info.getCode()!=1) {
+                    activity.verify(STATUS_FAILED);
+                }else{
+                    activity.verify(STATUS_SUCCESS);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<InfoUser> call, Throwable t) {
+                activity.verify(STATUS_NO_INTERNET);
+            }
+        });
     }
+    //获取用户详情（指的是自己去看对方的信息）
+    public void fetchUserDetail(int userId){
+        OkHttpClient adder = new OkHttpClient.Builder()
+                .addInterceptor(new AddCookiesInterceptor(context))
+                .build();
 
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(adder)
+                .build();
+        Api api = retrofit.create(Api.class);
+        Call<InfoUser> dataCall=api.userDetail(userId);
+        dataCall.enqueue(new Callback<InfoUser>() {
+            UserDataShowInterface activity = UserPresenter.this.activity;
+            @Override
+            public void onResponse(Call<InfoUser> call, Response<InfoUser> response) {
+                InfoUser info=response.body();
+                if(info==null){
+                    userDetail=new UserData();
+                    activity.userDetail(STATUS_NO_INTERNET);
+                } else if (info.getData()!=null) {
+                    userDetail=info.getData();
+                    activity.userDetail(STATUS_SUCCESS);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<InfoUser> call, Throwable t) {
+                userDetail=new UserData();
+                activity.userDetail(STATUS_NO_INTERNET);
+            }
+        });
+    }
+    //冻结用户
+    //参数是userId、freezeHour单位为小时
+    public void freezeUser(int userId,int freezeHour){
+        OkHttpClient adder = new OkHttpClient.Builder()
+                .addInterceptor(new AddCookiesInterceptor(context))
+                .build();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(adder)
+                .build();
+        Api api = retrofit.create(Api.class);
+        JSONObject jsonObject=new JSONObject();
+        try {
+           jsonObject.put("userId",userId);
+           jsonObject.put("freezeHour",freezeHour);
+        }catch (JSONException e){
+           e.printStackTrace();
+        }
+        Call<InfoUser> dataCall=api.freezeUser(jsonObject);
+        dataCall.enqueue(new Callback<InfoUser>() {
+            @Override
+            public void onResponse(Call<InfoUser> call, Response<InfoUser> response) {
+                InfoUser info=response.body();
+                if(info==null){
+                    activity.freeze(STATUS_NO_INTERNET);
+                } else if (info.getCode()!=1) {
+                    activity.freeze(STATUS_FAILED);
+                }else {
+                    activity.freeze(STATUS_SUCCESS);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<InfoUser> call, Throwable t) {
+                activity.freeze(STATUS_NO_INTERNET);
+            }
+        });
+    }
+    //冻结项目
+    //参数是projectId、freezeHour单位为小时
+    public void freezeProject(int projectId,int freezeHour){
+        OkHttpClient adder = new OkHttpClient.Builder()
+                .addInterceptor(new AddCookiesInterceptor(context))
+                .build();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(adder)
+                .build();
+        Api api = retrofit.create(Api.class);
+        JSONObject jsonObject=new JSONObject();
+        try {
+            jsonObject.put("projectId",projectId);
+            jsonObject.put("freezeHour",freezeHour);
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+        Call<InfoUser> dataCall=api.freezeProject(jsonObject);
+        dataCall.enqueue(new Callback<InfoUser>() {
+            @Override
+            public void onResponse(Call<InfoUser> call, Response<InfoUser> response) {
+                InfoUser info=response.body();
+                if(info==null){
+                    activity.freeze(STATUS_NO_INTERNET);
+                } else if (info.getCode()!=1) {
+                    activity.freeze(STATUS_FAILED);
+                }else {
+                    activity.freeze(STATUS_SUCCESS);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<InfoUser> call, Throwable t) {
+                activity.freeze(STATUS_NO_INTERNET);
+            }
+        });
+    }
 
 
     //获取登录状态，已登录则返回true
@@ -748,6 +905,8 @@ public class UserPresenter {
     public ProjectData getProjectDetail(){
         return projectDetail;
     }
+    ////获取用户详情（指的是自己去看对方的信息）
+    public UserData getUserDetail(){return userDetail;}
 
     //先调用相应接口再调用这个方法
     public List<ProjectData> getProjectList(){

@@ -94,6 +94,11 @@ public class LogActivity extends AppCompatActivity implements UserDataShowInterf
 
     }
 
+    @Override
+    public void freeze(int STATUS) {
+
+    }
+
     //非本地调用的方法
     @Override
     public void userLog(int STATUS) {
@@ -121,6 +126,16 @@ public class LogActivity extends AppCompatActivity implements UserDataShowInterf
 
     @Override
     public void userListResult(int STATUS) {
+
+    }
+
+    @Override
+    public void userDetail(int STATUS) {
+
+    }
+
+    @Override
+    public void verify(int STATUS) {
 
     }
 
