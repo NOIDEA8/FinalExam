@@ -75,6 +75,7 @@ public class UserPresenter {
 
 
         dataCall.enqueue(new Callback<InfoUser>() {
+            UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
             public void onResponse(@NonNull Call<InfoUser> call, @NonNull Response<InfoUser> response) {
                 InfoUser info = response.body();
@@ -131,6 +132,7 @@ public class UserPresenter {
         jsonObject=null;
 
         dataCall.enqueue(new Callback<InfoUser>() {
+            UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
             public void onResponse(@NonNull Call<InfoUser> call, @NonNull Response<InfoUser> response) {
                 InfoUser info = response.body();
@@ -165,6 +167,7 @@ public class UserPresenter {
         Call<InfoShowAllProject> dataCall = api.getAllProjectForUser(1,0) ;//拿取所有数据
 
         dataCall.enqueue(new Callback<InfoShowAllProject>() {
+            UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
             public void onResponse(Call<InfoShowAllProject> call, Response<InfoShowAllProject> response) {
                 InfoShowAllProject info=response.body();
@@ -198,6 +201,7 @@ public class UserPresenter {
         Call<InfoProject> dataCall = api.getProjectDetail(projectId) ;
 
         dataCall.enqueue(new Callback<InfoProject>() {
+            UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
             public void onResponse(@NonNull Call<InfoProject> call, @NonNull Response<InfoProject> response) {
                 InfoProject info=response.body();
@@ -228,6 +232,7 @@ public class UserPresenter {
 
         Call<InfoProjectList> dataCall = api.getSelfProjects(user.getUserId());
         dataCall.enqueue(new Callback<InfoProjectList>() {
+            UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
             public void onResponse(Call<InfoProjectList> call, Response<InfoProjectList> response) {
                 InfoProjectList info= response.body();

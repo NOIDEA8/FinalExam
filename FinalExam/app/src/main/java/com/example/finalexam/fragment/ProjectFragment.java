@@ -12,13 +12,15 @@ import android.view.ViewGroup;
 
 import com.example.finalexam.R;
 import com.example.finalexam.adapter.ProjectAdapter;
+import com.example.finalexam.helper.UserDataShowInterface;
 import com.example.finalexam.model.ProjectData;
+import com.example.finalexam.presenter.UserPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class ProjectFragment extends Fragment {
+public class ProjectFragment extends Fragment implements UserDataShowInterface {
     private static final String TAG = "ProjectFragment";
     private View view;
 
@@ -48,5 +50,27 @@ public class ProjectFragment extends Fragment {
 
     private void initView() {
         projectListView = view.findViewById(R.id.project_list);
+    }
+
+    @Override
+    public void userLog(int STATUS) {
+
+    }
+
+    @Override
+    public void userRegister(int STATUS) {
+
+    }
+
+    @Override
+    public void projectListResult(int STATUS) {
+        if (STATUS == UserPresenter.STATUS_SUCCESS){
+            list.addAll(UserPresenter.getInstance(this).getProjectList());
+        }
+    }
+
+    @Override
+    public void projectDetail(int STATUS) {
+
     }
 }
