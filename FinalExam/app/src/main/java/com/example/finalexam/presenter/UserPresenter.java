@@ -6,8 +6,9 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.finalexam.helper.UserApi;
+import com.example.finalexam.helper.Api;
 import com.example.finalexam.helper.UserDataShowInterface;
+import com.example.finalexam.info.InfoProject;
 import com.example.finalexam.info.InfoProjectList;
 import com.example.finalexam.info.InfoShowAllProject;
 import com.example.finalexam.info.InfoUser;
@@ -17,8 +18,13 @@ import com.example.finalexam.model.UserData;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,12 +33,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class UserPresenter {
     private static final String TAG = "UserPresenter";
-    private String baseUrl="http://47.113.224.195:31110/";
+    private static final String baseUrl="http://47.113.224.195:31110/";
     public UserDataShowInterface activity;
     private static UserPresenter presenter=new UserPresenter();
     private UserData user =new UserData();//一个用户一个presenter
-    private List<ProjectData> allProject;
-
+    private List<ProjectData> projectList;
+    private ProjectData projectDetail;
 
 
 
@@ -44,8 +50,7 @@ public class UserPresenter {
     public static final int STATUS_ACCOUNT_ALREADY_EXIST = 13;
     public static final int STATUS_PASSWORD_INCORRECT = 21;
     public static final int STATUS_PASSWORDS_INCONSISTENT = 22;
-    public static final int STATUS_ACCOUNT_OR_PASSWORD_NOT_SATISFIABLE = 23;
-    public static final int STATUS_UPDATE_ERROR = 31;///
+    public static final int STATUS_NO_PROJECT_DETAIL= 31;
 
 
    //获取唯一present
@@ -62,7 +67,7 @@ public class UserPresenter {
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        UserApi userApi = retrofit.create(UserApi.class);
+        Api userApi = retrofit.create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
 
@@ -112,7 +117,7 @@ public class UserPresenter {
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        UserApi userApi = retrofit.create(UserApi.class);
+        Api userApi = retrofit.create(Api.class);
 
         JSONObject jsonObject=new JSONObject();
         try {
@@ -148,19 +153,100 @@ public class UserPresenter {
         });
     }
 
-    public void allProject(){
+    //做了无数据返回时给AllBriefProject赋一个new出来的值
+    public void fetchAllBriefProject(){
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        UserApi userApi = retrofit.create(UserApi.class);
+        Api api = retrofit.create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
+        Call<InfoShowAllProject> dataCall = api.getAllProjectForUser(1,0) ;//拿取所有数据
+
+        dataCall.enqueue(new Callback<InfoShowAllProject>() {
+            @Override
+            public void onResponse(Call<InfoShowAllProject> call, Response<InfoShowAllProject> response) {
+                InfoShowAllProject info=response.body();
+                if(info==null){
+                    projectList =new ArrayList<>();
+                    activity.projectListResult(STATUS_NO_INTERNET);
+                } else{
+                    projectList =info.getData().getList();
+                    activity.projectListResult(STATUS_SUCCESS);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<InfoShowAllProject> call, Throwable t) {
+                projectList =new ArrayList<>();
+                activity.projectListResult(STATUS_NO_INTERNET);
+            }
+        });
     }
 
 
+   //做了无数据返回时给ProjectDetail赋一个new出来的值
+    public void fetchProjectDetail(int projectId){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        Api api = retrofit.create(Api.class);
+        Log.d(TAG, "baseUrl = " + baseUrl);
 
+        Call<InfoProject> dataCall = api.getProjectDetail(projectId) ;
 
+        dataCall.enqueue(new Callback<InfoProject>() {
+            @Override
+            public void onResponse(@NonNull Call<InfoProject> call, @NonNull Response<InfoProject> response) {
+                InfoProject info=response.body();
+                if(info==null){
+                    projectDetail=new ProjectData();
+                    activity.projectDetail(STATUS_NO_INTERNET);
+                } else{
+                    projectDetail=info.getData();
+                    activity.projectDetail(STATUS_SUCCESS);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<InfoProject> call, @NonNull Throwable throwable) {
+                projectDetail=new ProjectData();
+                activity.projectDetail(STATUS_NO_INTERNET);
+            }
+        });
+    }
+
+    public void fetchSelfProjects(){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        Api api = retrofit.create(Api.class);
+        Log.d(TAG, "baseUrl = " + baseUrl);
+
+        Call<InfoProjectList> dataCall = api.getSelfProjects(user.getUserId());
+        dataCall.enqueue(new Callback<InfoProjectList>() {
+            @Override
+            public void onResponse(Call<InfoProjectList> call, Response<InfoProjectList> response) {
+                InfoProjectList info= response.body();
+                if(info==null){
+                    projectList=new ArrayList<>();
+                    activity.projectListResult(STATUS_NO_INTERNET);
+                } else{
+                    projectList=info.getData();
+                    activity.projectListResult(STATUS_SUCCESS);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<InfoProjectList> call, Throwable t) {
+                projectList=new ArrayList<>();
+                activity.projectListResult(STATUS_NO_INTERNET);
+            }
+        });
+    }
 
 
 
@@ -201,4 +287,20 @@ public class UserPresenter {
         SharedPreferences sp = context.getSharedPreferences("User", Context.MODE_PRIVATE);
         return sp.getString("password", "null");
     }
+
+    //先调用相应接口再调用这个方法
+    public ProjectData getProjectDetail(){
+        return projectDetail;
+    }
+
+    //先调用相应接口再调用这个方法
+    public List<ProjectData> getProjectList(){
+        return projectList;
+    }
+
+
+
+
+
+
 }

@@ -124,6 +124,16 @@ public class LogActivity extends AppCompatActivity implements UserDataShowInterf
     }
 
     @Override
+    public void projectListResult(int STATUS) {
+
+    }
+
+    @Override
+    public void projectDetail(int STATUS) {
+
+    }
+
+    @Override
     public void managerLog(int STATUS) {
 
     }
@@ -132,4 +142,6 @@ public class LogActivity extends AppCompatActivity implements UserDataShowInterf
     public void updateManagerData(int STATUS) {
 
     }
+
+
 }

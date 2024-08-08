@@ -87,6 +87,16 @@ public class MainActivity extends AppCompatActivity  implements UserDataShowInte
 
     }
 
+    @Override
+    public void projectListResult(int STATUS) {
+
+    }
+
+    @Override
+    public void projectDetail(int STATUS) {
+
+    }
+
 
     @Override
     public void managerLog(int STATUS) {

@@ -95,6 +95,6 @@ public class UserDesktop extends AppCompatActivity {
             transaction.replace(R.id.user_pagerContainer, personFragment);
             Log.d(TAG, "UserDesktop change page to PersonFragment");
         }
-        transaction.commit();
+        transaction.commit();//
     }
 }
