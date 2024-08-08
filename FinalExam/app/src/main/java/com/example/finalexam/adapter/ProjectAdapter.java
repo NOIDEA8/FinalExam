@@ -8,12 +8,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.finalexam.model.ProjectData;
 import com.example.finalexam.R;
 
 import java.util.List;
 
-public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHolder>{
+public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHolder> {
 
     private static final String TAG = "ItemAdapter";
 
@@ -35,7 +36,14 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHold
 
     @Override
     public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
-        if(list == null) return;
+        if (list == null) return;
+        else if (list.isEmpty()) return;
+        ProjectData data = list.get(position);
+        String projectName = data.getProjectName();
+        String creatorName = data.getCreator();
+        String creatorColor = "#FFFFFF";
+        projectName = projectName == null ? "null" : projectName;
+        creatorName = creatorName == null ? "null" : creatorName;
     }
 
     @Override
@@ -46,14 +54,14 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHold
 
     public class ItemHolder extends RecyclerView.ViewHolder {
         public TextView projectName;
-        public TextView userName;
-        public TextView userColor;
+        public TextView creatorName;
+        public TextView creatorColor;
 
         public ItemHolder(@NonNull View itemView) {
             super(itemView);
             projectName = itemView.findViewById(R.id.project_name);
-            userName = itemView.findViewById(R.id.project_user_name);
-            userColor = itemView.findViewById(R.id.project_user_color);
+            creatorName = itemView.findViewById(R.id.project_creator_name);
+            creatorColor = itemView.findViewById(R.id.project_creator_color);
         }
     }
 

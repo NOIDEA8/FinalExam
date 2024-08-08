@@ -64,7 +64,9 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
 
     @Override
     public void projectListResult(int STATUS) {
-        if (STATUS == UserPresenter.STATUS_SUCCESS){
+        if (STATUS == UserPresenter.STATUS_NO_DATA) {
+
+        } else if (STATUS == UserPresenter.STATUS_SUCCESS) {
             list.addAll(UserPresenter.getInstance(this).getProjectList());
         }
     }
