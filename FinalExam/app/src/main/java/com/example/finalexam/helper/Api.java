@@ -37,7 +37,7 @@ public interface Api {
 
     @FormUrlEncoded
     @GET("user/myApplicationOnMonitorProject")
-    Call<InfoProjectList> getOnMonitorProject(@Query("userId") int useId);
+    Call<InfoProjectList> getApplyingProject(@Query("userId") int useId);
 
     @GET("user/myApplicationProject")
     Call<InfoProjectList> myApplicationProject(@Query("userId") int UserId);

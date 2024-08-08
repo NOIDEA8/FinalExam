@@ -253,7 +253,36 @@ public class UserPresenter {
         });
     }
 
+    public void fetchMonitorProjects(){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        Api api = retrofit.create(Api.class);
+        Log.d(TAG, "baseUrl = " + baseUrl);
 
+        Call<InfoProjectList> dataCall = api.getHaveMonitorProjects(user.getUserId());
+        dataCall.enqueue(new Callback<InfoProjectList>() {
+            UserDataShowInterface activity = UserPresenter.this.activity;
+            @Override
+            public void onResponse(Call<InfoProjectList> call, Response<InfoProjectList> response) {
+                InfoProjectList info= response.body();
+                if(info==null){
+                    projectList=new ArrayList<>();
+                    activity.projectListResult(STATUS_NO_INTERNET);
+                } else{
+                    projectList=info.getData();
+                    activity.projectListResult(STATUS_SUCCESS);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<InfoProjectList> call, Throwable t) {
+                projectList=new ArrayList<>();
+                activity.projectListResult(STATUS_NO_INTERNET);
+            }
+        });
+    }
 
 
 
