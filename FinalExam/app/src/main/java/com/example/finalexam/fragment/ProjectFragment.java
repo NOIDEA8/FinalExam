@@ -7,9 +7,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.finalexam.R;
 import com.example.finalexam.adapter.ProjectAdapter;
@@ -95,9 +97,12 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void projectListResult(int STATUS) {
-        if (STATUS == UserPresenter.STATUS_NO_DATA) {
-
+        if (STATUS == UserPresenter.STATUS_NO_INTERNET) {
+            Toast.makeText(requireContext(), "列表获取失败", Toast.LENGTH_SHORT).show();
+        } else if (STATUS == UserPresenter.STATUS_NO_DATA) {
+            Toast.makeText(requireContext(), "列表获取成功", Toast.LENGTH_SHORT).show();
         } else if (STATUS == UserPresenter.STATUS_SUCCESS) {
+            Toast.makeText(requireContext(), "列表获取成功", Toast.LENGTH_SHORT).show();
             list.clear();
             list.addAll(UserPresenter.getInstance(this).getProjectList());
         }

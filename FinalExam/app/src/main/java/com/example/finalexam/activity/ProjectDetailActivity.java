@@ -3,7 +3,6 @@ package com.example.finalexam.activity;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,13 +13,23 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.finalexam.R;
 import com.example.finalexam.adapter.ProjectAdapter;
 import com.example.finalexam.helper.UserDataShowInterface;
+import com.example.finalexam.model.ProjectData;
+import com.example.finalexam.overrideview.DoubleGraphView;
 import com.example.finalexam.presenter.UserPresenter;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Random;
 
 public class ProjectDetailActivity extends AppCompatActivity implements UserDataShowInterface {
     private static final String TAG = "ProjectDetailActivity";
 
+    private ProjectData data = new ProjectData();
     private TextView projectName;
     private TextView projectId;
+    private TextView descriptionView;
+    private DoubleGraphView graphView;
+    private List<Integer> FPS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +45,20 @@ public class ProjectDetailActivity extends AppCompatActivity implements UserData
         initView();
         initListener();
         requestData();
-        showData();
+        initGraph();
+    }
+
+    private void initGraph() {
+        FPS = graphView.targetFPS;
+        addTestFPS();
+    }
+
+    private void addTestFPS() {
+        Random random = new Random(System.currentTimeMillis());
+        int min = 50;
+        for (int i = 0; i < 10; i++) {
+            FPS.add(min + random.nextInt(51));
+        }
     }
 
     private void initListener() {
@@ -45,7 +67,9 @@ public class ProjectDetailActivity extends AppCompatActivity implements UserData
 
     @SuppressLint("SetTextI18n")
     private void showData() {
+        projectName.setText(data.getProjectName());
         projectId.setText("id: " + ProjectAdapter.clickId);
+        descriptionView.setText(data.getDescription());
     }
 
     private void requestData() {
@@ -55,7 +79,11 @@ public class ProjectDetailActivity extends AppCompatActivity implements UserData
     private void initView() {
         projectName = findViewById(R.id.detail_project_name);
         projectId =  findViewById(R.id.detail_project_id);
+        descriptionView = findViewById(R.id.detail_project_description);
+        graphView = findViewById(R.id.detail_project_graph);
     }
+
+
 
     @Override
     public void applyMonitorPermission(int STATUS) {
@@ -69,6 +97,11 @@ public class ProjectDetailActivity extends AppCompatActivity implements UserData
 
     @Override
     public void userRegister(int STATUS) {
+
+    }
+
+    @Override
+    public void userListResult(int STATUS) {
 
     }
 
@@ -87,7 +120,13 @@ public class ProjectDetailActivity extends AppCompatActivity implements UserData
         if (STATUS == UserPresenter.STATUS_NO_INTERNET) {
             //Toast.makeText(this, "无网络，请稍后再试", Toast.LENGTH_SHORT).show();
         } else if (STATUS == UserPresenter.STATUS_SUCCESS) {
-
+            data  = UserPresenter.getInstance(this).getProjectDetail();
+            showData();
         }
+    }
+
+    @Override
+    public void updata(int STATUS) {
+
     }
 }
