@@ -55,6 +55,10 @@ public class RegisterActivity extends AppCompatActivity implements UserDataShowI
     }
 
 
+    @Override
+    public void applyMonitorPermission(int STATUS) {
+
+    }
 
     //非本地调用的方法
     @Override

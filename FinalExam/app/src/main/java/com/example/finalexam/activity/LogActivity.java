@@ -89,16 +89,12 @@ public class LogActivity extends AppCompatActivity implements UserDataShowInterf
     }
 
 
+    @Override
+    public void applyMonitorPermission(int STATUS) {
 
+    }
 
-
-
-
-
-
-
-
-//非本地调用的方法
+    //非本地调用的方法
     @Override
     public void userLog(int STATUS) {
         if(STATUS==UserPresenter.STATUS_NO_INTERNET){

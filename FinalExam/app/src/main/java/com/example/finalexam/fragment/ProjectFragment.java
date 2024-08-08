@@ -66,6 +66,11 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
     }
 
     @Override
+    public void applyMonitorPermission(int STATUS) {
+
+    }
+
+    @Override
     public void userLog(int STATUS) {
 
     }

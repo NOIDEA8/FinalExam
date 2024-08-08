@@ -20,11 +20,12 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,19 +40,19 @@ public class UserPresenter {
     private UserData user =new UserData();//一个用户一个presenter
     private List<ProjectData> projectList;
     private ProjectData projectDetail;
-
-
+    private Context context;//接cookie用
 
 
     public static final int STATUS_SUCCESS = 100;
+    public static final int STATUS_FAILED = 101;//发布项目他返回的code可能是不成功的那个，暂且写着
     public static final int STATUS_NO_INTERNET = 0;
     public static final int STATUS_ACCOUNT_NOT_EXIST = 11;
     public static final int STATUS_ACCOUNT_FROZEN= 12;
     public static final int STATUS_ACCOUNT_ALREADY_EXIST = 13;
     public static final int STATUS_PASSWORD_INCORRECT = 21;
     public static final int STATUS_PASSWORDS_INCONSISTENT = 22;
-    public static final int STATUS_NO_PROJECT_DETAIL= 31;
     public static final int STATUS_NO_DATA= 32;
+
 
 
 
@@ -65,8 +66,16 @@ public class UserPresenter {
     public void userLog(Context context, String account, String password){
         Log.d(TAG, "requestLog: 登录请求");
         Log.d(TAG, "account = " + account + ", password = " + password);
+        this.context=context;
+
+
+        OkHttpClient receiver = new OkHttpClient.Builder()
+                .addInterceptor(new ReceivedCookiesInterceptor(context))
+                .build();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
+                .client(receiver)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         Api userApi = retrofit.create(Api.class);
@@ -159,9 +168,14 @@ public class UserPresenter {
 
     //做了无数据返回时给AllBriefProject赋一个new出来的值
     public void fetchAllBriefProject(){
+        OkHttpClient adder = new OkHttpClient.Builder()
+                .addInterceptor(new AddCookiesInterceptor(context))
+                .build();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(adder)
                 .build();
         Api api = retrofit.create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
@@ -196,9 +210,14 @@ public class UserPresenter {
 
    //做了无数据返回时给ProjectDetail赋一个new出来的值
     public void fetchProjectDetail(int projectId){
+        OkHttpClient adder = new OkHttpClient.Builder()
+                .addInterceptor(new AddCookiesInterceptor(context))
+                .build();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(adder)
                 .build();
         Api api = retrofit.create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
@@ -228,9 +247,14 @@ public class UserPresenter {
     }
     //获取自己的项目（自己为发布者）
     public void fetchSelfProjects(){
+        OkHttpClient adder = new OkHttpClient.Builder()
+                .addInterceptor(new AddCookiesInterceptor(context))
+                .build();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(adder)
                 .build();
         Api api = retrofit.create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
@@ -262,9 +286,14 @@ public class UserPresenter {
     }
     //获取自己监控的项目
     public void fetchMonitorProjects(){
+        OkHttpClient adder = new OkHttpClient.Builder()
+                .addInterceptor(new AddCookiesInterceptor(context))
+                .build();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(adder)
                 .build();
         Api api = retrofit.create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
@@ -296,9 +325,14 @@ public class UserPresenter {
     }
     //获取正在申请的项目
     public void fetchApplyingProjects(){
+        OkHttpClient adder = new OkHttpClient.Builder()
+                .addInterceptor(new AddCookiesInterceptor(context))
+                .build();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(adder)
                 .build();
         Api api = retrofit.create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
@@ -330,9 +364,14 @@ public class UserPresenter {
     }
     //自己发布项目
     public void pushProject(String projectName,String description,int userId,String projectUrl,String projectPassword){
+        OkHttpClient adder = new OkHttpClient.Builder()
+                .addInterceptor(new AddCookiesInterceptor(context))
+                .build();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(adder)
                 .build();
         Api api = retrofit.create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
@@ -355,17 +394,68 @@ public class UserPresenter {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
             public void onResponse(Call<InfoUser> call, Response<InfoUser> response) {
-
+                InfoUser infoUser=response.body();
+                if(infoUser==null){
+                    activity.projectPublishResult(STATUS_NO_INTERNET);
+                } else if (infoUser.getCode()==0) {
+                    activity.projectPublishResult(STATUS_FAILED);//发布项目他返回的code可能是不成功的那个，暂且写着
+                } else {
+                    activity.projectPublishResult(STATUS_SUCCESS);
+                }
             }
 
             @Override
             public void onFailure(Call<InfoUser> call, Throwable t) {
-
+                activity.projectPublishResult(STATUS_NO_INTERNET);
             }
         });
     }
+    //请求项目的监控权限
+    public void applyMonitorPermission(int userId,int projectId){
+        OkHttpClient adder = new OkHttpClient.Builder()
+                .addInterceptor(new AddCookiesInterceptor(context))
+                .build();
 
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(adder)
+                .build();
+        Api api = retrofit.create(Api.class);
+        Log.d(TAG, "baseUrl = " + baseUrl);
 
+        //用户id、项目id
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+            jsonObject.put("userId", userId);
+            jsonObject.put("projectId",projectId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Call<InfoUser> dataCall=api.publishProject(jsonObject);
+
+        dataCall.enqueue(new Callback<InfoUser>() {
+            UserDataShowInterface activity = UserPresenter.this.activity;
+            @Override
+            public void onResponse(Call<InfoUser> call, Response<InfoUser> response) {
+                InfoUser info=response.body();
+                if(info==null){
+                    activity.applyMonitorPermission(STATUS_NO_INTERNET);
+                }else if(info.getCode()==0){
+                    activity.applyMonitorPermission(STATUS_FAILED);
+                }else{
+                    activity.applyMonitorPermission(STATUS_SUCCESS);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<InfoUser> call, Throwable t) {
+                activity.applyMonitorPermission(STATUS_NO_INTERNET);
+            }
+        });
+    }
 
 
 
@@ -417,7 +507,55 @@ public class UserPresenter {
 
 
 
-
-
-
 }
+class ReceivedCookiesInterceptor implements Interceptor {
+    private Context context;
+    public ReceivedCookiesInterceptor(Context context) {
+        super();
+        this.context=context;
+    }
+
+    @Override
+    public okhttp3.Response intercept(Chain chain) throws IOException {
+        okhttp3.Response originalResponse = chain.proceed(chain.request());
+        //这里获取请求返回的cookie
+        if (!originalResponse.headers("Set-Cookie").isEmpty()) {
+
+            HashSet<String> cookies = new HashSet<>();
+            for(String header: originalResponse.headers("Set-Cookie"))
+            {
+                Log.i("ReceivedCookiesInterceptor", "拦截的cookie是："+header);
+                cookies.add(header);
+            }
+            //保存的sharepreference文件名为cookieData
+            SharedPreferences sharedPreferences = context.getSharedPreferences("cookieData", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putStringSet("cookie", cookies);
+            editor.commit();
+        }
+
+        return originalResponse;
+    }
+}
+class AddCookiesInterceptor implements Interceptor {
+    private Context context;
+
+    public AddCookiesInterceptor(Context context) {
+        this.context = context;
+    }
+
+    @Override
+    public okhttp3.Response intercept(Chain chain) throws IOException {
+
+        Request.Builder builder = chain.request().newBuilder();
+        HashSet<String> perferences = (HashSet) context.getSharedPreferences("cookieData", Context.MODE_PRIVATE).getStringSet("cookie", null);
+        if (perferences != null) {
+            for (String cookie : perferences) {
+                builder.addHeader("Cookie", cookie);
+            }
+        }
+        return chain.proceed(builder.build());
+    }
+}
+
+
