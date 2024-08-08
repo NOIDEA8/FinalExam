@@ -1,6 +1,7 @@
 package com.example.finalexam.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -9,9 +10,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.finalexam.R;
+import com.example.finalexam.activity.ProjectDetailActivity;
 import com.example.finalexam.helper.ColorHelper;
 import com.example.finalexam.model.ProjectData;
 
@@ -20,6 +23,7 @@ import java.util.List;
 public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHolder> {
 
     private static final String TAG = "ItemAdapter";
+    public static int clickId = 114;
 
     private List<ProjectData> list;
 
@@ -44,6 +48,18 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHold
 
         ProjectData data = list.get(position);
 
+        showProjectData(holder,data);
+        setListener(holder,data);
+    }
+
+    private void setListener(ItemHolder holder,ProjectData data) {
+        holder.projectRVItem.setOnClickListener(v->{
+            clickId = data.getProjectId();
+            context.startActivity(new Intent(context, ProjectDetailActivity.class));
+        });
+    }
+
+    private void showProjectData(ItemHolder holder, ProjectData data) {
         //获取项目名字和发布者名字
         String projectName = data.getProjectName();
         String creatorName = data.getCreator();
@@ -75,12 +91,14 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHold
     }
 
     public class ItemHolder extends RecyclerView.ViewHolder {
+        public ConstraintLayout projectRVItem;
         public TextView projectName;
         public TextView creatorName;
         public TextView creatorColor;
 
         public ItemHolder(@NonNull View itemView) {
             super(itemView);
+            projectRVItem = itemView.findViewById(R.id.project_rv_item);
             projectName = itemView.findViewById(R.id.project_name);
             creatorName = itemView.findViewById(R.id.project_creator_name);
             creatorColor = itemView.findViewById(R.id.project_creator_color);

@@ -50,7 +50,9 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
         ProjectData projectData1 = new ProjectData();
         ProjectData projectData2 = new ProjectData();
         projectData1.setCreator("NOIDEA8");
+        projectData1.setProjectId(114);
         projectData2.setCreator("PPPoria");
+        projectData2.setProjectId(514);
         list.add(projectData1);
         list.add(projectData2);
         list.add(new ProjectData());

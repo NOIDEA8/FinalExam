@@ -21,6 +21,9 @@
         android:theme="@style/Theme.FinalExam"
         tools:targetApi="31">
         <activity
+            android:name=".activity.ProjectDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.AddProjectActivity"
             android:exported="false" />
         <activity
