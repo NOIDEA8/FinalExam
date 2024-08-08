@@ -75,6 +75,11 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
     }
 
     @Override
+    public void freeze(int STATUS) {
+
+    }
+
+    @Override
     public void userLog(int STATUS) {
 
     }
@@ -86,6 +91,16 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
 
     @Override
     public void userListResult(int STATUS) {
+
+    }
+
+    @Override
+    public void userDetail(int STATUS) {
+
+    }
+
+    @Override
+    public void verify(int STATUS) {
 
     }
 

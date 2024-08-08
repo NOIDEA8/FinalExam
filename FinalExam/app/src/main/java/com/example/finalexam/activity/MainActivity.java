@@ -68,6 +68,11 @@ public class MainActivity extends AppCompatActivity  implements UserDataShowInte
     }
 
     @Override
+    public void freeze(int STATUS) {
+
+    }
+
+    @Override
     public void userLog(int STATUS) {
         if(STATUS==UserPresenter.STATUS_NO_INTERNET){
             Toast.makeText(this,"无网络，稍后重试",Toast.LENGTH_SHORT).show();
@@ -91,6 +96,16 @@ public class MainActivity extends AppCompatActivity  implements UserDataShowInte
 
     @Override
     public void userListResult(int STATUS) {
+
+    }
+
+    @Override
+    public void userDetail(int STATUS) {
+
+    }
+
+    @Override
+    public void verify(int STATUS) {
 
     }
 
