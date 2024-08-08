@@ -35,10 +35,7 @@ public class MainActivity extends AppCompatActivity  implements UserDataShowInte
         });
 
 
-        startActivity(new Intent(MainActivity.this, UserDesktop.class));
-
-
-       /* new Thread(new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 if (userPresenter.isLogged(MainActivity.this)==false) {//SPPresenter为工具类保存原有打开shareprefrence的读取操作
@@ -63,7 +60,6 @@ public class MainActivity extends AppCompatActivity  implements UserDataShowInte
                 }
             }
         }).start();
-*/
     }
 
     @Override
