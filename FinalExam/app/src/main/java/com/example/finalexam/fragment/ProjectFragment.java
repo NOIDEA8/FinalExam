@@ -1,5 +1,6 @@
 package com.example.finalexam.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -18,6 +19,7 @@ import com.example.finalexam.presenter.UserPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class ProjectFragment extends Fragment implements UserDataShowInterface {
@@ -34,17 +36,28 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
 
         initView();
         initRV();
+        requestData();
 
         return view;
     }
 
+
+    private void requestData() {
+        UserPresenter.getInstance(this).fetchAllBriefProject();
+    }
+
+    private void addTestData() {
+        ProjectData projectData1 = new ProjectData();
+        ProjectData projectData2 = new ProjectData();
+        projectData1.setCreator("NOIDEA8");
+        projectData2.setCreator("PPPoria");
+        list.add(projectData1);
+        list.add(projectData2);
+        list.add(new ProjectData());
+    }
+
     private void initRV() {
         projectListView.setLayoutManager(new LinearLayoutManager(requireContext()));
-
-        list.add(new ProjectData());
-        list.add(new ProjectData());
-        list.add(new ProjectData());
-
         projectListView.setAdapter(new ProjectAdapter(requireContext(), list));
     }
 
@@ -67,13 +80,17 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void projectListResult(int STATUS) {
         if (STATUS == UserPresenter.STATUS_NO_DATA) {
 
         } else if (STATUS == UserPresenter.STATUS_SUCCESS) {
+            list.clear();
             list.addAll(UserPresenter.getInstance(this).getProjectList());
         }
+        addTestData();
+        Objects.requireNonNull(projectListView.getAdapter()).notifyDataSetChanged();
     }
 
     @Override

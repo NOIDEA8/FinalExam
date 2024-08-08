@@ -1,6 +1,8 @@
 package com.example.finalexam.adapter;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.finalexam.model.ProjectData;
 import com.example.finalexam.R;
+import com.example.finalexam.helper.ColorHelper;
+import com.example.finalexam.model.ProjectData;
 
 import java.util.List;
 
@@ -38,12 +41,31 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHold
     public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
         if (list == null) return;
         else if (list.isEmpty()) return;
+
         ProjectData data = list.get(position);
+
+        //获取项目名字和发布者名字
         String projectName = data.getProjectName();
         String creatorName = data.getCreator();
+        projectName = projectName == null ? "projectName" : projectName;
+        creatorName = creatorName == null ? "creatorName" : creatorName;
+
+        //获取颜色
         String creatorColor = "#FFFFFF";
-        projectName = projectName == null ? "null" : projectName;
-        creatorName = creatorName == null ? "null" : creatorName;
+        creatorColor = ColorHelper.createColorHex(creatorName);
+        int color = Color.parseColor(creatorColor);
+
+        holder.projectName.setText(projectName);
+        holder.creatorName.setText(creatorName);
+
+        holder.creatorColor.setText(creatorName.substring(0, 1));
+        holder.creatorColor.setBackgroundTintList(ColorStateList.valueOf(color));
+
+        //判断是否为深色，是则把字体改为白色，更加显眼
+        if (ColorHelper.isBrightColor(color))
+            holder.creatorColor.setTextColor(Color.BLACK);
+        else
+            holder.creatorColor.setTextColor(Color.WHITE);
     }
 
     @Override
