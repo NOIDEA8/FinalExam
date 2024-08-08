@@ -63,6 +63,11 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
     }
 
     @Override
+    public void projectPublishResult(int STATUS) {
+
+    }
+
+    @Override
     public void projectListResult(int STATUS) {
         if (STATUS == UserPresenter.STATUS_NO_DATA) {
 
