@@ -15,14 +15,14 @@ import com.example.finalexam.info.InfoString;
 import com.example.finalexam.info.InfoUser;
 import com.example.finalexam.info.InfoUserList;
 import com.example.finalexam.model.ProjectData;
-import com.example.finalexam.sendmodel.FreezeProjectSend;
-import com.example.finalexam.sendmodel.FreezeUserSend;
-import com.example.finalexam.sendmodel.MonitorSend;
-import com.example.finalexam.sendmodel.PublishSend;
-import com.example.finalexam.sendmodel.RegisterSend;
+import com.example.finalexam.model.sendmodel.FreezeProjectSend;
+import com.example.finalexam.model.sendmodel.FreezeUserSend;
+import com.example.finalexam.model.sendmodel.MonitorSend;
+import com.example.finalexam.model.sendmodel.PublishSend;
+import com.example.finalexam.model.sendmodel.RegisterSend;
 import com.example.finalexam.model.UserData;
-import com.example.finalexam.sendmodel.UpdataProjectSend;
-import com.example.finalexam.sendmodel.VerifyApplicationSend;
+import com.example.finalexam.model.sendmodel.UpdataProjectSend;
+import com.example.finalexam.model.sendmodel.VerifyApplicationSend;
 
 import org.json.JSONObject;
 

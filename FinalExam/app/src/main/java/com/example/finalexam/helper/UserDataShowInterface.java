@@ -12,8 +12,11 @@ public interface UserDataShowInterface {
     void projectPublishResult(int STATUS);
 
     void briefProjectList(int STATUS);
+
     void selfProjectList(int STATUS);
+
     void monitorProjectList(int STATUS);
+
     void applyingMonitorProjectList(int STATUS);//申请项目监控的记录
     void applyingProjectList(int STATUS);//申请项目发布或更新的记录
 

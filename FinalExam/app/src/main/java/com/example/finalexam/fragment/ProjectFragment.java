@@ -114,6 +114,31 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
 
     }
 
+    @Override
+    public void briefProjectList(int STATUS) {
+
+    }
+
+    @Override
+    public void selfProjectList(int STATUS) {
+
+    }
+
+    @Override
+    public void monitorProjectList(int STATUS) {
+
+    }
+
+    @Override
+    public void applyingMonitorProjectList(int STATUS) {
+
+    }
+
+    @Override
+    public void applyingProjectList(int STATUS) {
+
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void projectListResult(int STATUS) {
@@ -137,6 +162,26 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
 
     @Override
     public void updateProject(int STATUS) {
+
+    }
+
+    @Override
+    public void cancelMonitor(int STATUS) {
+
+    }
+
+    @Override
+    public void deleteProject(int STATUS) {
+
+    }
+
+    @Override
+    public void freezeOrNotProjectList(int STATUS) {
+
+    }
+
+    @Override
+    public void applyOrNotProjectList(int STATUS) {
 
     }
 }
