@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity  implements UserDataShowInte
     }
 
     @Override
-    public void userListResult(int STATUS) {
+    public void monitorUserListResult(int STATUS) {
 
     }
 

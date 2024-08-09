@@ -111,7 +111,7 @@ public class ProjectDetailActivity extends AppCompatActivity implements UserData
     }
 
     @Override
-    public void userListResult(int STATUS) {
+    public void monitorUserListResult(int STATUS) {
 
     }
 

@@ -130,7 +130,7 @@ public class LogActivity extends AppCompatActivity implements UserDataShowInterf
     }
 
     @Override
-    public void userListResult(int STATUS) {
+    public void monitorUserListResult(int STATUS) {
 
     }
 

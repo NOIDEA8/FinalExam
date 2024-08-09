@@ -461,20 +461,20 @@ public class UserPresenter {
                 InfoUserList info=response.body();
                 if(info==null){
                     userList=new ArrayList<>();
-                    activity.userListResult(STATUS_NO_INTERNET);
+                    activity.monitorUserListResult(STATUS_NO_INTERNET);
                 }else if(info.getData()==null){
                     userList=new ArrayList<>();
-                    activity.userListResult(STATUS_NO_DATA);
+                    activity.monitorUserListResult(STATUS_NO_DATA);
                 }else{
                     userList=info.getData();
-                    activity.userListResult(STATUS_SUCCESS);
+                    activity.monitorUserListResult(STATUS_SUCCESS);
                 }
             }
 
             @Override
             public void onFailure(Call<InfoUserList> call, Throwable t) {
                 userList=new ArrayList<>();
-                activity.userListResult(STATUS_NO_INTERNET);
+                activity.monitorUserListResult(STATUS_NO_INTERNET);
             }
         });
     }
@@ -525,7 +525,7 @@ public class UserPresenter {
                 } else if (info.getCode()!=1) {
                     activity.deleteProject(STATUS_FAILED);
                 }else{
-                    activity.userListResult(STATUS_SUCCESS);
+                    activity.monitorUserListResult(STATUS_SUCCESS);
                 }
             }
             @Override

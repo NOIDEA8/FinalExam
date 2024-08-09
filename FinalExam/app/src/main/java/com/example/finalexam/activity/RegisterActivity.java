@@ -92,7 +92,7 @@ public class RegisterActivity extends AppCompatActivity implements UserDataShowI
     }
 
     @Override
-    public void userListResult(int STATUS) {
+    public void monitorUserListResult(int STATUS) {
 
     }
 
