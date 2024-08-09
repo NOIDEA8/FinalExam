@@ -8,32 +8,21 @@ import androidx.annotation.NonNull;
 
 import com.example.finalexam.helper.Api;
 import com.example.finalexam.helper.UserDataShowInterface;
-import com.example.finalexam.info.InfoApplyingProjectList;
-import com.example.finalexam.info.InfoMonitorProjectList;
-import com.example.finalexam.info.InfoMonitorUserList;
-import com.example.finalexam.info.InfoProjectDetail;
-import com.example.finalexam.info.InfoPublishApplication;
-import com.example.finalexam.info.InfoSelfProjectList;
-import com.example.finalexam.info.InfoBriefProjectList;
+import com.example.finalexam.info.InfoProject;
+import com.example.finalexam.info.InfoProjectList;
+import com.example.finalexam.info.InfoShowAllProject;
 import com.example.finalexam.info.InfoString;
-import com.example.finalexam.info.InfoUserDetail;
-import com.example.finalexam.info.InfoMonitorApplication;
-import com.example.finalexam.model.application.UserMonitorApplication;
-import com.example.finalexam.model.application.UserPublishApplication;
-import com.example.finalexam.model.project.ApplyingProject;
-import com.example.finalexam.model.project.BriefProject;
-import com.example.finalexam.model.project.ProjectDetail;
-import com.example.finalexam.model.project.SelfProject;
-import com.example.finalexam.model.sendmodel.FreezeProjectSend;
-import com.example.finalexam.model.sendmodel.FreezeUserSend;
-import com.example.finalexam.model.sendmodel.MonitorSend;
-import com.example.finalexam.model.sendmodel.PublishSend;
-import com.example.finalexam.model.sendmodel.RegisterSend;
+import com.example.finalexam.info.InfoUser;
+import com.example.finalexam.info.InfoUserList;
+import com.example.finalexam.model.ProjectData;
+import com.example.finalexam.sendmodel.FreezeProjectSend;
+import com.example.finalexam.sendmodel.FreezeUserSend;
+import com.example.finalexam.sendmodel.MonitorSend;
+import com.example.finalexam.sendmodel.PublishSend;
+import com.example.finalexam.sendmodel.RegisterSend;
 import com.example.finalexam.model.UserData;
-import com.example.finalexam.model.sendmodel.UpdataProjectSend;
-import com.example.finalexam.model.sendmodel.VerifyApplicationSend;
-import com.example.finalexam.model.user.MonitorUser;
-import com.example.finalexam.model.user.UserDetail;
+import com.example.finalexam.sendmodel.UpdataProjectSend;
+import com.example.finalexam.sendmodel.VerifyApplicationSend;
 
 import org.json.JSONObject;
 
@@ -56,17 +45,10 @@ public class UserPresenter {
     public UserDataShowInterface activity;
     private static UserPresenter presenter=new UserPresenter();
     private UserData user =new UserData();//一个用户一个presenter
-
-    private List<SelfProject> selfProjects;
-    private List<BriefProject> monitorProjects;
-    private List<UserMonitorApplication> userMonitorApplications;
-    private List<UserPublishApplication> userPublishApplications;
-    private List<BriefProject> allBriefProjects;
-    private List<BriefProject> freezeOrNotProjects;
-    private List<ApplyingProject> applyingProjects;
-    private List<MonitorUser> monitorUsers ;
-    private UserDetail userDetail;
-    private ProjectDetail projectDetail;
+    private List<ProjectData> projectList;
+    private List<UserData> userList;
+    private UserData userDetail;
+    private ProjectData projectDetail;
     private String checkResult;
     private Context context;//接cookie用
 
@@ -108,12 +90,12 @@ public class UserPresenter {
         Api userApi = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
-        Call<InfoUserDetail> dataCall = userApi.log(account,password);
-        dataCall.enqueue(new Callback<InfoUserDetail>() {
+        Call<InfoUser> dataCall = userApi.log(account,password);
+        dataCall.enqueue(new Callback<InfoUser>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
-            public void onResponse(@NonNull Call<InfoUserDetail> call, @NonNull Response<InfoUserDetail> response) {
-                InfoUserDetail info = response.body();
+            public void onResponse(@NonNull Call<InfoUser> call, @NonNull Response<InfoUser> response) {
+                InfoUser info = response.body();
                 if(info==null){
                     activity.userLog(STATUS_NO_INTERNET);
                 } else if (info.getMsg().equals("账号不存在")) {
@@ -123,7 +105,7 @@ public class UserPresenter {
                 } else if (info.getMsg().equals("密码错误")) {
                     activity.userLog(STATUS_PASSWORD_INCORRECT);
                 }else {
-                    UserDetail tempData=info.getData();
+                    UserData tempData=info.getData();
                     SPPresenter.accordUsername(context, account);
                     SPPresenter.accordPassword(context, password);
                     SPPresenter.accordLoggedStatus(context, true);
@@ -136,7 +118,7 @@ public class UserPresenter {
 
             }
             @Override
-            public void onFailure(@NonNull Call<InfoUserDetail> call, @NonNull Throwable throwable) {
+            public void onFailure(@NonNull Call<InfoUser> call, @NonNull Throwable throwable) {
                 Log.d(TAG, throwable.toString());
                 activity.userLog(STATUS_NO_INTERNET);
             }
@@ -160,13 +142,13 @@ public class UserPresenter {
         registerSend.setUsername(account);
         registerSend.setPassword(password);
 
-        Call<InfoUserDetail> dataCall = userApi.register(registerSend);
+        Call<InfoUser> dataCall = userApi.register(registerSend);
 
-        dataCall.enqueue(new Callback<InfoUserDetail>() {
+        dataCall.enqueue(new Callback<InfoUser>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
-            public void onResponse(@NonNull Call<InfoUserDetail> call, @NonNull Response<InfoUserDetail> response) {
-                InfoUserDetail info = response.body();
+            public void onResponse(@NonNull Call<InfoUser> call, @NonNull Response<InfoUser> response) {
+                InfoUser info = response.body();
                 Log.d(TAG, "onResponse: ");
                 if (info == null) activity.userRegister(STATUS_NO_INTERNET);
                 else if(info.getData()==null) activity.userRegister(STATUS_ACCOUNT_ALREADY_EXIST);
@@ -176,7 +158,7 @@ public class UserPresenter {
             }
 
             @Override
-            public void onFailure(@NonNull Call<InfoUserDetail> call, @NonNull Throwable throwable) {
+            public void onFailure(@NonNull Call<InfoUser> call, @NonNull Throwable throwable) {
                 Log.d(TAG, throwable.toString());
                 activity.userRegister(STATUS_NO_INTERNET);
             }
@@ -189,29 +171,29 @@ public class UserPresenter {
         Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
-        Call<InfoBriefProjectList> dataCall = api.getAllProjectForUser(1,0,null) ;//拿取所有数据
+        Call<InfoShowAllProject> dataCall = api.getAllProjectForUser(1,0,null) ;//拿取所有数据
 
-        dataCall.enqueue(new Callback<InfoBriefProjectList>() {
+        dataCall.enqueue(new Callback<InfoShowAllProject>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
-            public void onResponse(Call<InfoBriefProjectList> call, Response<InfoBriefProjectList> response) {
-                InfoBriefProjectList info=response.body();
+            public void onResponse(Call<InfoShowAllProject> call, Response<InfoShowAllProject> response) {
+                InfoShowAllProject info=response.body();
                 if(info==null){
-                    allBriefProjects =new ArrayList<>();
-                    activity.projectListResult(STATUS_NO_INTERNET);
+                    projectList =new ArrayList<>();
+                    activity.briefProjectList(STATUS_NO_INTERNET);
                 } else if (info.getData()==null) {
-                    allBriefProjects =new ArrayList<>();
-                    activity.projectListResult(STATUS_NO_DATA);
+                    projectList =new ArrayList<>();
+                    activity.briefProjectList(STATUS_NO_DATA);
                 } else{
-                    allBriefProjects =info.getData().getList();
-                    activity.projectListResult(STATUS_SUCCESS);
+                    projectList =info.getData().getList();
+                    activity.briefProjectList(STATUS_SUCCESS);
                 }
             }
 
             @Override
-            public void onFailure(Call<InfoBriefProjectList> call, Throwable t) {
-                allBriefProjects =new ArrayList<>();
-                activity.projectListResult(STATUS_NO_INTERNET);
+            public void onFailure(Call<InfoShowAllProject> call, Throwable t) {
+                projectList =new ArrayList<>();
+                activity.briefProjectList(STATUS_NO_INTERNET);
             }
         });
     }
@@ -221,18 +203,18 @@ public class UserPresenter {
         Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
-        Call<InfoProjectDetail> dataCall = api.getProjectDetail(projectId) ;
+        Call<InfoProject> dataCall = api.getProjectDetail(projectId) ;
 
-        dataCall.enqueue(new Callback<InfoProjectDetail>() {
+        dataCall.enqueue(new Callback<InfoProject>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
-            public void onResponse(@NonNull Call<InfoProjectDetail> call, @NonNull Response<InfoProjectDetail> response) {
-                InfoProjectDetail info=response.body();
+            public void onResponse(@NonNull Call<InfoProject> call, @NonNull Response<InfoProject> response) {
+                InfoProject info=response.body();
                 if(info==null){
-                    projectDetail=new ProjectDetail();
+                    projectDetail=new ProjectData();
                     activity.projectDetail(STATUS_NO_INTERNET);
                 }else if(info.getCode()!=1){
-                    projectDetail=new ProjectDetail();
+                    projectDetail=new ProjectData();
                     activity.projectDetail(STATUS_FAILED);
                 } else{
                     projectDetail=info.getData();
@@ -241,8 +223,8 @@ public class UserPresenter {
             }
 
             @Override
-            public void onFailure(@NonNull Call<InfoProjectDetail> call, @NonNull Throwable throwable) {
-                projectDetail=new ProjectDetail();
+            public void onFailure(@NonNull Call<InfoProject> call, @NonNull Throwable throwable) {
+                projectDetail=new ProjectData();
                 activity.projectDetail(STATUS_NO_INTERNET);
             }
         });
@@ -253,28 +235,28 @@ public class UserPresenter {
         Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
-        Call<InfoSelfProjectList> dataCall = api.getSelfProjects(user.getUserId());
-        dataCall.enqueue(new Callback<InfoSelfProjectList>() {
+        Call<InfoProjectList> dataCall = api.getSelfProjects(user.getUserId());
+        dataCall.enqueue(new Callback<InfoProjectList>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
-            public void onResponse(Call<InfoSelfProjectList> call, Response<InfoSelfProjectList> response) {
-                InfoSelfProjectList info= response.body();
+            public void onResponse(Call<InfoProjectList> call, Response<InfoProjectList> response) {
+                InfoProjectList info= response.body();
                 if(info==null){
-                    selfProjects =new ArrayList<>();
-                    activity.projectListResult(STATUS_NO_INTERNET);
+                    projectList=new ArrayList<>();
+                    activity.selfProjectList(STATUS_NO_INTERNET);
                 }else if (info.getData()==null) {
-                    selfProjects =new ArrayList<>();
-                    activity.projectListResult(STATUS_NO_DATA);
+                    projectList =new ArrayList<>();
+                    activity.selfProjectList(STATUS_NO_DATA);
                 } else{
-                    selfProjects =info.getData();
-                    activity.projectListResult(STATUS_SUCCESS);
+                    projectList=info.getData();
+                    activity.selfProjectList(STATUS_SUCCESS);
                 }
             }
 
             @Override
-            public void onFailure(Call<InfoSelfProjectList> call, Throwable t) {
-                selfProjects =new ArrayList<>();
-                activity.projectListResult(STATUS_NO_INTERNET);
+            public void onFailure(Call<InfoProjectList> call, Throwable t) {
+                projectList=new ArrayList<>();
+                activity.selfProjectList(STATUS_NO_INTERNET);
             }
         });
     }
@@ -284,88 +266,88 @@ public class UserPresenter {
         Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
-        Call<InfoMonitorProjectList> dataCall = api.getHaveMonitorProjects(user.getUserId());
-        dataCall.enqueue(new Callback<InfoMonitorProjectList>() {
+        Call<InfoProjectList> dataCall = api.getHaveMonitorProjects(user.getUserId());
+        dataCall.enqueue(new Callback<InfoProjectList>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
-            public void onResponse(Call<InfoMonitorProjectList> call, Response<InfoMonitorProjectList> response) {
-                InfoMonitorProjectList info= response.body();
+            public void onResponse(Call<InfoProjectList> call, Response<InfoProjectList> response) {
+                InfoProjectList info= response.body();
                 if(info==null){
-                    monitorProjects=new ArrayList<>();
-                    activity.projectListResult(STATUS_NO_INTERNET);
+                    projectList=new ArrayList<>();
+                    activity.monitorProjectList(STATUS_NO_INTERNET);
                 }else if (info.getData()==null) {
-                    monitorProjects =new ArrayList<>();
-                    activity.projectListResult(STATUS_NO_DATA);
+                    projectList =new ArrayList<>();
+                    activity.monitorProjectList(STATUS_NO_DATA);
                 } else{
-                    monitorProjects=info.getData();
-                    activity.projectListResult(STATUS_SUCCESS);
+                    projectList=info.getData();
+                    activity.monitorProjectList(STATUS_SUCCESS);
                 }
             }
 
             @Override
-            public void onFailure(Call<InfoMonitorProjectList> call, Throwable t) {
-                monitorProjects=new ArrayList<>();
-                activity.projectListResult(STATUS_NO_INTERNET);
+            public void onFailure(Call<InfoProjectList> call, Throwable t) {
+                projectList=new ArrayList<>();
+                activity.monitorProjectList(STATUS_NO_INTERNET);
             }
         });
     }
     //获取正在申请监控权限的记录
-    public void fetchApplyingMonitorApplication(){
+    public void fetchApplyingMonitorProject(){
         Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
-        Call<InfoMonitorApplication> dataCall = api.getApplyingMonitorProject(user.getUserId());
-        dataCall.enqueue(new Callback<InfoMonitorApplication>() {
+        Call<InfoProjectList> dataCall = api.getApplyingMonitorProject(user.getUserId());
+        dataCall.enqueue(new Callback<InfoProjectList>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
-            public void onResponse(Call<InfoMonitorApplication> call, Response<InfoMonitorApplication> response) {
-                InfoMonitorApplication info= response.body();
+            public void onResponse(Call<InfoProjectList> call, Response<InfoProjectList> response) {
+                InfoProjectList info= response.body();
                 if(info==null){
-                    userMonitorApplications=new ArrayList<>();
-                    activity.projectListResult(STATUS_NO_INTERNET);
+                    projectList=new ArrayList<>();
+                    activity.applyingMonitorProjectList(STATUS_NO_INTERNET);
                 } else if (info.getData()==null) {
-                    userMonitorApplications =new ArrayList<>();
-                    activity.projectListResult(STATUS_NO_DATA);
+                    projectList =new ArrayList<>();
+                    activity.applyingMonitorProjectList(STATUS_NO_DATA);
                 } else{
-                    userMonitorApplications=info.getData();
-                    activity.projectListResult(STATUS_SUCCESS);
+                    projectList=info.getData();
+                    activity.applyingMonitorProjectList(STATUS_SUCCESS);
                 }
             }
 
             @Override
-            public void onFailure(Call<InfoMonitorApplication> call, Throwable t) {
-                userMonitorApplications=new ArrayList<>();
-                activity.projectListResult(STATUS_NO_INTERNET);
+            public void onFailure(Call<InfoProjectList> call, Throwable t) {
+                projectList=new ArrayList<>();
+                activity.applyingMonitorProjectList(STATUS_NO_INTERNET);
             }
         });
     }
     //获取正在发布或更新的项目的记录
-    public void fetchApplyingProject(){
+    public void fetchMyApplyingProject(){
         Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
-        Call<InfoPublishApplication> dataCall = api.getMyApplicationProject(user.getUserId());
-        dataCall.enqueue(new Callback<InfoPublishApplication>() {
+        Call<InfoProjectList> dataCall = api.getMyApplicationProject(user.getUserId());
+        dataCall.enqueue(new Callback<InfoProjectList>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
-            public void onResponse(Call<InfoPublishApplication> call, Response<InfoPublishApplication> response) {
-                InfoPublishApplication info= response.body();
+            public void onResponse(Call<InfoProjectList> call, Response<InfoProjectList> response) {
+                InfoProjectList info= response.body();
                 if(info==null){
-                    userPublishApplications=new ArrayList<>();
-                    activity.projectListResult(STATUS_NO_INTERNET);
+                    projectList=new ArrayList<>();
+                    activity.applyingProjectList(STATUS_NO_INTERNET);
                 } else if (info.getData()==null) {
-                    userPublishApplications =new ArrayList<>();
-                    activity.projectListResult(STATUS_NO_DATA);
+                    projectList =new ArrayList<>();
+                    activity.applyingProjectList(STATUS_NO_DATA);
                 } else{
-                    userPublishApplications=info.getData();
-                    activity.projectListResult(STATUS_SUCCESS);
+                    projectList=info.getData();
+                    activity.applyingProjectList(STATUS_SUCCESS);
                 }
             }
 
             @Override
-            public void onFailure(Call<InfoPublishApplication> call, Throwable t) {
-                userPublishApplications=new ArrayList<>();
-                activity.projectListResult(STATUS_NO_INTERNET);
+            public void onFailure(Call<InfoProjectList> call, Throwable t) {
+                projectList=new ArrayList<>();
+                activity.applyingProjectList(STATUS_NO_INTERNET);
             }
         });
     }
@@ -383,12 +365,12 @@ public class UserPresenter {
         publishData.setProjectUrl(projectUrl);
         publishData.setProjectPassword(projectPassword);
 
-        Call<InfoUserDetail> dataCall=api.publishProject(publishData);
-        dataCall.enqueue(new Callback<InfoUserDetail>() {
+        Call<InfoUser> dataCall=api.publishProject(publishData);
+        dataCall.enqueue(new Callback<InfoUser>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
-            public void onResponse(Call<InfoUserDetail> call, Response<InfoUserDetail> response) {
-                InfoUserDetail infoUser=response.body();
+            public void onResponse(Call<InfoUser> call, Response<InfoUser> response) {
+                InfoUser infoUser=response.body();
                 if(infoUser==null){
                     activity.projectPublishResult(STATUS_NO_INTERNET);
                 } else if (infoUser.getCode()!=1) {
@@ -399,7 +381,7 @@ public class UserPresenter {
             }
 
             @Override
-            public void onFailure(Call<InfoUserDetail> call, Throwable t) {
+            public void onFailure(Call<InfoUser> call, Throwable t) {
                 activity.projectPublishResult(STATUS_NO_INTERNET);
             }
         });
@@ -413,13 +395,13 @@ public class UserPresenter {
         applyMonitorSend.setProjectId(projectId);
         applyMonitorSend.setUserId(userId);
 
-        Call<InfoUserDetail> dataCall=api.applyMonitorPermission(applyMonitorSend);
+        Call<InfoUser> dataCall=api.applyMonitorPermission(applyMonitorSend);
 
-        dataCall.enqueue(new Callback<InfoUserDetail>() {
+        dataCall.enqueue(new Callback<InfoUser>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
-            public void onResponse(Call<InfoUserDetail> call, Response<InfoUserDetail> response) {
-                InfoUserDetail info=response.body();
+            public void onResponse(Call<InfoUser> call, Response<InfoUser> response) {
+                InfoUser info=response.body();
                 if(info==null){
                     activity.applyMonitorPermission(STATUS_NO_INTERNET);
                 }else if(info.getCode()!=1){
@@ -430,7 +412,7 @@ public class UserPresenter {
             }
 
             @Override
-            public void onFailure(Call<InfoUserDetail> call, Throwable t) {
+            public void onFailure(Call<InfoUser> call, Throwable t) {
                 activity.applyMonitorPermission(STATUS_NO_INTERNET);
             }
         });
@@ -445,53 +427,53 @@ public class UserPresenter {
         updataProjectSend.setDescription(description);
         updataProjectSend.setProjectPassword(projectPassword);
         updataProjectSend.setUserId(userId);
-        Call<InfoUserDetail> dataCall=api.updateProject(updataProjectSend);
+        Call<InfoUser> dataCall=api.updateProject(updataProjectSend);
 
-        dataCall.enqueue(new Callback<InfoUserDetail>() {
+        dataCall.enqueue(new Callback<InfoUser>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
-            public void onResponse(Call<InfoUserDetail> call, Response<InfoUserDetail> response) {
-                InfoUserDetail info=response.body();
+            public void onResponse(Call<InfoUser> call, Response<InfoUser> response) {
+                InfoUser info=response.body();
                 if(info==null){
-                    activity.updata(STATUS_NO_INTERNET);
+                    activity.updateProject(STATUS_NO_INTERNET);
                 } else if (info.getCode()!=1) {
-                    activity.updata(STATUS_FAILED);
+                    activity.updateProject(STATUS_FAILED);
                 }else {
-                    activity.updata(STATUS_SUCCESS);
+                    activity.updateProject(STATUS_SUCCESS);
                 }
             }
 
             @Override
-            public void onFailure(Call<InfoUserDetail> call, Throwable t) {
-                activity.updata(STATUS_NO_INTERNET);
+            public void onFailure(Call<InfoUser> call, Throwable t) {
+                activity.updateProject(STATUS_NO_INTERNET);
             }
         });
     }
     //获取一个项目的所有监管者
     public void fetchMonitorUser(int projectId){
         Api api = getRetrofit().create(Api.class);
-        Call<InfoMonitorUserList> dataCall=api.queryMonitorUser(projectId);
+        Call<InfoUserList> dataCall=api.queryMonitorUser(projectId);
 
-        dataCall.enqueue(new Callback<InfoMonitorUserList>() {
+        dataCall.enqueue(new Callback<InfoUserList>() {
             @Override
-            public void onResponse(Call<InfoMonitorUserList> call, Response<InfoMonitorUserList> response) {
+            public void onResponse(Call<InfoUserList> call, Response<InfoUserList> response) {
                 UserDataShowInterface activity = UserPresenter.this.activity;
-                InfoMonitorUserList info=response.body();
+                InfoUserList info=response.body();
                 if(info==null){
-                    monitorUsers=new ArrayList<>();
+                    userList=new ArrayList<>();
                     activity.userListResult(STATUS_NO_INTERNET);
                 }else if(info.getData()==null){
-                    monitorUsers=new ArrayList<>();
+                    userList=new ArrayList<>();
                     activity.userListResult(STATUS_NO_DATA);
                 }else{
-                    monitorUsers=info.getData();
+                    userList=info.getData();
                     activity.userListResult(STATUS_SUCCESS);
                 }
             }
 
             @Override
-            public void onFailure(Call<InfoMonitorUserList> call, Throwable t) {
-                monitorUsers=new ArrayList<>();
+            public void onFailure(Call<InfoUserList> call, Throwable t) {
+                userList=new ArrayList<>();
                 activity.userListResult(STATUS_NO_INTERNET);
             }
         });
@@ -505,24 +487,24 @@ public class UserPresenter {
         cancelMontorSend.setProjectId(projectId);
         cancelMontorSend.setUserId(userId);
 
-        Call<InfoUserDetail> dataCall=api.cancelUserMoitorPermission(cancelMontorSend);
-        dataCall.enqueue(new Callback<InfoUserDetail>() {
+        Call<InfoUser> dataCall=api.cancelUserMoitorPermission(cancelMontorSend);
+        dataCall.enqueue(new Callback<InfoUser>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
-            public void onResponse(Call<InfoUserDetail> call, Response<InfoUserDetail> response) {
-                InfoUserDetail info=response.body();
+            public void onResponse(Call<InfoUser> call, Response<InfoUser> response) {
+                InfoUser info=response.body();
                 if(info==null){
-                    activity.updata(STATUS_NO_INTERNET);
+                    activity.cancelMonitor(STATUS_NO_INTERNET);
                 } else if (info.getCode()!=1) {
-                    activity.updata(STATUS_FAILED);
+                    activity.cancelMonitor(STATUS_FAILED);
                 }else{
-                    activity.updata(STATUS_SUCCESS);
+                    activity.cancelMonitor(STATUS_SUCCESS);
                 }
             }
 
             @Override
-            public void onFailure(Call<InfoUserDetail> call, Throwable t) {
-                activity.updata(STATUS_NO_INTERNET);
+            public void onFailure(Call<InfoUser> call, Throwable t) {
+                activity.cancelMonitor(STATUS_NO_INTERNET);
             }
         });
     }
@@ -531,24 +513,24 @@ public class UserPresenter {
 
         Api api = getRetrofit().create(Api.class);
 
-        Call<InfoUserDetail> dataCall=api.deleteProject(projectId,projectPassword);
+        Call<InfoUser> dataCall=api.deleteProject(projectId,projectPassword);
 
-        dataCall.enqueue(new Callback<InfoUserDetail>() {
+        dataCall.enqueue(new Callback<InfoUser>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
-            public void onResponse(Call<InfoUserDetail> call, Response<InfoUserDetail> response) {
-                InfoUserDetail info=response.body();
+            public void onResponse(Call<InfoUser> call, Response<InfoUser> response) {
+                InfoUser info=response.body();
                 if(info==null){
-                    activity.updata(STATUS_NO_INTERNET);
+                    activity.deleteProject(STATUS_NO_INTERNET);
                 } else if (info.getCode()!=1) {
-                    activity.updata(STATUS_FAILED);
+                    activity.deleteProject(STATUS_FAILED);
                 }else{
                     activity.userListResult(STATUS_SUCCESS);
                 }
             }
             @Override
-            public void onFailure(Call<InfoUserDetail> call, Throwable t) {
-                activity.updata(STATUS_NO_INTERNET);
+            public void onFailure(Call<InfoUser> call, Throwable t) {
+                activity.deleteProject(STATUS_NO_INTERNET);
             }
         });
     }
@@ -590,60 +572,60 @@ public class UserPresenter {
 
         Api api = getRetrofit().create(Api.class);
 
-        Call<InfoBriefProjectList> dataCall=api.getFrezonOrNotProject(projectType);
+        Call<InfoShowAllProject> dataCall=api.getFrezonOrNotProject(projectType);
 
-        dataCall.enqueue(new Callback<InfoBriefProjectList>() {
+        dataCall.enqueue(new Callback<InfoShowAllProject>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
-            public void onResponse(Call<InfoBriefProjectList> call, Response<InfoBriefProjectList> response) {
-                InfoBriefProjectList info=response.body();
+            public void onResponse(Call<InfoShowAllProject> call, Response<InfoShowAllProject> response) {
+                InfoShowAllProject info=response.body();
                 if(info==null){
-                    freezeOrNotProjects=new ArrayList<>();
-                    activity.projectListResult(STATUS_NO_INTERNET);
+                    projectList=new ArrayList<>();
+                    activity.freezeOrNotProjectList(STATUS_NO_INTERNET);
                 }else if(info.getData()==null){
-                    freezeOrNotProjects=new ArrayList<>();
-                    activity.projectListResult(STATUS_NO_DATA);
+                    projectList=new ArrayList<>();
+                    activity.freezeOrNotProjectList(STATUS_NO_DATA);
                 }else{
-                    freezeOrNotProjects=info.getData().getList();
-                    activity.projectListResult(STATUS_SUCCESS);
+                    projectList=info.getData().getList();
+                    activity.freezeOrNotProjectList(STATUS_SUCCESS);
                 }
             }
 
             @Override
-            public void onFailure(Call<InfoBriefProjectList> call, Throwable t) {
-                freezeOrNotProjects=new ArrayList<>();
-                activity.projectListResult(STATUS_NO_INTERNET);
+            public void onFailure(Call<InfoShowAllProject> call, Throwable t) {
+                projectList=new ArrayList<>();
+                activity.freezeOrNotProjectList(STATUS_NO_INTERNET);
             }
         });
     }
     //获取不同审核状态的项目
-    public void fetchApplyingProject(int projectType){
+    public void fetchReviewOrNotProject(int projectType){
 
         Api api = getRetrofit().create(Api.class);
 
-        Call<InfoApplyingProjectList> dataCall=api.getReviewOrNotProject(projectType);
+        Call<InfoShowAllProject> dataCall=api.getReviewOrNotProject(projectType);
 
-        dataCall.enqueue(new Callback<InfoApplyingProjectList>() {
+        dataCall.enqueue(new Callback<InfoShowAllProject>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
-            public void onResponse(Call<InfoApplyingProjectList> call, Response<InfoApplyingProjectList> response) {
-                InfoApplyingProjectList info=response.body();
+            public void onResponse(Call<InfoShowAllProject> call, Response<InfoShowAllProject> response) {
+                InfoShowAllProject info=response.body();
                 if(info==null){
-                    applyingProjects=new ArrayList<>();
-                    activity.projectListResult(STATUS_NO_INTERNET);
+                    projectList=new ArrayList<>();
+                    activity.applyOrNotProjectList(STATUS_NO_INTERNET);
                 }else if(info.getData()==null){
-                    applyingProjects=new ArrayList<>();
-                    activity.projectListResult(STATUS_NO_DATA);
+                    projectList=new ArrayList<>();
+                    activity.applyOrNotProjectList(STATUS_NO_DATA);
                 }else{
-                    applyingProjects=info.getData().getList();
-                    activity.projectListResult(STATUS_SUCCESS);
+                    projectList=info.getData().getList();
+                    activity.applyOrNotProjectList(STATUS_SUCCESS);
                 }
             }
 
             @Override
-            public void onFailure(Call<InfoApplyingProjectList> call, Throwable t) {
-                applyingProjects=new ArrayList<>();
-                activity.projectListResult(STATUS_NO_INTERNET);
+            public void onFailure(Call<InfoShowAllProject> call, Throwable t) {
+                projectList=new ArrayList<>();
+                activity.applyOrNotProjectList(STATUS_NO_INTERNET);
             }
         });
     }
@@ -652,13 +634,13 @@ public class UserPresenter {
 
         Api api = getRetrofit().create(Api.class);
         VerifyApplicationSend verifyApplicationSend=new VerifyApplicationSend(projectId,reviewResult,rejectResason);
-        Call<InfoUserDetail> dataCall=api.verifyApplication(verifyApplicationSend);
+        Call<InfoUser> dataCall=api.verifyApplication(verifyApplicationSend);
 
-        dataCall.enqueue(new Callback<InfoUserDetail>() {
+        dataCall.enqueue(new Callback<InfoUser>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
-            public void onResponse(Call<InfoUserDetail> call, Response<InfoUserDetail> response) {
-                InfoUserDetail info=response.body();
+            public void onResponse(Call<InfoUser> call, Response<InfoUser> response) {
+                InfoUser info=response.body();
                 if(info==null){
                     activity.verify(STATUS_NO_INTERNET);
                 } else if (info.getCode()!=1) {
@@ -669,7 +651,7 @@ public class UserPresenter {
             }
 
             @Override
-            public void onFailure(Call<InfoUserDetail> call, Throwable t) {
+            public void onFailure(Call<InfoUser> call, Throwable t) {
                 activity.verify(STATUS_NO_INTERNET);
             }
         });
@@ -678,14 +660,14 @@ public class UserPresenter {
     public void fetchUserDetail(int userId){
 
         Api api = getRetrofit().create(Api.class);
-        Call<InfoUserDetail> dataCall=api.userDetail(userId);
-        dataCall.enqueue(new Callback<InfoUserDetail>() {
+        Call<InfoUser> dataCall=api.userDetail(userId);
+        dataCall.enqueue(new Callback<InfoUser>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
-            public void onResponse(Call<InfoUserDetail> call, Response<InfoUserDetail> response) {
-                InfoUserDetail info=response.body();
+            public void onResponse(Call<InfoUser> call, Response<InfoUser> response) {
+                InfoUser info=response.body();
                 if(info==null){
-                    userDetail=new UserDetail();
+                    userDetail=new UserData();
                     activity.userDetail(STATUS_NO_INTERNET);
                 } else if (info.getData()!=null) {
                     userDetail=info.getData();
@@ -694,8 +676,8 @@ public class UserPresenter {
             }
 
             @Override
-            public void onFailure(Call<InfoUserDetail> call, Throwable t) {
-                userDetail=new UserDetail();
+            public void onFailure(Call<InfoUser> call, Throwable t) {
+                userDetail=new UserData();
                 activity.userDetail(STATUS_NO_INTERNET);
             }
         });
@@ -709,11 +691,11 @@ public class UserPresenter {
         FreezeUserSend freezeUserSend=new FreezeUserSend();
         freezeUserSend.setUserId(userId);
         freezeUserSend.setFreezeHour(freezeHour);
-        Call<InfoUserDetail> dataCall=api.freezeUser(freezeUserSend);
-        dataCall.enqueue(new Callback<InfoUserDetail>() {
+        Call<InfoUser> dataCall=api.freezeUser(freezeUserSend);
+        dataCall.enqueue(new Callback<InfoUser>() {
             @Override
-            public void onResponse(Call<InfoUserDetail> call, Response<InfoUserDetail> response) {
-                InfoUserDetail info=response.body();
+            public void onResponse(Call<InfoUser> call, Response<InfoUser> response) {
+                InfoUser info=response.body();
                 if(info==null){
                     activity.freeze(STATUS_NO_INTERNET);
                 } else if (info.getCode()!=1) {
@@ -724,7 +706,7 @@ public class UserPresenter {
             }
 
             @Override
-            public void onFailure(Call<InfoUserDetail> call, Throwable t) {
+            public void onFailure(Call<InfoUser> call, Throwable t) {
                 activity.freeze(STATUS_NO_INTERNET);
             }
         });
@@ -738,11 +720,11 @@ public class UserPresenter {
         FreezeProjectSend freezeProjectSend=new FreezeProjectSend();
         freezeProjectSend.setProjectId(projectId);
         freezeProjectSend.setFreezeHour(freezeHour);
-        Call<InfoUserDetail> dataCall=api.freezeProject(freezeProjectSend);
-        dataCall.enqueue(new Callback<InfoUserDetail>() {
+        Call<InfoUser> dataCall=api.freezeProject(freezeProjectSend);
+        dataCall.enqueue(new Callback<InfoUser>() {
             @Override
-            public void onResponse(Call<InfoUserDetail> call, Response<InfoUserDetail> response) {
-                InfoUserDetail info=response.body();
+            public void onResponse(Call<InfoUser> call, Response<InfoUser> response) {
+                InfoUser info=response.body();
                 if(info==null){
                     activity.freeze(STATUS_NO_INTERNET);
                 } else if (info.getCode()!=1) {
@@ -753,7 +735,7 @@ public class UserPresenter {
             }
 
             @Override
-            public void onFailure(Call<InfoUserDetail> call, Throwable t) {
+            public void onFailure(Call<InfoUser> call, Throwable t) {
                 activity.freeze(STATUS_NO_INTERNET);
             }
         });
@@ -784,29 +766,15 @@ public class UserPresenter {
     public int getUserId(){return user.getUserId();}
 
     //先调用相应接口再调用这个方法
-    public ProjectDetail getProjectDetail(){return projectDetail;}
+    public ProjectData getProjectDetail(){return projectDetail;}
     ////获取用户详情（指的是自己去看对方的信息）
-    public UserDetail getUserDetail(){return userDetail;}
+    public UserData getUserDetail(){return userDetail;}
 
+    //先调用相应接口再调用这个方法
+    public List<ProjectData> getProjectList(){return projectList;}
+    //获取一系列用户数据
+    public List<UserData> getUserList(){return userList;}
     public String getCheckResult(){return checkResult;}
-
-    public List<BriefProject> getAllBriefProjects() {return allBriefProjects;}
-
-    public List<ApplyingProject> getApplyingProjects() {return applyingProjects;}
-
-    public List<BriefProject> getMonitorProjects() {return monitorProjects;}
-
-    public List<BriefProject> getFreezeOrNotProjects() {return freezeOrNotProjects;}
-
-
-    public List<MonitorUser> getMonitorUsers() {return monitorUsers;}
-
-    public List<UserMonitorApplication> getUserMonitorApplications() {return userMonitorApplications;}
-
-    public List<UserPublishApplication> getUserPublishApplications() {return userPublishApplications;}
-
-    public List<SelfProject> getSelfProjects() {return selfProjects;}
-
 
     public void setContext(Context context){this.context=context;}
 
