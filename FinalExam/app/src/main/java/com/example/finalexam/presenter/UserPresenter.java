@@ -472,7 +472,7 @@ public class UserPresenter {
         });
     }
     //发布者进行项目数据更新
-    public void updateProject(String projectUrl,int projectId,String description){
+    public void updateProject(String projectUrl,int projectId,String description,String projectPassword,int userId){
         OkHttpClient adder = new OkHttpClient.Builder()
                 .addInterceptor(new AddCookiesInterceptor(context))
                 .build();
@@ -489,6 +489,8 @@ public class UserPresenter {
             jsonObject.put("projectUrl", projectUrl);
             jsonObject.put("projectId",projectId);
             jsonObject.put("description",description);
+            jsonObject.put("projectPassword",projectPassword);
+            jsonObject.put("userId",userId);
         } catch (JSONException e) {
             e.printStackTrace();
         }
