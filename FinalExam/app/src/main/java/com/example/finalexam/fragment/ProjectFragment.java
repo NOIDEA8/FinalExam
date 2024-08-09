@@ -68,7 +68,7 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
 
     private void initRV() {
         projectListView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        projectListView.setAdapter(new ProjectAdapter(requireContext(), allProjectList));
+        projectListView.setAdapter(new ProjectAdapter(requireContext(), allProjectList, selfProjectList, monitorProjectList));
     }
 
     private void initView() {
