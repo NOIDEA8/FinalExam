@@ -260,6 +260,37 @@ public class UserPresenter {
             }
         });
     }
+    //获取发给自己的申请
+    public void fetchApplication(){
+
+        Api api = getRetrofit().create(Api.class);
+        Log.d(TAG, "baseUrl = " + baseUrl);
+
+        Call<InfoProjectList> dataCall = api.getApplication(user.getUserId());
+        dataCall.enqueue(new Callback<InfoProjectList>() {
+            UserDataShowInterface activity = UserPresenter.this.activity;
+            @Override
+            public void onResponse(Call<InfoProjectList> call, Response<InfoProjectList> response) {
+                InfoProjectList info= response.body();
+                if(info==null){
+                    projectList=new ArrayList<>();
+                    activity.application(STATUS_NO_INTERNET);
+                }else if (info.getData()==null) {
+                    projectList =new ArrayList<>();
+                    activity.application(STATUS_NO_DATA);
+                } else{
+                    projectList=info.getData();
+                    activity.application(STATUS_SUCCESS);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<InfoProjectList> call, Throwable t) {
+                projectList=new ArrayList<>();
+                activity.application(STATUS_NO_INTERNET);
+            }
+        });
+    }
     //获取自己监控的项目
     public void fetchMonitorProjects(){
 
@@ -351,7 +382,6 @@ public class UserPresenter {
             }
         });
     }
-
     //自己发布项目
     public void pushProject(String projectName,String description,int userId,String projectUrl,String projectPassword){
         Api api = getRetrofit().create(Api.class);
@@ -740,6 +770,9 @@ public class UserPresenter {
             }
         });
     }
+
+
+
 
 
     //获取登录状态，已登录则返回true

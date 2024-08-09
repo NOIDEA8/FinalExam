@@ -49,6 +49,9 @@ public interface Api {
     //获取我发布或更改的项目
     @GET("user/myApplicationProject")
     Call<InfoProjectList> getMyApplicationProject(@Query("userId") int useId);
+    //收到的申请
+    @GET("user/receivedMonitorApplication")
+    Call<InfoProjectList> getApplication(@Query("userId") int useId);
 
     @GET("project/showAllProjectForUser")
     Call<InfoShowAllProject> getAllProjectForUser(@Query("page") int page, @Query("pagesize") int pageSize, @Query("projectName")String projectName) ;//page为零拿所有

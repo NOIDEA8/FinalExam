@@ -37,5 +37,5 @@ public interface UserDataShowInterface {
     void userDetail(int STATUS);//用户详情
 
     void verify(int STATUS);//审核项目
-
+    void application(int STATUS);//获取我收到的申请
 }
