@@ -42,5 +42,5 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.6.3'
     implementation 'com.google.code.gson:gson:2.8.0'
     implementation 'com.alibaba:fastjson:1.2.76'
-    implementation files("./libs/monitor-debug.aar")
+    implementation files("./libs/QGSDK.aar")
 }
