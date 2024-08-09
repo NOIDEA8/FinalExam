@@ -64,12 +64,19 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
         monitor.setCreator("NOIDEA8");
         monitor.setProjectId(114);
 
-        ProjectData self = new ProjectData();
-        self.setCreator("PPPoria");
-        self.setProjectId(514);
+        ProjectData self1 = new ProjectData();
+        self1.setCreator("PPPoria");
+        self1.setProjectId(514);
+
+        ProjectData self2 = new ProjectData();
+        self2.setCreator("PPPoria");
+        self2.setProjectId(1919);
 
         monitorProjectList.add(monitor);
-        selfProjectList.add(self);
+        selfProjectList.add(self1);
+        selfProjectList.add(self2);
+        allProjectList.add(new ProjectData());
+        allProjectList.add(new ProjectData());
         allProjectList.add(new ProjectData());
         allProjectList.addAll(selfProjectList);
         allProjectList.addAll(monitorProjectList);

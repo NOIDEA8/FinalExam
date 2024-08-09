@@ -25,9 +25,11 @@ public class ProjectDetailActivity extends AppCompatActivity implements UserData
     private static final String TAG = "ProjectDetailActivity";
 
     private ProjectData data = new ProjectData();
+
     private TextView projectName;
     private TextView projectId;
     private TextView descriptionView;
+
     private DoubleGraphView graphView;
     private List<Integer> FPS;
 

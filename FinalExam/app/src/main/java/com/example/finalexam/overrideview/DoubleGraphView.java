@@ -26,7 +26,7 @@ public class DoubleGraphView extends View {
 
     private final float MAX_FPS = 160f;
     private final int DOWN_SPEED = 3;
-    public final List<Integer> targetFPS = new ArrayList<>();//上限120，下限0
+    public final List<Integer> targetFPS = new ArrayList<>();
     public final List<Integer> trackFPS = new ArrayList<>();//动画用
 
     @Override

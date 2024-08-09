@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,15 +29,14 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHold
     public static int clickId = 114;
     public static boolean canBeEdited = false;
 
-    private List<ProjectData> all;
-    private List<ProjectData> self;
-    private List<ProjectData> monitor;
-    private List<ProjectData> tempList = new ArrayList<>();
-    private int allNum = 0;
+    private final List<ProjectData> all;
+    private final List<ProjectData> self;
+    private final List<ProjectData> monitor;
+    private final List<ProjectData> tempList = new ArrayList<>();
     private int selfNum = 0;
     private int monitorNum = 0;
 
-    private Context context;
+    private final Context context;
 
     public ProjectAdapter(Context context, List<ProjectData> all, List<ProjectData> self, List<ProjectData> monitor) {
         this.context = context;
@@ -49,22 +49,17 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHold
     @Override
     public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(context).inflate(R.layout.project_rv_item, parent, false);
-        try {
-            allNum = all.size();
-            selfNum = self.size();
-            monitorNum = monitor.size();
+        selfNum = self.size();
+        monitorNum = monitor.size();
 
-            tempList.addAll(self);
-            tempList.addAll(monitor);
-            all.removeAll(self);
-            all.removeAll(monitor);
-            tempList.addAll(all);
-            all.clear();
-            all.addAll(tempList);
-            tempList.clear();
-        } catch (NullPointerException e) {
-            throw e;
-        }
+        tempList.addAll(self);
+        tempList.addAll(monitor);
+        all.removeAll(self);
+        all.removeAll(monitor);
+        tempList.addAll(all);
+        all.clear();
+        all.addAll(tempList);
+        tempList.clear();
         return new ItemHolder(itemView);
     }
 
@@ -91,12 +86,14 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHold
         holder.projectRVItem.setOnClickListener(v -> {
             clickId = data.getProjectId();
             ProjectAdapter.canBeEdited = canBeEdited;
+            Log.d(TAG, "click project, id: " + clickId +", canBeEdit = " + canBeEdited);
             context.startActivity(new Intent(context, ProjectDetailActivity.class));
         });
     }
 
     private void setApplyListener(ItemHolder holder, ProjectData data) {
         holder.projectRVItem.setOnClickListener(v -> {
+            clickId = data.getProjectId();
             Toast.makeText(context, "哒咩", Toast.LENGTH_SHORT).show();
         });
     }
@@ -109,7 +106,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHold
         creatorName = creatorName == null ? "creatorName" : creatorName;
 
         //获取颜色
-        String creatorColor = "#FFFFFF";
+        String creatorColor;
         creatorColor = ColorHelper.createColorHex(creatorName);
         int color = Color.parseColor(creatorColor);
 
@@ -137,7 +134,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHold
         return all.size();
     }
 
-    public class ItemHolder extends RecyclerView.ViewHolder {
+    public static class ItemHolder extends RecyclerView.ViewHolder {
         public ConstraintLayout projectRVItem;
         public TextView projectName;
         public TextView creatorName;

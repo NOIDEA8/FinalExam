@@ -58,7 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="@drawable/square_all_4"
-            android:backgroundTint="@color/black_transparent25"
+            android:backgroundTint="@color/white_transparent75"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
