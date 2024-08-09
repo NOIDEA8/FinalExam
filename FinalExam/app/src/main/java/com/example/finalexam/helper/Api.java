@@ -51,7 +51,7 @@ public interface Api {
     Call<InfoProjectList> getMyApplicationProject(@Query("userId") int useId);
 
     @GET("project/showAllProjectForUser")
-    Call<InfoShowAllProject> getAllProjectForUser(@Query("page") int page, @Query("pagesize") int pageSize) ;//page为零拿所有
+    Call<InfoShowAllProject> getAllProjectForUser(@Query("page") int page, @Query("pagesize") int pageSize,@Query("projectName")String projectName) ;//page为零拿所有
 
     //这里InfoUser任意，因为data不返回数据。数据体包括  项目名、项目描述、发布者id、项目url、项目口令
     @POST("project/publishProject")

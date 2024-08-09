@@ -171,7 +171,7 @@ public class UserPresenter {
         Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
-        Call<InfoShowAllProject> dataCall = api.getAllProjectForUser(1,0) ;//拿取所有数据
+        Call<InfoShowAllProject> dataCall = api.getAllProjectForUser(1,0,null) ;//拿取所有数据
 
         dataCall.enqueue(new Callback<InfoShowAllProject>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
