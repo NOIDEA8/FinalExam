@@ -1,9 +1,11 @@
 package com.example.finalexam.info;
 
-public class InfoShowAllProject {
+import com.example.finalexam.info.data.AllBriefProject;
+
+public class InfoBriefProjectList {
     private int code;
     private String msg;
-    private dataShowAllProject data;
+    private AllBriefProject data;
 
     public int getCode() {
         return code;
@@ -13,7 +15,7 @@ public class InfoShowAllProject {
         return msg;
     }
 
-    public dataShowAllProject getData() {
+    public AllBriefProject getData() {
         return data;
     }
 }
