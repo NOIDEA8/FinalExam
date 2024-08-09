@@ -1,4 +1,4 @@
-package com.example.finalexam.sendmodel;
+package com.example.finalexam.model.sendmodel;
 
 public class UpdataProjectSend {
     private String projectUrl;
