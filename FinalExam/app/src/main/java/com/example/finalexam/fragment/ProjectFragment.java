@@ -139,22 +139,6 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
 
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    @Override
-    public void projectListResult(int STATUS) {
-        if (STATUS == UserPresenter.STATUS_NO_INTERNET) {
-            Toast.makeText(requireContext(), "列表获取失败", Toast.LENGTH_SHORT).show();
-        } else if (STATUS == UserPresenter.STATUS_NO_DATA) {
-            Toast.makeText(requireContext(), "列表获取成功", Toast.LENGTH_SHORT).show();
-        } else if (STATUS == UserPresenter.STATUS_SUCCESS) {
-            Toast.makeText(requireContext(), "列表获取成功", Toast.LENGTH_SHORT).show();
-            list.clear();
-            list.addAll(UserPresenter.getInstance(this).getProjectList());
-        }
-        addTestData();
-        Objects.requireNonNull(projectListView.getAdapter()).notifyDataSetChanged();
-    }
-
     @Override
     public void projectDetail(int STATUS) {
 
