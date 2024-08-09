@@ -18,12 +18,10 @@ import com.example.finalexam.info.InfoBriefProjectList;
 import com.example.finalexam.info.InfoString;
 import com.example.finalexam.info.InfoUserDetail;
 import com.example.finalexam.info.InfoMonitorApplication;
-import com.example.finalexam.model.ProjectData;
 import com.example.finalexam.model.application.UserMonitorApplication;
 import com.example.finalexam.model.application.UserPublishApplication;
 import com.example.finalexam.model.project.ApplyingProject;
 import com.example.finalexam.model.project.BriefProject;
-import com.example.finalexam.model.project.MonitorProject;
 import com.example.finalexam.model.project.ProjectDetail;
 import com.example.finalexam.model.project.SelfProject;
 import com.example.finalexam.model.sendmodel.FreezeProjectSend;
@@ -60,7 +58,7 @@ public class UserPresenter {
     private UserData user =new UserData();//一个用户一个presenter
 
     private List<SelfProject> selfProjects;
-    private List<MonitorProject> monitorProjects;
+    private List<BriefProject> monitorProjects;
     private List<UserMonitorApplication> userMonitorApplications;
     private List<UserPublishApplication> userPublishApplications;
     private List<BriefProject> allBriefProjects;
@@ -125,7 +123,7 @@ public class UserPresenter {
                 } else if (info.getMsg().equals("密码错误")) {
                     activity.userLog(STATUS_PASSWORD_INCORRECT);
                 }else {
-                    UserData tempData=info.getData();
+                    UserDetail tempData=info.getData();
                     SPPresenter.accordUsername(context, account);
                     SPPresenter.accordPassword(context, password);
                     SPPresenter.accordLoggedStatus(context, true);
@@ -796,7 +794,7 @@ public class UserPresenter {
 
     public List<ApplyingProject> getApplyingProjects() {return applyingProjects;}
 
-    public List<MonitorProject> getMonitorProjects() {return monitorProjects;}
+    public List<BriefProject> getMonitorProjects() {return monitorProjects;}
 
     public List<BriefProject> getFreezeOrNotProjects() {return freezeOrNotProjects;}
 

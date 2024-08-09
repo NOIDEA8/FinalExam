@@ -1,7 +1,6 @@
 package com.example.finalexam.info;
 
 import com.example.finalexam.model.application.UserPublishApplication;
-import com.example.finalexam.model.project.MonitorProject;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package com.example.finalexam.info;
 
-import com.example.finalexam.model.project.MonitorProject;
+import com.example.finalexam.model.project.BriefProject;
 
 
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 public class InfoMonitorProjectList {
     private int code;
     private String msg;
-    private List<MonitorProject> data;
+    private List<BriefProject> data;
 
     public int getCode() {
         return code;
@@ -18,7 +18,7 @@ public class InfoMonitorProjectList {
         return msg;
     }
 
-    public List<MonitorProject> getData() {
+    public List<BriefProject> getData() {
         return data;
     }
 }

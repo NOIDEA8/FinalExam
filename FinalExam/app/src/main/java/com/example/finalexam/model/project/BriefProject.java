@@ -5,6 +5,15 @@ public class BriefProject {//所有项目展示时所返回的单个项目数据
     private int projectId;
     private String description;
     private String createTime;
+    private String creator;
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
 
     public String getProjectName() {
         return projectName;
