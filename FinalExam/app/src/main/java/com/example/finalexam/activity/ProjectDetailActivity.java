@@ -126,6 +126,11 @@ public class ProjectDetailActivity extends AppCompatActivity implements UserData
     }
 
     @Override
+    public void application(int STATUS) {
+
+    }
+
+    @Override
     public void projectPublishResult(int STATUS) {
 
     }

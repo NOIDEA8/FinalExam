@@ -122,6 +122,11 @@ public class MainActivity extends AppCompatActivity  implements UserDataShowInte
     }
 
     @Override
+    public void application(int STATUS) {
+
+    }
+
+    @Override
     public void projectPublishResult(int STATUS) {
 
     }

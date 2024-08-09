@@ -107,6 +107,11 @@ public class RegisterActivity extends AppCompatActivity implements UserDataShowI
     }
 
     @Override
+    public void application(int STATUS) {
+
+    }
+
+    @Override
     public void projectPublishResult(int STATUS) {
 
     }

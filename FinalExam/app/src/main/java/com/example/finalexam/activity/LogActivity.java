@@ -145,6 +145,11 @@ public class LogActivity extends AppCompatActivity implements UserDataShowInterf
     }
 
     @Override
+    public void application(int STATUS) {
+
+    }
+
+    @Override
     public void projectPublishResult(int STATUS) {
 
     }
