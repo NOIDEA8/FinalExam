@@ -1,18 +1,18 @@
 package com.example.finalexam.helper;
 
 import com.example.finalexam.info.InfoProject;
+import com.example.finalexam.info.InfoProjectList;
 import com.example.finalexam.info.InfoShowAllProject;
 import com.example.finalexam.info.InfoString;
-import com.example.finalexam.info.InfoUserList;
 import com.example.finalexam.info.InfoUser;
-import com.example.finalexam.info.InfoProjectList;
-import com.example.finalexam.sendmodel.FreezeProjectSend;
-import com.example.finalexam.sendmodel.FreezeUserSend;
-import com.example.finalexam.sendmodel.MonitorSend;
-import com.example.finalexam.sendmodel.PublishSend;
-import com.example.finalexam.sendmodel.RegisterSend;
-import com.example.finalexam.sendmodel.UpdataProjectSend;
-import com.example.finalexam.sendmodel.VerifyApplicationSend;
+import com.example.finalexam.info.InfoUserList;
+import com.example.finalexam.model.sendmodel.FreezeProjectSend;
+import com.example.finalexam.model.sendmodel.FreezeUserSend;
+import com.example.finalexam.model.sendmodel.MonitorSend;
+import com.example.finalexam.model.sendmodel.PublishSend;
+import com.example.finalexam.model.sendmodel.RegisterSend;
+import com.example.finalexam.model.sendmodel.UpdataProjectSend;
+import com.example.finalexam.model.sendmodel.VerifyApplicationSend;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -51,7 +51,7 @@ public interface Api {
     Call<InfoProjectList> getMyApplicationProject(@Query("userId") int useId);
 
     @GET("project/showAllProjectForUser")
-    Call<InfoShowAllProject> getAllProjectForUser(@Query("page") int page, @Query("pagesize") int pageSize,@Query("projectName")String projectName) ;//page为零拿所有
+    Call<InfoShowAllProject> getAllProjectForUser(@Query("page") int page, @Query("pagesize") int pageSize, @Query("projectName")String projectName) ;//page为零拿所有
 
     //这里InfoUser任意，因为data不返回数据。数据体包括  项目名、项目描述、发布者id、项目url、项目口令
     @POST("project/publishProject")
@@ -77,7 +77,7 @@ public interface Api {
 
     //这里InfoUser任意，因为data不返回数据。数据体包括  项目id、项目口令
     @DELETE("project/deleteProject")
-    Call<InfoUser> deleteProject(@Query("projectId") int projectId,@Query("projectPassword") String projectPassword);
+    Call<InfoUser> deleteProject(@Query("projectId") int projectId, @Query("projectPassword") String projectPassword);
 
     //查看用户是否有项目的监测权限
     @POST("project/checkMonitorAuth")//用户id、项目id

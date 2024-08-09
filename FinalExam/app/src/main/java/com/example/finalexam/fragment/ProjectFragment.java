@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -120,20 +121,29 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
 
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     @Override
-    public void projectListResult(int STATUS) {
-        if (STATUS == UserPresenter.STATUS_NO_INTERNET) {
-            Toast.makeText(requireContext(), "列表获取失败", Toast.LENGTH_SHORT).show();
-        } else if (STATUS == UserPresenter.STATUS_NO_DATA) {
-            Toast.makeText(requireContext(), "列表获取成功", Toast.LENGTH_SHORT).show();
-        } else if (STATUS == UserPresenter.STATUS_SUCCESS) {
-            Toast.makeText(requireContext(), "列表获取成功", Toast.LENGTH_SHORT).show();
-            allProjectList.clear();
-            allProjectList.addAll(UserPresenter.getInstance(this).getProjectList());
-        }
-        addTestData();
-        Objects.requireNonNull(projectListView.getAdapter()).notifyDataSetChanged();
+    public void briefProjectList(int STATUS) {
+
+    }
+
+    @Override
+    public void selfProjectList(int STATUS) {
+
+    }
+
+    @Override
+    public void monitorProjectList(int STATUS) {
+
+    }
+
+    @Override
+    public void applyingMonitorProjectList(int STATUS) {
+
+    }
+
+    @Override
+    public void applyingProjectList(int STATUS) {
+
     }
 
     @Override
@@ -142,7 +152,27 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
     }
 
     @Override
-    public void updata(int STATUS) {
+    public void updateProject(int STATUS) {
+
+    }
+
+    @Override
+    public void cancelMonitor(int STATUS) {
+
+    }
+
+    @Override
+    public void deleteProject(int STATUS) {
+
+    }
+
+    @Override
+    public void freezeOrNotProjectList(int STATUS) {
+
+    }
+
+    @Override
+    public void applyOrNotProjectList(int STATUS) {
 
     }
 }

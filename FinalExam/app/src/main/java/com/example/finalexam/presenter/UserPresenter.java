@@ -15,14 +15,14 @@ import com.example.finalexam.info.InfoString;
 import com.example.finalexam.info.InfoUser;
 import com.example.finalexam.info.InfoUserList;
 import com.example.finalexam.model.ProjectData;
-import com.example.finalexam.sendmodel.FreezeProjectSend;
-import com.example.finalexam.sendmodel.FreezeUserSend;
-import com.example.finalexam.sendmodel.MonitorSend;
-import com.example.finalexam.sendmodel.PublishSend;
-import com.example.finalexam.sendmodel.RegisterSend;
+import com.example.finalexam.model.sendmodel.FreezeProjectSend;
+import com.example.finalexam.model.sendmodel.FreezeUserSend;
+import com.example.finalexam.model.sendmodel.MonitorSend;
+import com.example.finalexam.model.sendmodel.PublishSend;
+import com.example.finalexam.model.sendmodel.RegisterSend;
 import com.example.finalexam.model.UserData;
-import com.example.finalexam.sendmodel.UpdataProjectSend;
-import com.example.finalexam.sendmodel.VerifyApplicationSend;
+import com.example.finalexam.model.sendmodel.UpdataProjectSend;
+import com.example.finalexam.model.sendmodel.VerifyApplicationSend;
 
 import org.json.JSONObject;
 
@@ -180,20 +180,20 @@ public class UserPresenter {
                 InfoShowAllProject info=response.body();
                 if(info==null){
                     projectList =new ArrayList<>();
-                    activity.projectListResult(STATUS_NO_INTERNET);
+                    activity.briefProjectList(STATUS_NO_INTERNET);
                 } else if (info.getData()==null) {
                     projectList =new ArrayList<>();
-                    activity.projectListResult(STATUS_NO_DATA);
+                    activity.briefProjectList(STATUS_NO_DATA);
                 } else{
                     projectList =info.getData().getList();
-                    activity.projectListResult(STATUS_SUCCESS);
+                    activity.briefProjectList(STATUS_SUCCESS);
                 }
             }
 
             @Override
             public void onFailure(Call<InfoShowAllProject> call, Throwable t) {
                 projectList =new ArrayList<>();
-                activity.projectListResult(STATUS_NO_INTERNET);
+                activity.briefProjectList(STATUS_NO_INTERNET);
             }
         });
     }
@@ -243,20 +243,20 @@ public class UserPresenter {
                 InfoProjectList info= response.body();
                 if(info==null){
                     projectList=new ArrayList<>();
-                    activity.projectListResult(STATUS_NO_INTERNET);
+                    activity.selfProjectList(STATUS_NO_INTERNET);
                 }else if (info.getData()==null) {
                     projectList =new ArrayList<>();
-                    activity.projectListResult(STATUS_NO_DATA);
+                    activity.selfProjectList(STATUS_NO_DATA);
                 } else{
                     projectList=info.getData();
-                    activity.projectListResult(STATUS_SUCCESS);
+                    activity.selfProjectList(STATUS_SUCCESS);
                 }
             }
 
             @Override
             public void onFailure(Call<InfoProjectList> call, Throwable t) {
                 projectList=new ArrayList<>();
-                activity.projectListResult(STATUS_NO_INTERNET);
+                activity.selfProjectList(STATUS_NO_INTERNET);
             }
         });
     }
@@ -274,20 +274,20 @@ public class UserPresenter {
                 InfoProjectList info= response.body();
                 if(info==null){
                     projectList=new ArrayList<>();
-                    activity.projectListResult(STATUS_NO_INTERNET);
+                    activity.monitorProjectList(STATUS_NO_INTERNET);
                 }else if (info.getData()==null) {
                     projectList =new ArrayList<>();
-                    activity.projectListResult(STATUS_NO_DATA);
+                    activity.monitorProjectList(STATUS_NO_DATA);
                 } else{
                     projectList=info.getData();
-                    activity.projectListResult(STATUS_SUCCESS);
+                    activity.monitorProjectList(STATUS_SUCCESS);
                 }
             }
 
             @Override
             public void onFailure(Call<InfoProjectList> call, Throwable t) {
                 projectList=new ArrayList<>();
-                activity.projectListResult(STATUS_NO_INTERNET);
+                activity.monitorProjectList(STATUS_NO_INTERNET);
             }
         });
     }
@@ -304,20 +304,20 @@ public class UserPresenter {
                 InfoProjectList info= response.body();
                 if(info==null){
                     projectList=new ArrayList<>();
-                    activity.projectListResult(STATUS_NO_INTERNET);
+                    activity.applyingMonitorProjectList(STATUS_NO_INTERNET);
                 } else if (info.getData()==null) {
                     projectList =new ArrayList<>();
-                    activity.projectListResult(STATUS_NO_DATA);
+                    activity.applyingMonitorProjectList(STATUS_NO_DATA);
                 } else{
                     projectList=info.getData();
-                    activity.projectListResult(STATUS_SUCCESS);
+                    activity.applyingMonitorProjectList(STATUS_SUCCESS);
                 }
             }
 
             @Override
             public void onFailure(Call<InfoProjectList> call, Throwable t) {
                 projectList=new ArrayList<>();
-                activity.projectListResult(STATUS_NO_INTERNET);
+                activity.applyingMonitorProjectList(STATUS_NO_INTERNET);
             }
         });
     }
@@ -334,20 +334,20 @@ public class UserPresenter {
                 InfoProjectList info= response.body();
                 if(info==null){
                     projectList=new ArrayList<>();
-                    activity.projectListResult(STATUS_NO_INTERNET);
+                    activity.applyingProjectList(STATUS_NO_INTERNET);
                 } else if (info.getData()==null) {
                     projectList =new ArrayList<>();
-                    activity.projectListResult(STATUS_NO_DATA);
+                    activity.applyingProjectList(STATUS_NO_DATA);
                 } else{
                     projectList=info.getData();
-                    activity.projectListResult(STATUS_SUCCESS);
+                    activity.applyingProjectList(STATUS_SUCCESS);
                 }
             }
 
             @Override
             public void onFailure(Call<InfoProjectList> call, Throwable t) {
                 projectList=new ArrayList<>();
-                activity.projectListResult(STATUS_NO_INTERNET);
+                activity.applyingProjectList(STATUS_NO_INTERNET);
             }
         });
     }
@@ -435,17 +435,17 @@ public class UserPresenter {
             public void onResponse(Call<InfoUser> call, Response<InfoUser> response) {
                 InfoUser info=response.body();
                 if(info==null){
-                    activity.updata(STATUS_NO_INTERNET);
+                    activity.updateProject(STATUS_NO_INTERNET);
                 } else if (info.getCode()!=1) {
-                    activity.updata(STATUS_FAILED);
+                    activity.updateProject(STATUS_FAILED);
                 }else {
-                    activity.updata(STATUS_SUCCESS);
+                    activity.updateProject(STATUS_SUCCESS);
                 }
             }
 
             @Override
             public void onFailure(Call<InfoUser> call, Throwable t) {
-                activity.updata(STATUS_NO_INTERNET);
+                activity.updateProject(STATUS_NO_INTERNET);
             }
         });
     }
@@ -494,17 +494,17 @@ public class UserPresenter {
             public void onResponse(Call<InfoUser> call, Response<InfoUser> response) {
                 InfoUser info=response.body();
                 if(info==null){
-                    activity.updata(STATUS_NO_INTERNET);
+                    activity.cancelMonitor(STATUS_NO_INTERNET);
                 } else if (info.getCode()!=1) {
-                    activity.updata(STATUS_FAILED);
+                    activity.cancelMonitor(STATUS_FAILED);
                 }else{
-                    activity.updata(STATUS_SUCCESS);
+                    activity.cancelMonitor(STATUS_SUCCESS);
                 }
             }
 
             @Override
             public void onFailure(Call<InfoUser> call, Throwable t) {
-                activity.updata(STATUS_NO_INTERNET);
+                activity.cancelMonitor(STATUS_NO_INTERNET);
             }
         });
     }
@@ -521,16 +521,16 @@ public class UserPresenter {
             public void onResponse(Call<InfoUser> call, Response<InfoUser> response) {
                 InfoUser info=response.body();
                 if(info==null){
-                    activity.updata(STATUS_NO_INTERNET);
+                    activity.deleteProject(STATUS_NO_INTERNET);
                 } else if (info.getCode()!=1) {
-                    activity.updata(STATUS_FAILED);
+                    activity.deleteProject(STATUS_FAILED);
                 }else{
                     activity.userListResult(STATUS_SUCCESS);
                 }
             }
             @Override
             public void onFailure(Call<InfoUser> call, Throwable t) {
-                activity.updata(STATUS_NO_INTERNET);
+                activity.deleteProject(STATUS_NO_INTERNET);
             }
         });
     }
@@ -581,20 +581,20 @@ public class UserPresenter {
                 InfoShowAllProject info=response.body();
                 if(info==null){
                     projectList=new ArrayList<>();
-                    activity.projectListResult(STATUS_NO_INTERNET);
+                    activity.freezeOrNotProjectList(STATUS_NO_INTERNET);
                 }else if(info.getData()==null){
                     projectList=new ArrayList<>();
-                    activity.projectListResult(STATUS_NO_DATA);
+                    activity.freezeOrNotProjectList(STATUS_NO_DATA);
                 }else{
                     projectList=info.getData().getList();
-                    activity.projectListResult(STATUS_SUCCESS);
+                    activity.freezeOrNotProjectList(STATUS_SUCCESS);
                 }
             }
 
             @Override
             public void onFailure(Call<InfoShowAllProject> call, Throwable t) {
                 projectList=new ArrayList<>();
-                activity.projectListResult(STATUS_NO_INTERNET);
+                activity.freezeOrNotProjectList(STATUS_NO_INTERNET);
             }
         });
     }
@@ -612,20 +612,20 @@ public class UserPresenter {
                 InfoShowAllProject info=response.body();
                 if(info==null){
                     projectList=new ArrayList<>();
-                    activity.projectListResult(STATUS_NO_INTERNET);
+                    activity.applyOrNotProjectList(STATUS_NO_INTERNET);
                 }else if(info.getData()==null){
                     projectList=new ArrayList<>();
-                    activity.projectListResult(STATUS_NO_DATA);
+                    activity.applyOrNotProjectList(STATUS_NO_DATA);
                 }else{
                     projectList=info.getData().getList();
-                    activity.projectListResult(STATUS_SUCCESS);
+                    activity.applyOrNotProjectList(STATUS_SUCCESS);
                 }
             }
 
             @Override
             public void onFailure(Call<InfoShowAllProject> call, Throwable t) {
                 projectList=new ArrayList<>();
-                activity.projectListResult(STATUS_NO_INTERNET);
+                activity.applyOrNotProjectList(STATUS_NO_INTERNET);
             }
         });
     }
