@@ -112,7 +112,27 @@ public class RegisterActivity extends AppCompatActivity implements UserDataShowI
     }
 
     @Override
-    public void projectListResult(int STATUS) {
+    public void briefProjectList(int STATUS) {
+
+    }
+
+    @Override
+    public void selfProjectList(int STATUS) {
+
+    }
+
+    @Override
+    public void monitorProjectList(int STATUS) {
+
+    }
+
+    @Override
+    public void applyingMonitorProjectList(int STATUS) {
+
+    }
+
+    @Override
+    public void applyingProjectList(int STATUS) {
 
     }
 
@@ -122,7 +142,27 @@ public class RegisterActivity extends AppCompatActivity implements UserDataShowI
     }
 
     @Override
-    public void updata(int STATUS) {
+    public void updateProject(int STATUS) {
+
+    }
+
+    @Override
+    public void cancelMonitor(int STATUS) {
+
+    }
+
+    @Override
+    public void deleteProject(int STATUS) {
+
+    }
+
+    @Override
+    public void freezeOrNotProjectList(int STATUS) {
+
+    }
+
+    @Override
+    public void applyOrNotProjectList(int STATUS) {
 
     }
 
