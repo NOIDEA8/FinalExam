@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -18,48 +19,89 @@ import com.example.finalexam.activity.ProjectDetailActivity;
 import com.example.finalexam.helper.ColorHelper;
 import com.example.finalexam.model.ProjectData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHolder> {
 
     private static final String TAG = "ItemAdapter";
     public static int clickId = 114;
+    public static boolean canBeEdited = false;
 
-    private List<ProjectData> list;
+    private List<ProjectData> all;
+    private List<ProjectData> self;
+    private List<ProjectData> monitor;
+    private List<ProjectData> tempList = new ArrayList<>();
+    private int allNum = 0;
+    private int selfNum = 0;
+    private int monitorNum = 0;
 
     private Context context;
 
-    public ProjectAdapter(Context context, List<ProjectData> list) {
+    public ProjectAdapter(Context context, List<ProjectData> all, List<ProjectData> self, List<ProjectData> monitor) {
         this.context = context;
-        this.list = list;
+        this.all = all;
+        this.self = self;
+        this.monitor = monitor;
     }
 
     @NonNull
     @Override
     public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(context).inflate(R.layout.project_rv_item, parent, false);
+        try {
+            allNum = all.size();
+            selfNum = self.size();
+            monitorNum = monitor.size();
+
+            tempList.addAll(self);
+            tempList.addAll(monitor);
+            all.removeAll(self);
+            all.removeAll(monitor);
+            tempList.addAll(all);
+            all.clear();
+            all.addAll(tempList);
+            tempList.clear();
+        } catch (NullPointerException e) {
+            throw e;
+        }
         return new ItemHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
-        if (list == null) return;
-        else if (list.isEmpty()) return;
+        if (all == null) return;
+        else if (all.isEmpty()) return;
 
-        ProjectData data = list.get(position);
+        ProjectData data = all.get(position);
 
-        showProjectData(holder,data);
-        setListener(holder,data);
+        if (position < selfNum) {
+            setDetailListener(holder, data, true);
+            showProjectData(holder, data, true);
+        } else if (position < monitorNum + selfNum) {
+            setDetailListener(holder, data, false);
+            showProjectData(holder, data, true);
+        } else {
+            setApplyListener(holder, data);
+            showProjectData(holder, data, false);
+        }
     }
 
-    private void setListener(ItemHolder holder,ProjectData data) {
-        holder.projectRVItem.setOnClickListener(v->{
+    private void setDetailListener(ItemHolder holder, ProjectData data, boolean canBeEdited) {
+        holder.projectRVItem.setOnClickListener(v -> {
             clickId = data.getProjectId();
+            ProjectAdapter.canBeEdited = canBeEdited;
             context.startActivity(new Intent(context, ProjectDetailActivity.class));
         });
     }
 
-    private void showProjectData(ItemHolder holder, ProjectData data) {
+    private void setApplyListener(ItemHolder holder, ProjectData data) {
+        holder.projectRVItem.setOnClickListener(v -> {
+            Toast.makeText(context, "哒咩", Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    private void showProjectData(ItemHolder holder, ProjectData data, boolean canBeMonitored) {
         //获取项目名字和发布者名字
         String projectName = data.getProjectName();
         String creatorName = data.getCreator();
@@ -77,17 +119,22 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHold
         holder.creatorColor.setText(creatorName.substring(0, 1));
         holder.creatorColor.setBackgroundTintList(ColorStateList.valueOf(color));
 
-        //判断是否为深色，是则把字体改为白色，更加显眼
+        //判断是否为深色，是则把头像字体改为白色，更加显眼
         if (ColorHelper.isBrightColor(color))
             holder.creatorColor.setTextColor(Color.BLACK);
         else
             holder.creatorColor.setTextColor(Color.WHITE);
+
+        if (canBeMonitored)
+            holder.noMonitor.setVisibility(View.INVISIBLE);
+        else
+            holder.noMonitor.setVisibility(View.VISIBLE);
     }
 
     @Override
     public int getItemCount() {
-        if (list == null) return 0;
-        return list.size();
+        if (all == null) return 0;
+        return all.size();
     }
 
     public class ItemHolder extends RecyclerView.ViewHolder {
@@ -95,6 +142,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHold
         public TextView projectName;
         public TextView creatorName;
         public TextView creatorColor;
+        public View noMonitor;
 
         public ItemHolder(@NonNull View itemView) {
             super(itemView);
@@ -102,6 +150,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHold
             projectName = itemView.findViewById(R.id.project_name);
             creatorName = itemView.findViewById(R.id.project_creator_name);
             creatorColor = itemView.findViewById(R.id.project_creator_color);
+            noMonitor = itemView.findViewById(R.id.project_item_no_monitor);
         }
     }
 

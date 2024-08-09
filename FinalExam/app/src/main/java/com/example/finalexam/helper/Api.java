@@ -33,16 +33,15 @@ public interface Api {
     @POST("user/register")
     Call<InfoUser> register(@Body RegisterSend user);
 
-    @FormUrlEncoded
     @GET("user/showSelfProjects")
     Call<InfoProjectList> getSelfProjects(@Query("userId") int useId);
 
-    @FormUrlEncoded
+
     @GET("user/showHaveMonitorPermissionProjects")
     Call<InfoProjectList> getHaveMonitorProjects(@Query("userId") int useId);
 
     //获取我申请过监控的项目
-    @FormUrlEncoded
+
     @GET("user/myApplicationOnMonitorProject")
     Call<InfoProjectList> getApplyingMonitorProject(@Query("userId") int useId);
 

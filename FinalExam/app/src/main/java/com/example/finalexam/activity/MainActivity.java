@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity  implements UserDataShowInte
                                 throw new RuntimeException(e);
                             } finally {
                                 //startActivity(new Intent(MainActivity.this, UserDesktop.class));
-                                startActivity(new Intent(MainActivity.this, LogActivity.class));
+                                startActivity(new Intent(MainActivity.this, UserDesktop.class));
                                 finish();
                             }
                         }

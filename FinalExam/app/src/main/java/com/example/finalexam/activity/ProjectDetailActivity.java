@@ -55,9 +55,10 @@ public class ProjectDetailActivity extends AppCompatActivity implements UserData
 
     private void addTestFPS() {
         Random random = new Random(System.currentTimeMillis());
-        int min = 50;
-        for (int i = 0; i < 10; i++) {
-            FPS.add(min + random.nextInt(51));
+        int min = 60;
+        int max = 90;
+        for (int i = 0; i < 20; i++) {
+            FPS.add(min + random.nextInt(max - min + 1));
         }
     }
 
@@ -78,11 +79,10 @@ public class ProjectDetailActivity extends AppCompatActivity implements UserData
 
     private void initView() {
         projectName = findViewById(R.id.detail_project_name);
-        projectId =  findViewById(R.id.detail_project_id);
+        projectId = findViewById(R.id.detail_project_id);
         descriptionView = findViewById(R.id.detail_project_description);
         graphView = findViewById(R.id.detail_project_graph);
     }
-
 
 
     @Override
@@ -160,7 +160,7 @@ public class ProjectDetailActivity extends AppCompatActivity implements UserData
         if (STATUS == UserPresenter.STATUS_NO_INTERNET) {
             //Toast.makeText(this, "无网络，请稍后再试", Toast.LENGTH_SHORT).show();
         } else if (STATUS == UserPresenter.STATUS_SUCCESS) {
-            data  = UserPresenter.getInstance(this).getProjectDetail();
+            data = UserPresenter.getInstance(this).getProjectDetail();
             showData();
         }
     }
