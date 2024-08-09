@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -25,12 +26,12 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHold
 
     private static final String TAG = "ItemAdapter";
     public static int clickId = 114;
+    public static boolean canBeEdited = false;
 
     private List<ProjectData> all;
     private List<ProjectData> self;
     private List<ProjectData> monitor;
     private List<ProjectData> tempList = new ArrayList<>();
-    private int projectNum = 0;
     private int allNum = 0;
     private int selfNum = 0;
     private int monitorNum = 0;
@@ -74,18 +75,33 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHold
 
         ProjectData data = all.get(position);
 
-        showProjectData(holder, data);
-        setListener(holder, data);
+        if (position < selfNum) {
+            setDetailListener(holder, data, true);
+            showProjectData(holder, data, true);
+        } else if (position < monitorNum + selfNum) {
+            setDetailListener(holder, data, false);
+            showProjectData(holder, data, true);
+        } else {
+            setApplyListener(holder, data);
+            showProjectData(holder, data, false);
+        }
     }
 
-    private void setListener(ItemHolder holder, ProjectData data) {
+    private void setDetailListener(ItemHolder holder, ProjectData data, boolean canBeEdited) {
         holder.projectRVItem.setOnClickListener(v -> {
             clickId = data.getProjectId();
+            ProjectAdapter.canBeEdited = canBeEdited;
             context.startActivity(new Intent(context, ProjectDetailActivity.class));
         });
     }
 
-    private void showProjectData(ItemHolder holder, ProjectData data) {
+    private void setApplyListener(ItemHolder holder, ProjectData data) {
+        holder.projectRVItem.setOnClickListener(v -> {
+            Toast.makeText(context, "哒咩", Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    private void showProjectData(ItemHolder holder, ProjectData data, boolean canBeMonitored) {
         //获取项目名字和发布者名字
         String projectName = data.getProjectName();
         String creatorName = data.getCreator();
@@ -108,6 +124,11 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHold
             holder.creatorColor.setTextColor(Color.BLACK);
         else
             holder.creatorColor.setTextColor(Color.WHITE);
+
+        if (canBeMonitored)
+            holder.noMonitor.setVisibility(View.INVISIBLE);
+        else
+            holder.noMonitor.setVisibility(View.VISIBLE);
     }
 
     @Override

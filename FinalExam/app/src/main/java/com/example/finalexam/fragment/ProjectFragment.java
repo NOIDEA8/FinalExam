@@ -33,6 +33,7 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
     private final int SELF_PROJECT = 1;
     private final int MONITOR_PROJECT = 2;
     private int projectType = 0;
+    private int requestNum = 0;
     private static final List<ProjectData> allProjectList = new ArrayList<>();
     private static final List<ProjectData> selfProjectList = new ArrayList<>();
     private static final List<ProjectData> monitorProjectList = new ArrayList<>();//监管的且非自己发布的项目
@@ -43,6 +44,7 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_project, container, false);
 
+        addTestData();
         initView();
         initRV();
         requestData();
@@ -53,18 +55,24 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
 
     private void requestData() {
         UserPresenter.getInstance(this).fetchAllBriefProject();
+        UserPresenter.getInstance(this).fetchSelfProjects();
+        UserPresenter.getInstance(this).fetchMonitorProjects();
     }
 
     private void addTestData() {
-        ProjectData projectData1 = new ProjectData();
-        ProjectData projectData2 = new ProjectData();
-        projectData1.setCreator("NOIDEA8");
-        projectData1.setProjectId(114);
-        projectData2.setCreator("PPPoria");
-        projectData2.setProjectId(514);
-        allProjectList.add(projectData1);
-        allProjectList.add(projectData2);
+        ProjectData monitor = new ProjectData();
+        monitor.setCreator("NOIDEA8");
+        monitor.setProjectId(114);
+
+        ProjectData self = new ProjectData();
+        self.setCreator("PPPoria");
+        self.setProjectId(514);
+
+        monitorProjectList.add(monitor);
+        selfProjectList.add(self);
         allProjectList.add(new ProjectData());
+        allProjectList.addAll(selfProjectList);
+        allProjectList.addAll(monitorProjectList);
     }
 
     private void initRV() {
@@ -121,19 +129,55 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void briefProjectList(int STATUS) {
+        if (STATUS == UserPresenter.STATUS_NO_INTERNET) {
 
+        } else if (STATUS == UserPresenter.STATUS_SUCCESS) {
+            allProjectList.clear();
+            allProjectList.addAll(UserPresenter.getInstance(this).getProjectList());
+        }
+
+        if (++requestNum == 3) {
+            requestNum = 0;
+            Objects.requireNonNull(projectListView.getAdapter()).notifyDataSetChanged();
+            Log.d(TAG, "RV notify set change");
+        }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void selfProjectList(int STATUS) {
+        if (STATUS == UserPresenter.STATUS_NO_INTERNET) {
 
+        } else if (STATUS == UserPresenter.STATUS_SUCCESS) {
+            selfProjectList.clear();
+            selfProjectList.addAll(UserPresenter.getInstance(this).getProjectList());
+        }
+
+        if (++requestNum == 3) {
+            requestNum = 0;
+            Objects.requireNonNull(projectListView.getAdapter()).notifyDataSetChanged();
+            Log.d(TAG, "RV notify set change");
+        }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void monitorProjectList(int STATUS) {
+        if (STATUS == UserPresenter.STATUS_NO_INTERNET) {
 
+        } else if (STATUS == UserPresenter.STATUS_SUCCESS) {
+            monitorProjectList.clear();
+            monitorProjectList.addAll(UserPresenter.getInstance(this).getProjectList());
+        }
+
+        if (++requestNum == 3) {
+            requestNum = 0;
+            Objects.requireNonNull(projectListView.getAdapter()).notifyDataSetChanged();
+            Log.d(TAG, "RV notify set change");
+        }
     }
 
     @Override
