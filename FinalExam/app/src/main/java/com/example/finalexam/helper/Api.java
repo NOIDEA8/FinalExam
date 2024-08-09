@@ -6,8 +6,13 @@ import com.example.finalexam.info.InfoString;
 import com.example.finalexam.info.InfoUserList;
 import com.example.finalexam.info.InfoUser;
 import com.example.finalexam.info.InfoProjectList;
-
-import org.json.JSONObject;
+import com.example.finalexam.sendmodel.FreezeProjectSend;
+import com.example.finalexam.sendmodel.FreezeUserSend;
+import com.example.finalexam.sendmodel.MonitorSend;
+import com.example.finalexam.sendmodel.PublishSend;
+import com.example.finalexam.sendmodel.RegisterSend;
+import com.example.finalexam.sendmodel.UpdataProjectSend;
+import com.example.finalexam.sendmodel.VerifyApplicationSend;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -26,7 +31,7 @@ public interface Api {
                        @Field("password") String password);
 
     @POST("user/register")
-    Call<InfoUser> register(@Body JSONObject jsonObject);
+    Call<InfoUser> register(@Body RegisterSend user);
 
     @FormUrlEncoded
     @GET("user/showSelfProjects")
@@ -36,34 +41,39 @@ public interface Api {
     @GET("user/showHaveMonitorPermissionProjects")
     Call<InfoProjectList> getHaveMonitorProjects(@Query("userId") int useId);
 
+    //获取我申请过监控的项目
     @FormUrlEncoded
     @GET("user/myApplicationOnMonitorProject")
-    Call<InfoProjectList> getApplyingProject(@Query("userId") int useId);
+    Call<InfoProjectList> getApplyingMonitorProject(@Query("userId") int useId);
+
+    //获取我发布或更改的项目
+    @GET("user/myApplicationProject")
+    Call<InfoProjectList> getMyApplicationProject(@Query("userId") int useId);
 
     @GET("project/showAllProjectForUser")
     Call<InfoShowAllProject> getAllProjectForUser(@Query("page") int page, @Query("pagesize") int pageSize) ;//page为零拿所有
 
     //这里InfoUser任意，因为data不返回数据。数据体包括  项目名、项目描述、发布者id、项目url、项目口令
     @POST("project/publishProject")
-    Call<InfoUser> publishProject(@Body JSONObject jsonObject);
+    Call<InfoUser> publishProject(@Body PublishSend jsonObject);
 
     @GET("project/detailedInfo")
     Call<InfoProject> getProjectDetail(@Query("projectId") int projectId);
 
     //这里InfoUser任意，因为data不返回数据。数据体包括  用户id、项目id
     @POST("project/applyMonitorPermission")
-    Call<InfoUser> applyMonitorPermission(@Body JSONObject jsonObject);
+    Call<InfoUser> applyMonitorPermission(@Body MonitorSend jsonObject);
 
     //这里InfoUser任意，因为data不返回数据。数据体包括  项目URL、项目id、项目描述、项目口令,用户id
     @POST("project/updateProject")
-    Call<InfoUser> updateProject(@Body JSONObject jsonObject);
+    Call<InfoUser> updateProject(@Body UpdataProjectSend jsonObject);
 
     @GET("project/queryOwnMonitorUser")
     Call<InfoUserList> queryMonitorUser(@Query("projectId") int projectId);
 
     //这里InfoUser任意，因为data不返回数据。数据体包括  用户id、项目id
     @POST("project/cancelUserMonitorPermission")
-    Call<InfoUser> cancelUserMoitorPermission(@Body JSONObject jsonObject);
+    Call<InfoUser> cancelUserMoitorPermission(@Body MonitorSend jsonObject);
 
     //这里InfoUser任意，因为data不返回数据。数据体包括  项目id、项目口令
     @DELETE("project/deleteProject")
@@ -71,7 +81,7 @@ public interface Api {
 
     //查看用户是否有项目的监测权限
     @POST("project/checkMonitorAuth")//用户id、项目id
-    Call<InfoString> checkMonitorAuth(@Body JSONObject jsonObject);
+    Call<InfoString> checkMonitorAuth(@Body MonitorSend jsonObject);
 
     //获取不同冻结状态的项目
     @GET("admin/pagedQueryPublishedProject")
@@ -83,7 +93,7 @@ public interface Api {
 
     //这里InfoUser任意，因为data不返回数据。数据体包括  applicationId、status(1通过2拒绝）（字符串形式）、rejectResason
     @POST("admin/verifyApplication")
-    Call<InfoUser> verifyApplication(@Body JSONObject jsonObject);
+    Call<InfoUser> verifyApplication(@Body VerifyApplicationSend jsonObject);
 
     //获得单个用户的信息，InfoUser不是任意的
     @POST("admin/showUserDetailedInfo")
@@ -92,11 +102,11 @@ public interface Api {
     //冻结用户，InfoUser是任意的
     //参数是userId、freezeHour
     @POST("admin/freezeUser")
-    Call<InfoUser> freezeUser(@Body JSONObject jsonObject);
+    Call<InfoUser> freezeUser(@Body FreezeUserSend jsonObject);
 
     //冻结项目，InfoUser是任意的
     //参数是projectId、freezeHour
     @POST("admin/freezeProject")
-    Call<InfoUser> freezeProject(@Body JSONObject jsonObject);
+    Call<InfoUser> freezeProject(@Body FreezeProjectSend jsonObject);
 
 }

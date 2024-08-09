@@ -1,6 +1,5 @@
 package com.example.finalexam.presenter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -16,20 +15,24 @@ import com.example.finalexam.info.InfoString;
 import com.example.finalexam.info.InfoUser;
 import com.example.finalexam.info.InfoUserList;
 import com.example.finalexam.model.ProjectData;
+import com.example.finalexam.sendmodel.FreezeProjectSend;
+import com.example.finalexam.sendmodel.FreezeUserSend;
+import com.example.finalexam.sendmodel.MonitorSend;
+import com.example.finalexam.sendmodel.PublishSend;
+import com.example.finalexam.sendmodel.RegisterSend;
 import com.example.finalexam.model.UserData;
+import com.example.finalexam.sendmodel.UpdataProjectSend;
+import com.example.finalexam.sendmodel.VerifyApplicationSend;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.StringTokenizer;
 
-import okhttp3.Interceptor;
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -38,7 +41,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class UserPresenter {
     private static final String TAG = "UserPresenter";
-    private static final String baseUrl="http://47.113.224.195:31110/api/";
+    private static final String baseUrl="http://47.113.224.195:31111/";
     public UserDataShowInterface activity;
     private static UserPresenter presenter=new UserPresenter();
     private UserData user =new UserData();//一个用户一个presenter
@@ -48,8 +51,8 @@ public class UserPresenter {
     private ProjectData projectDetail;
     private String checkResult;
     private Context context;//接cookie用
-    private Retrofit receiverRetrofit;
-    private Retrofit adderRetrofit;
+
+    private Retrofit Retrofit;
 
     private static final int PROJECT_FROZEN=0;
     private static final int PROJECT_ACTIVE=1;
@@ -84,7 +87,7 @@ public class UserPresenter {
         Log.d(TAG, "account = " + account + ", password = " + password);
        /* this.context=context;*/
 
-        Api userApi = getReceiverRetrofit().create(Api.class);
+        Api userApi = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
         Call<InfoUser> dataCall = userApi.log(account,password);
@@ -134,36 +137,29 @@ public class UserPresenter {
                 .build();
         Api userApi = retrofit.create(Api.class);
 
-        JSONObject jsonObject=new JSONObject();
-        try {
-            jsonObject.put("username", account);
-            jsonObject.put("password", password);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
-        Call<InfoUser> dataCall = userApi.register(jsonObject);
-        jsonObject=null;
+        RegisterSend registerSend=new RegisterSend();
+        registerSend.setUsername(account);
+        registerSend.setPassword(password);
+
+        Call<InfoUser> dataCall = userApi.register(registerSend);
 
         dataCall.enqueue(new Callback<InfoUser>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
             public void onResponse(@NonNull Call<InfoUser> call, @NonNull Response<InfoUser> response) {
                 InfoUser info = response.body();
+                Log.d(TAG, "onResponse: ");
                 if (info == null) activity.userRegister(STATUS_NO_INTERNET);
                 else if(info.getData()==null) activity.userRegister(STATUS_ACCOUNT_ALREADY_EXIST);
                 else {
-                  /*  SPPresenter.accordAccount(context, account);
-                    SPPresenter.accordPassword(context, password);
-                    SPPresenter.accordLoggedStatus(context, true);
-                    user.setUsername(account);
-                    user.setPassword(password);*/
                     activity.userRegister(STATUS_SUCCESS);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<InfoUser> call, @NonNull Throwable throwable) {
+                Log.d(TAG, throwable.toString());
                 activity.userRegister(STATUS_NO_INTERNET);
             }
         });
@@ -172,7 +168,7 @@ public class UserPresenter {
     //做了无数据返回时给AllBriefProject赋一个new出来的值
     public void fetchAllBriefProject(){
 
-        Api api = getAdderRetrofit().create(Api.class);
+        Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
         Call<InfoShowAllProject> dataCall = api.getAllProjectForUser(1,0) ;//拿取所有数据
@@ -202,10 +198,9 @@ public class UserPresenter {
         });
     }
 
-
    //做了无数据返回时给ProjectDetail赋一个new出来的值
     public void fetchProjectDetail(int projectId){
-        Api api = getAdderRetrofit().create(Api.class);
+        Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
         Call<InfoProject> dataCall = api.getProjectDetail(projectId) ;
@@ -237,7 +232,7 @@ public class UserPresenter {
     //获取自己的项目（自己为发布者）
     public void fetchSelfProjects(){
 
-        Api api = getAdderRetrofit().create(Api.class);
+        Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
         Call<InfoProjectList> dataCall = api.getSelfProjects(user.getUserId());
@@ -268,7 +263,7 @@ public class UserPresenter {
     //获取自己监控的项目
     public void fetchMonitorProjects(){
 
-        Api api = getAdderRetrofit().create(Api.class);
+        Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
         Call<InfoProjectList> dataCall = api.getHaveMonitorProjects(user.getUserId());
@@ -296,12 +291,12 @@ public class UserPresenter {
             }
         });
     }
-    //获取正在申请的项目
-    public void fetchApplyingProjects(){
-        Api api = getAdderRetrofit().create(Api.class);
+    //获取正在申请监控权限的记录
+    public void fetchApplyingMonitorProject(){
+        Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
-        Call<InfoProjectList> dataCall = api.getApplyingProject(user.getUserId());
+        Call<InfoProjectList> dataCall = api.getApplyingMonitorProject(user.getUserId());
         dataCall.enqueue(new Callback<InfoProjectList>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
@@ -326,25 +321,51 @@ public class UserPresenter {
             }
         });
     }
+    //获取正在发布或更新的项目的记录
+    public void fetchMyApplyingProject(){
+        Api api = getRetrofit().create(Api.class);
+        Log.d(TAG, "baseUrl = " + baseUrl);
+
+        Call<InfoProjectList> dataCall = api.getMyApplicationProject(user.getUserId());
+        dataCall.enqueue(new Callback<InfoProjectList>() {
+            UserDataShowInterface activity = UserPresenter.this.activity;
+            @Override
+            public void onResponse(Call<InfoProjectList> call, Response<InfoProjectList> response) {
+                InfoProjectList info= response.body();
+                if(info==null){
+                    projectList=new ArrayList<>();
+                    activity.projectListResult(STATUS_NO_INTERNET);
+                } else if (info.getData()==null) {
+                    projectList =new ArrayList<>();
+                    activity.projectListResult(STATUS_NO_DATA);
+                } else{
+                    projectList=info.getData();
+                    activity.projectListResult(STATUS_SUCCESS);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<InfoProjectList> call, Throwable t) {
+                projectList=new ArrayList<>();
+                activity.projectListResult(STATUS_NO_INTERNET);
+            }
+        });
+    }
+
     //自己发布项目
     public void pushProject(String projectName,String description,int userId,String projectUrl,String projectPassword){
-        Api api = getAdderRetrofit().create(Api.class);
+        Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
 
-        JSONObject jsonObject = new JSONObject();
-        //项目名、项目描述、发布者id、项目url、项目口令
-        try {
-            jsonObject.put("projectName", projectName);
-            jsonObject.put("description", description);
-            jsonObject.put("userId", userId);
-            jsonObject.put("projectUrl", projectUrl);
-            jsonObject.put("projectPassword", projectPassword);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        PublishSend publishData=new PublishSend();
+        publishData.setDescription(description);
+        publishData.setProjectName(projectName);
+        publishData.setUserId(userId);
+        publishData.setProjectUrl(projectUrl);
+        publishData.setProjectPassword(projectPassword);
 
-        Call<InfoUser> dataCall=api.publishProject(jsonObject);
+        Call<InfoUser> dataCall=api.publishProject(publishData);
         dataCall.enqueue(new Callback<InfoUser>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
@@ -367,20 +388,14 @@ public class UserPresenter {
     }
     //请求项目的监控权限
     public void applyMonitorPermission(int userId,int projectId){
-        Api api = getAdderRetrofit().create(Api.class);
+        Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
-        //用户id、项目id
-        JSONObject jsonObject = new JSONObject();
+        MonitorSend applyMonitorSend=new MonitorSend();
+        applyMonitorSend.setProjectId(projectId);
+        applyMonitorSend.setUserId(userId);
 
-        try {
-            jsonObject.put("userId", userId);
-            jsonObject.put("projectId",projectId);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        Call<InfoUser> dataCall=api.applyMonitorPermission(jsonObject);
+        Call<InfoUser> dataCall=api.applyMonitorPermission(applyMonitorSend);
 
         dataCall.enqueue(new Callback<InfoUser>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
@@ -404,20 +419,15 @@ public class UserPresenter {
     }
     //发布者进行项目数据更新
     public void updateProject(String projectUrl,int projectId,String description,String projectPassword,int userId){
-        Api api = getAdderRetrofit().create(Api.class);
+        Api api = getRetrofit().create(Api.class);
         //项目URL、项目id、项目描述
-        JSONObject jsonObject=new JSONObject();
-        try {
-            jsonObject.put("projectUrl", projectUrl);
-            jsonObject.put("projectId",projectId);
-            jsonObject.put("description",description);
-            jsonObject.put("projectPassword",projectPassword);
-            jsonObject.put("userId",userId);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        Call<InfoUser> dataCall=api.updateProject(jsonObject);
+        UpdataProjectSend updataProjectSend=new UpdataProjectSend();
+        updataProjectSend.setProjectUrl(projectUrl);
+        updataProjectSend.setProjectId(projectId);
+        updataProjectSend.setDescription(description);
+        updataProjectSend.setProjectPassword(projectPassword);
+        updataProjectSend.setUserId(userId);
+        Call<InfoUser> dataCall=api.updateProject(updataProjectSend);
 
         dataCall.enqueue(new Callback<InfoUser>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
@@ -441,7 +451,7 @@ public class UserPresenter {
     }
     //获取一个项目的所有监管者
     public void fetchMonitorUser(int projectId){
-        Api api = getAdderRetrofit().create(Api.class);
+        Api api = getRetrofit().create(Api.class);
         Call<InfoUserList> dataCall=api.queryMonitorUser(projectId);
 
         dataCall.enqueue(new Callback<InfoUserList>() {
@@ -471,18 +481,13 @@ public class UserPresenter {
     //取消一个用户为一个项目的监管者
     public void cancelMonitorPermission(int userId,int projectId){//用户id、项目id
 
-        Api api = getAdderRetrofit().create(Api.class);
+        Api api = getRetrofit().create(Api.class);
 
-        JSONObject jsonObject=new JSONObject();
+        MonitorSend cancelMontorSend=new MonitorSend();
+        cancelMontorSend.setProjectId(projectId);
+        cancelMontorSend.setUserId(userId);
 
-        try{
-            jsonObject.put("userId",userId);
-            jsonObject.put("projectId",projectId);
-        }catch (JSONException e){
-            e.printStackTrace();
-        }
-
-        Call<InfoUser> dataCall=api.cancelUserMoitorPermission(jsonObject);
+        Call<InfoUser> dataCall=api.cancelUserMoitorPermission(cancelMontorSend);
         dataCall.enqueue(new Callback<InfoUser>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
@@ -506,7 +511,7 @@ public class UserPresenter {
     //删除项目
     public void deleteProject(int projectId,String projectPassword){//项目id、项目口令
 
-        Api api = getAdderRetrofit().create(Api.class);
+        Api api = getRetrofit().create(Api.class);
 
         Call<InfoUser> dataCall=api.deleteProject(projectId,projectPassword);
 
@@ -530,17 +535,13 @@ public class UserPresenter {
         });
     }
     //检测某用户是否有一个项目的管理权限
-    public void checkMonitorAuth(int userId,int projectId){
+    public void fetchMonitorPermissionResult(int userId,int projectId){
 
-        Api api = getAdderRetrofit().create(Api.class);
-        JSONObject jsonObject=new JSONObject();
-        try{
-            jsonObject.put("userId",userId);
-            jsonObject.put("projectId",projectId);
-        }catch (JSONException e){
-            e.printStackTrace();
-        }
-        Call<InfoString> dataCall=api.checkMonitorAuth(jsonObject);
+        Api api = getRetrofit().create(Api.class);
+        MonitorSend checkMonitorSend=new MonitorSend();
+        checkMonitorSend.setProjectId(projectId);
+        checkMonitorSend.setUserId(userId);
+        Call<InfoString> dataCall=api.checkMonitorAuth(checkMonitorSend);
         dataCall.enqueue(new Callback<InfoString>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
@@ -569,7 +570,7 @@ public class UserPresenter {
     //获取冻结或未被冻结的项目
     public void fetchFreezeOrNotProject(int projectType){
 
-        Api api = getAdderRetrofit().create(Api.class);
+        Api api = getRetrofit().create(Api.class);
 
         Call<InfoShowAllProject> dataCall=api.getFrezonOrNotProject(projectType);
 
@@ -600,7 +601,7 @@ public class UserPresenter {
     //获取不同审核状态的项目
     public void fetchReviewOrNotProject(int projectType){
 
-        Api api = getAdderRetrofit().create(Api.class);
+        Api api = getRetrofit().create(Api.class);
 
         Call<InfoShowAllProject> dataCall=api.getReviewOrNotProject(projectType);
 
@@ -631,18 +632,9 @@ public class UserPresenter {
     //对项目进行审核
     public void verifyApplication(int projectId, int reviewResult, String rejectResason){//applicationId、status(1通过2拒绝）、rejectResason
 
-        Api api = getAdderRetrofit().create(Api.class);
-
-        JSONObject jsonObject=new JSONObject();
-        try {
-            jsonObject.put("applicationId",projectId);
-            jsonObject.put("status",reviewResult);
-            jsonObject.put("rejectResason",rejectResason);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Call<InfoUser> dataCall=api.verifyApplication(jsonObject);
+        Api api = getRetrofit().create(Api.class);
+        VerifyApplicationSend verifyApplicationSend=new VerifyApplicationSend(projectId,reviewResult,rejectResason);
+        Call<InfoUser> dataCall=api.verifyApplication(verifyApplicationSend);
 
         dataCall.enqueue(new Callback<InfoUser>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
@@ -667,7 +659,7 @@ public class UserPresenter {
     //获取用户详情（指的是自己去看对方的信息）
     public void fetchUserDetail(int userId){
 
-        Api api = getAdderRetrofit().create(Api.class);
+        Api api = getRetrofit().create(Api.class);
         Call<InfoUser> dataCall=api.userDetail(userId);
         dataCall.enqueue(new Callback<InfoUser>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
@@ -694,15 +686,12 @@ public class UserPresenter {
     //参数是userId、freezeHour单位为小时
     public void freezeUser(int userId,int freezeHour){
 
-        Api api = getAdderRetrofit().create(Api.class);
+        Api api = getRetrofit().create(Api.class);
         JSONObject jsonObject=new JSONObject();
-        try {
-           jsonObject.put("userId",userId);
-           jsonObject.put("freezeHour",freezeHour);
-        }catch (JSONException e){
-           e.printStackTrace();
-        }
-        Call<InfoUser> dataCall=api.freezeUser(jsonObject);
+        FreezeUserSend freezeUserSend=new FreezeUserSend();
+        freezeUserSend.setUserId(userId);
+        freezeUserSend.setFreezeHour(freezeHour);
+        Call<InfoUser> dataCall=api.freezeUser(freezeUserSend);
         dataCall.enqueue(new Callback<InfoUser>() {
             @Override
             public void onResponse(Call<InfoUser> call, Response<InfoUser> response) {
@@ -726,15 +715,12 @@ public class UserPresenter {
     //参数是projectId、freezeHour单位为小时
     public void freezeProject(int projectId,int freezeHour){
 
-        Api api = getAdderRetrofit().create(Api.class);
+        Api api = getRetrofit().create(Api.class);
         JSONObject jsonObject=new JSONObject();
-        try {
-            jsonObject.put("projectId",projectId);
-            jsonObject.put("freezeHour",freezeHour);
-        }catch (JSONException e){
-            e.printStackTrace();
-        }
-        Call<InfoUser> dataCall=api.freezeProject(jsonObject);
+        FreezeProjectSend freezeProjectSend=new FreezeProjectSend();
+        freezeProjectSend.setProjectId(projectId);
+        freezeProjectSend.setFreezeHour(freezeHour);
+        Call<InfoUser> dataCall=api.freezeProject(freezeProjectSend);
         dataCall.enqueue(new Callback<InfoUser>() {
             @Override
             public void onResponse(Call<InfoUser> call, Response<InfoUser> response) {
@@ -788,89 +774,48 @@ public class UserPresenter {
     public List<ProjectData> getProjectList(){return projectList;}
     //获取一系列用户数据
     public List<UserData> getUserList(){return userList;}
-    public String getChckResult(){return checkResult;}
+    public String getCheckResult(){return checkResult;}
 
     public void setContext(Context context){this.context=context;}
 
-    public Retrofit getReceiverRetrofit() {
-        ReceivedCookiesInterceptor receivedCookiesInterceptor = new ReceivedCookiesInterceptor(context);
-        OkHttpClient receiver = new OkHttpClient.Builder()
-                .addInterceptor(receivedCookiesInterceptor)
+    public Retrofit getRetrofit() {
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .cookieJar(new PersistentCookieJar(context))
                 .build();
 
-
-        receiverRetrofit= new Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .client(receiver)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        return receiverRetrofit;
-    }
-
-    public Retrofit getAdderRetrofit() {
-        OkHttpClient adder = new OkHttpClient.Builder()
-                .addInterceptor(new AddCookiesInterceptor(context))
-                .build();
-
-        adderRetrofit= new Retrofit.Builder()
+        Retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(adder)
+                .client(okHttpClient)
                 .build();
-        return adderRetrofit;
+        return Retrofit;
     }
 }
-class ReceivedCookiesInterceptor implements Interceptor {
+class PersistentCookieJar implements CookieJar {
     private Context context;
-    public ReceivedCookiesInterceptor(Context context) {
-        super();
+    SharedPreferences sharedPreferences ;
+    public PersistentCookieJar(Context context) {
         this.context=context;
+        sharedPreferences = context.getSharedPreferences("cookieData", Context.MODE_PRIVATE);
     }
 
     @Override
-    public okhttp3.Response intercept(Chain chain) throws IOException {
-        okhttp3.Response originalResponse = chain.proceed(chain.request());
-        //这里获取请求返回的cookie
-        if (!originalResponse.headers("Set-Cookie").isEmpty()) {
-
-            HashSet<String> cookies = new HashSet<>();
-            for(String header: originalResponse.headers("Set-Cookie"))
-            {
-                Log.i("ReceivedCookiesInterceptor", "拦截的cookie是："+header);
-                cookies.add(header);
-            }
-            if (context!=null) {
-                //保存的sharepreference文件名为cookieData
-                SharedPreferences sharedPreferences = context.getSharedPreferences("cookieData", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putStringSet("cookie", cookies);
-                editor.commit();
-            }
+    public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        for (Cookie cookie : cookies) {
+            editor.putString(cookie.name(), cookie.toString());
         }
-
-        return originalResponse;
-    }
-}
-class AddCookiesInterceptor implements Interceptor {
-    private Context context;
-
-    public AddCookiesInterceptor(Context context) {
-        this.context = context;
+        editor.apply();
     }
 
     @Override
-    public okhttp3.Response intercept(Chain chain) throws IOException {
-
-        Request.Builder builder = chain.request().newBuilder();
-        if (context!=null) {
-            HashSet<String> perferences = (HashSet) context.getSharedPreferences("cookieData", Context.MODE_PRIVATE).getStringSet("cookie", null);
-            if (perferences != null) {
-                for (String cookie : perferences) {
-                    builder.addHeader("Cookie", cookie);
-                }
-            }
+    public List<Cookie> loadForRequest(HttpUrl url) {
+        List<Cookie> cookieList = new ArrayList<>();
+        for (String cookieName : sharedPreferences.getAll().keySet()) {
+            String cookieValue = sharedPreferences.getString(cookieName, "");
+            cookieList.add(Cookie.parse(url, cookieValue));
         }
-        return chain.proceed(builder.build());
+        return cookieList;
     }
 }
 
