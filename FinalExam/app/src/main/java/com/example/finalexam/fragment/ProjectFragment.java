@@ -75,6 +75,11 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
     }
 
     @Override
+    public void checkMonitorResult(int STATUS) {
+
+    }
+
+    @Override
     public void freeze(int STATUS) {
 
     }

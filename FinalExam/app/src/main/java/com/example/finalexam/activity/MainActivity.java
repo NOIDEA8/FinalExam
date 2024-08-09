@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity  implements UserDataShowInte
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            userPresenter.setContext(getApplicationContext());
             return insets;
         });
 
@@ -47,7 +48,8 @@ public class MainActivity extends AppCompatActivity  implements UserDataShowInte
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             } finally {
-                                startActivity(new Intent(MainActivity.this, UserDesktop.class));
+                                //startActivity(new Intent(MainActivity.this, UserDesktop.class));
+                                startActivity(new Intent(MainActivity.this, LogActivity.class));
                                 finish();
                             }
                         }
@@ -64,6 +66,11 @@ public class MainActivity extends AppCompatActivity  implements UserDataShowInte
 
     @Override
     public void applyMonitorPermission(int STATUS) {
+
+    }
+
+    @Override
+    public void checkMonitorResult(int STATUS) {
 
     }
 

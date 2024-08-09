@@ -95,6 +95,11 @@ public class LogActivity extends AppCompatActivity implements UserDataShowInterf
     }
 
     @Override
+    public void checkMonitorResult(int STATUS) {
+
+    }
+
+    @Override
     public void freeze(int STATUS) {
 
     }

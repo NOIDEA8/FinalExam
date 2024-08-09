@@ -91,6 +91,11 @@ public class ProjectDetailActivity extends AppCompatActivity implements UserData
     }
 
     @Override
+    public void checkMonitorResult(int STATUS) {
+
+    }
+
+    @Override
     public void freeze(int STATUS) {
 
     }

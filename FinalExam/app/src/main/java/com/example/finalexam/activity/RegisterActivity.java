@@ -61,6 +61,11 @@ public class RegisterActivity extends AppCompatActivity implements UserDataShowI
     }
 
     @Override
+    public void checkMonitorResult(int STATUS) {
+
+    }
+
+    @Override
     public void freeze(int STATUS) {
 
     }
