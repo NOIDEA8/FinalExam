@@ -46,14 +46,14 @@ public interface Api {
     @POST("project/publishProject")
     Call<InfoUser> publishProject(@Body JSONObject jsonObject);
 
-    @GET("project/DetaliedInfo")
+    @GET("project/detailedInfo")
     Call<InfoProject> getProjectDetail(@Query("projectId") int projectId);
 
     //这里InfoUser任意，因为data不返回数据。数据体包括  用户id、项目id
     @POST("project/applyMonitorPermission")
     Call<InfoUser> applyMonitorPermission(@Body JSONObject jsonObject);
 
-    //这里InfoUser任意，因为data不返回数据。数据体包括  项目URL、项目id、项目描述
+    //这里InfoUser任意，因为data不返回数据。数据体包括  项目URL、项目id、项目描述、项目口令
     @POST("project/updateProject")
     Call<InfoUser> updateProject(@Body JSONObject jsonObject);
 
