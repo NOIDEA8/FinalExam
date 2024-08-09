@@ -82,6 +82,12 @@ public class MainActivity extends AppCompatActivity  implements UserDataShowInte
     public void userLog(int STATUS) {
         if(STATUS==UserPresenter.STATUS_NO_INTERNET){
             Toast.makeText(this,"无网络，稍后重试",Toast.LENGTH_SHORT).show();
+            if (userName == "admin") {
+                startActivity(new Intent(MainActivity.this,ManagerDesktop.class));
+            }else{
+                startActivity(new Intent(MainActivity.this,UserDesktop.class));
+            }
+            finish();
         } else if (STATUS==UserPresenter.STATUS_ACCOUNT_FROZEN) {
             Toast.makeText(this,"账号被冻结，请联系管理员",Toast.LENGTH_SHORT).show();
         } else if (STATUS==UserPresenter.STATUS_SUCCESS) {

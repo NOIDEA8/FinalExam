@@ -1,4 +1,4 @@
-package com.example.finalexam.sendmodel;
+package com.example.finalexam.model.sendmodel;
 
 public class RegisterSend {
     private String username;//这个就是账号
