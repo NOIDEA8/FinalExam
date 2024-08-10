@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.finalexam.R;
 import com.example.finalexam.adapter.ProjectAdapter;
@@ -56,15 +57,15 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
 
     private void addTestData() {
         ProjectData monitor = new ProjectData();
-        monitor.setCreator("NOIDEA8");
+        monitor.setCreator("NOIDEA");
         monitor.setProjectId(114);
 
         ProjectData self1 = new ProjectData();
-        self1.setCreator("PPPoria");
+        self1.setCreator("Poria");
         self1.setProjectId(514);
 
         ProjectData self2 = new ProjectData();
-        self2.setCreator("PPPoria");
+        self2.setCreator("Poria");
         self2.setProjectId(1919);
 
         monitorProjectList.add(monitor);
@@ -169,8 +170,8 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void briefProjectList(int STATUS) {
-        if (STATUS == UserPresenter.STATUS_NO_INTERNET) {
-
+        if (STATUS == UserPresenter.STATUS_NO_DATA) {
+            Toast.makeText(requireContext(), "暂无项目", Toast.LENGTH_SHORT).show();
         } else if (STATUS == UserPresenter.STATUS_SUCCESS) {
             allProjectList.clear();
             allProjectList.addAll(UserPresenter.getInstance(this).getProjectList());
@@ -187,8 +188,8 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void selfProjectList(int STATUS) {
-        if (STATUS == UserPresenter.STATUS_NO_INTERNET) {
-
+        if (STATUS == UserPresenter.STATUS_NO_DATA) {
+            Toast.makeText(requireContext(), "暂无项目", Toast.LENGTH_SHORT).show();
         } else if (STATUS == UserPresenter.STATUS_SUCCESS) {
             selfProjectList.clear();
             selfProjectList.addAll(UserPresenter.getInstance(this).getProjectList());
@@ -205,8 +206,8 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void monitorProjectList(int STATUS) {
-        if (STATUS == UserPresenter.STATUS_NO_INTERNET) {
-
+        if (STATUS == UserPresenter.STATUS_NO_DATA) {
+            Toast.makeText(requireContext(), "暂无项目", Toast.LENGTH_SHORT).show();
         } else if (STATUS == UserPresenter.STATUS_SUCCESS) {
             monitorProjectList.clear();
             monitorProjectList.addAll(UserPresenter.getInstance(this).getProjectList());
