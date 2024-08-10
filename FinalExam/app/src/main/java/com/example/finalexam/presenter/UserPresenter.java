@@ -8,12 +8,16 @@ import androidx.annotation.NonNull;
 
 import com.example.finalexam.helper.Api;
 import com.example.finalexam.helper.UserDataShowInterface;
+import com.example.finalexam.info.InfoLogList;
 import com.example.finalexam.info.InfoProject;
 import com.example.finalexam.info.InfoProjectList;
+import com.example.finalexam.info.InfoShowAllLog;
 import com.example.finalexam.info.InfoShowAllProject;
 import com.example.finalexam.info.InfoString;
 import com.example.finalexam.info.InfoUser;
 import com.example.finalexam.info.InfoUserList;
+import com.example.finalexam.model.AllLog;
+import com.example.finalexam.model.LogData;
 import com.example.finalexam.model.ProjectData;
 import com.example.finalexam.model.sendmodel.FreezeProjectSend;
 import com.example.finalexam.model.sendmodel.FreezeUserSend;
@@ -23,6 +27,7 @@ import com.example.finalexam.model.sendmodel.RegisterSend;
 import com.example.finalexam.model.UserData;
 import com.example.finalexam.model.sendmodel.UpdataProjectSend;
 import com.example.finalexam.model.sendmodel.VerifyApplicationSend;
+import com.example.finalexam.model.sendmodel.ViewLogForGroupSend;
 
 import org.json.JSONObject;
 
@@ -47,6 +52,9 @@ public class UserPresenter {
     private UserData user =new UserData();//一个用户一个presenter
     private List<ProjectData> projectList;
     private List<UserData> userList;
+    private List<LogData> logDataList;//正常日志列
+    //logDataListByGroup指按照后台，前端、移动这样的分组来做日志拿取，和上面的分开是因为这个会返回一个总页数，我认为日志太多不要一次性那全部，于是为了适应他们的分页查询而来
+    private AllLog logDataListByGroup;
     private UserData userDetail;
     private ProjectData projectDetail;
     private String checkResult;
@@ -54,13 +62,20 @@ public class UserPresenter {
 
     private Retrofit Retrofit;
 
-    private static final int PROJECT_FROZEN=0;
-    private static final int PROJECT_ACTIVE=1;
-    private static final int PROJECT_PROCESSING=0;
-    private static final int PROJECT_ACCEPTED=1;
+    public static final int PROJECT_FROZEN=0;
+    public static final int PROJECT_ACTIVE=1;
+    public static final int PROJECT_PROCESSING=0;
+    public static final int PROJECT_ACCEPTED=1;
 
-    private static final int PASS_REVIEW=1;
-    private static final int REJECT_REVIEW=2;
+    public static final int PASS_REVIEW=1;
+    public static final int REJECT_REVIEW=2;
+    public static final int SERVER_LOG=0;
+    public static final int FRONT_LOG=1;
+    public static final int MOBILE_LOG=2;
+    public static final int EXCEPTION_LOG=0;
+    public static final int NORMAL_LOG=1;//其他包括性能，正常日志
+    public static final int SERVER_DEFINE_LOG=2;
+
     public static final int STATUS_SUCCESS = 100;
     public static final int STATUS_FAILED = 101;//发布项目他返回的code可能是不成功的那个，暂且写着
     public static final int STATUS_NO_INTERNET = 102;
@@ -723,6 +738,7 @@ public class UserPresenter {
         freezeUserSend.setFreezeHour(freezeHour);
         Call<InfoUser> dataCall=api.freezeUser(freezeUserSend);
         dataCall.enqueue(new Callback<InfoUser>() {
+            UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
             public void onResponse(Call<InfoUser> call, Response<InfoUser> response) {
                 InfoUser info=response.body();
@@ -752,6 +768,7 @@ public class UserPresenter {
         freezeProjectSend.setFreezeHour(freezeHour);
         Call<InfoUser> dataCall=api.freezeProject(freezeProjectSend);
         dataCall.enqueue(new Callback<InfoUser>() {
+            UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
             public void onResponse(Call<InfoUser> call, Response<InfoUser> response) {
                 InfoUser info=response.body();
@@ -770,7 +787,179 @@ public class UserPresenter {
             }
         });
     }
+    //查看服务器攻击日志
+    public void fetchAttackServerLog(int page,int pageSize){//得到记录条数是page*pageSize
+        Api api=getRetrofit().create(Api.class);
+        Call<InfoLogList> dataCall=api.queryAttackServerLog(page,pageSize);
+        dataCall.enqueue(new Callback<InfoLogList>() {
+            UserDataShowInterface activity = UserPresenter.this.activity;
+            @Override
+            public void onResponse(Call<InfoLogList> call, Response<InfoLogList> response) {
+                InfoLogList info=response.body();
+                if (info==null){
+                    logDataList=new ArrayList<>();
+                    activity.attackServerLogList(STATUS_NO_INTERNET);
+                    
+                } else if (info.getData()==null) {
+                    logDataList=new ArrayList<>();
+                    activity.attackServerLogList(STATUS_NO_DATA);
+                }else {
+                    logDataList=info.getData();
+                    activity.attackServerLogList(STATUS_SUCCESS);
+                }
+            }
 
+            @Override
+            public void onFailure(Call<InfoLogList> call, Throwable t) {
+                logDataList=new ArrayList<>();
+                activity.attackServerLogList(STATUS_NO_INTERNET);
+            }
+        });
+    }
+    //获取所有用户操作的日志
+    public void fetchAllUserOperationLog(int page,int pageSize){//得到记录条数是page*pageSize
+        Api api=getRetrofit().create(Api.class);
+        Call<InfoLogList> dataCall=api.queryAttackServerLog(page,pageSize);
+        dataCall.enqueue(new Callback<InfoLogList>() {
+            UserDataShowInterface activity = UserPresenter.this.activity;
+            @Override
+            public void onResponse(Call<InfoLogList> call, Response<InfoLogList> response) {
+                InfoLogList info=response.body();
+                if (info==null){
+                    logDataList=new ArrayList<>();
+                    activity.allUserOperationLogList(STATUS_NO_INTERNET);
+
+                } else if (info.getData()==null) {
+                    logDataList=new ArrayList<>();
+                    activity.allUserOperationLogList(STATUS_NO_DATA);
+                }else {
+                    logDataList=info.getData();
+                    activity.allUserOperationLogList(STATUS_SUCCESS);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<InfoLogList> call, Throwable t) {
+                logDataList=new ArrayList<>();
+                activity.allUserOperationLogList(STATUS_NO_INTERNET);
+            }
+        });
+    }
+    //查看的不同组的日志（页面、服务器、移动app）jsonObject包含groupType（后台0、前端1、移动2）、pageSize、page、projectId、logType日志类型(0异常/1其他包括性能，正常日志/2后台自定义日志)
+    public void fetchLogForGroup(int groupType,int pageSize,int page,int projectId,int logType){
+        Api api=getRetrofit().create(Api.class);
+        ViewLogForGroupSend send=new ViewLogForGroupSend(groupType,pageSize,page,projectId,logType);
+        Call<InfoShowAllLog> dataCall=api.viewLogForGroup(send);
+        dataCall.enqueue(new Callback<InfoShowAllLog>() {
+            UserDataShowInterface activity = UserPresenter.this.activity;
+            @Override
+            public void onResponse(Call<InfoShowAllLog> call, Response<InfoShowAllLog> response) {
+                InfoShowAllLog info= response.body();
+                if(info==null){
+                    logDataListByGroup=new AllLog();
+                    activity.logDataListByGroup(STATUS_NO_INTERNET);
+                } else if (info.getData()==null) {
+                    logDataListByGroup=new AllLog();
+                    activity.logDataListByGroup(STATUS_NO_DATA);
+                }else{
+                    logDataListByGroup=info.getData();
+                    activity.logDataListByGroup(STATUS_SUCCESS);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<InfoShowAllLog> call, Throwable t) {
+                logDataListByGroup=new AllLog();
+                activity.logDataListByGroup(STATUS_NO_INTERNET);
+            }
+        });
+    }
+    //最近一周内的项目的访问数据和报错统计
+    public void fetchProjectPresentationDateOneWeek(int projectId){
+        Api api=getRetrofit().create(Api.class);
+        Call<InfoLogList> dataCall=api.projectPresentationDateOneWeek(projectId);
+        dataCall.enqueue(new Callback<InfoLogList>() {
+            UserDataShowInterface activity = UserPresenter.this.activity;
+            @Override
+            public void onResponse(Call<InfoLogList> call, Response<InfoLogList> response) {
+                InfoLogList info=response.body();
+                if (info==null){
+                    logDataList=new ArrayList<>();
+                    activity.projectPresentationDateOneWeek(STATUS_NO_INTERNET);
+
+                } else if (info.getData()==null) {
+                    logDataList=new ArrayList<>();
+                    activity.projectPresentationDateOneWeek(STATUS_NO_DATA);
+                }else {
+                    logDataList=info.getData();
+                    activity.projectPresentationDateOneWeek(STATUS_SUCCESS);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<InfoLogList> call, Throwable t) {
+                logDataList=new ArrayList<>();
+                activity.projectPresentationDateOneWeek(STATUS_NO_INTERNET);
+            }
+        });
+    }
+    //查看项目操作日志(包括项目发布，更新日志)
+    public void fetchViewProjectOpearteLog(int projectId){
+        Api api=getRetrofit().create(Api.class);
+        Call<InfoLogList> dataCall=api.viewProjectOperateLog(projectId);
+        dataCall.enqueue(new Callback<InfoLogList>() {
+            UserDataShowInterface activity = UserPresenter.this.activity;
+            @Override
+            public void onResponse(Call<InfoLogList> call, Response<InfoLogList> response) {
+                InfoLogList info=response.body();
+                if (info==null){
+                    logDataList=new ArrayList<>();
+                    activity.ViewProjectOperateLog(STATUS_NO_INTERNET);
+
+                } else if (info.getData()==null) {
+                    logDataList=new ArrayList<>();
+                    activity.ViewProjectOperateLog(STATUS_NO_DATA);
+                }else {
+                    logDataList=info.getData();
+                    activity.ViewProjectOperateLog(STATUS_SUCCESS);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<InfoLogList> call, Throwable t) {
+                logDataList=new ArrayList<>();
+                activity.ViewProjectOperateLog(STATUS_NO_INTERNET);
+            }
+        });
+    }
+    //用户查看项目发送请求，项目访问量加一,InfoUser任意,projectData只包含id
+    public void increaseVisits(int projectId){
+        Api api=getRetrofit().create(Api.class);
+        ProjectData send=new ProjectData();
+        send.setProjectId(projectId);
+        Call<InfoUser> dataCall=api.increaseVisits(send);
+        dataCall.enqueue(new Callback<InfoUser>() {
+            UserDataShowInterface activity = UserPresenter.this.activity;
+            @Override
+            public void onResponse(Call<InfoUser> call, Response<InfoUser> response) {
+                InfoUser info= response.body();
+                if(info==null){
+                    activity.increaseView(STATUS_NO_INTERNET);
+
+                } else if (info.getCode()!=1) {
+                    activity.increaseView(STATUS_FAILED);
+                }else{
+                    activity.increaseView(STATUS_SUCCESS);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<InfoUser> call, Throwable t) {
+                activity.increaseView(STATUS_NO_INTERNET);
+
+            }
+        });
+    }
 
 
 
@@ -808,6 +997,11 @@ public class UserPresenter {
     //获取一系列用户数据
     public List<UserData> getUserList(){return userList;}
     public String getCheckResult(){return checkResult;}
+    public List<LogData> getLogDataList() {return logDataList;}
+
+
+    //获取一个项目的一个组（前后移动端）的所有日志，fetchLogForGroup的时候会被赋值，其他全部赋值到logDataList
+    public AllLog getLogDataListByGroup() {return logDataListByGroup;}
 
     public void setContext(Context context){this.context=context;}
 

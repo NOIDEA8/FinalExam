@@ -1,7 +1,6 @@
 package com.example.finalexam.info;
 
-import com.example.finalexam.info.data.AllBriefProject;
-import com.example.finalexam.info.data.AllLog;
+import com.example.finalexam.model.AllLog;
 
 public class InfoShowAllLog {
     private int code;

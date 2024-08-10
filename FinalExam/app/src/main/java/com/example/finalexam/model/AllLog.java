@@ -1,4 +1,4 @@
-package com.example.finalexam.info.data;
+package com.example.finalexam.model;
 
 import com.example.finalexam.model.LogData;
 import com.example.finalexam.model.ProjectData;
