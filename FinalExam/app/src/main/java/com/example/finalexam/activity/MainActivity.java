@@ -17,7 +17,7 @@ import com.example.finalexam.presenter.SPPresenter;
 import com.example.finalexam.presenter.UserPresenter;
 import com.example.finalexam.R;
 
-public class MainActivity extends AppCompatActivity  implements UserDataShowInterface, ManagerDataShowInterface {
+public class MainActivity extends BaseActivity  implements UserDataShowInterface, ManagerDataShowInterface {
     private static final String TAG = "MainActivity";
     private UserPresenter userPresenter = UserPresenter.getInstance(this);
     private String userName;

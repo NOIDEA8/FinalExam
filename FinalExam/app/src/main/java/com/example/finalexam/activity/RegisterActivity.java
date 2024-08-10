@@ -18,7 +18,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Objects;
 
-public class RegisterActivity extends AppCompatActivity implements UserDataShowInterface {
+public class RegisterActivity extends BaseActivity implements UserDataShowInterface {
     private static final String TAG = "RegisterActivity";
     private TextInputEditText account;
     private TextInputEditText password;

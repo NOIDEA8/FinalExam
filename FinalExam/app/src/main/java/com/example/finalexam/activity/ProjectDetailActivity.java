@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
-public class ProjectDetailActivity extends AppCompatActivity implements UserDataShowInterface {
+public class ProjectDetailActivity extends BaseActivity implements UserDataShowInterface {
     private static final String TAG = "ProjectDetailActivity";
 
     private ProjectData data = new ProjectData();

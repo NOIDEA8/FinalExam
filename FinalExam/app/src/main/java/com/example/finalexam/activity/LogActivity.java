@@ -23,7 +23,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Objects;
 
-public class LogActivity extends AppCompatActivity implements UserDataShowInterface, ManagerDataShowInterface {
+public class LogActivity extends BaseActivity implements UserDataShowInterface, ManagerDataShowInterface {
 
     private static final String TAG = "LogActivity";
     private TextInputEditText account;

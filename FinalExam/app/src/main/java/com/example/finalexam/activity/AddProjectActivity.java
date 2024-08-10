@@ -10,7 +10,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.finalexam.R;
 
-public class AddProjectActivity extends AppCompatActivity {
+public class AddProjectActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

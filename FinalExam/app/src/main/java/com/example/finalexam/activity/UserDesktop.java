@@ -21,7 +21,7 @@ import com.example.finalexam.fragment.PersonFragment;
 import com.example.finalexam.fragment.ProjectFragment;
 import com.example.finalexam.overrideview.AddButton;
 
-public class UserDesktop extends AppCompatActivity {
+public class UserDesktop extends BaseActivity {
     private static final String TAG = "UserDesktop";
 
     private FragmentManager fragmentManager;

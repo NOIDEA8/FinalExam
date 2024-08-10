@@ -10,7 +10,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.finalexam.R;
 
-public class ManagerDesktop extends AppCompatActivity {
+public class ManagerDesktop extends BaseActivity {
 
 
     @Override
