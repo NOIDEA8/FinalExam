@@ -9,11 +9,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.finalexam.baseappcompatactivity.BaseActivity;
 import com.example.finalexam.fragment.ManagerLogFragment;
 import com.example.finalexam.helper.ManagerDataShowInterface;
 import com.example.finalexam.helper.UserDataShowInterface;
@@ -23,7 +23,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Objects;
 
-public class LogActivity extends AppCompatActivity implements UserDataShowInterface, ManagerDataShowInterface {
+public class LogActivity extends BaseActivity implements UserDataShowInterface, ManagerDataShowInterface {
 
     private static final String TAG = "LogActivity";
     private TextInputEditText account;
@@ -146,6 +146,36 @@ public class LogActivity extends AppCompatActivity implements UserDataShowInterf
 
     @Override
     public void application(int STATUS) {
+
+    }
+
+    @Override
+    public void attackServerLogList(int STATUS) {
+
+    }
+
+    @Override
+    public void allUserOperationLogList(int STATUS) {
+
+    }
+
+    @Override
+    public void logDataListByGroup(int STATUS) {
+
+    }
+
+    @Override
+    public void projectPresentationDateOneWeek(int STATUS) {
+
+    }
+
+    @Override
+    public void ViewProjectOperateLog(int STATUS) {
+
+    }
+
+    @Override
+    public void increaseView(int STATUS) {
 
     }
 

@@ -1,11 +1,14 @@
 package com.example.finalexam.helper;
 
+import com.example.finalexam.info.InfoLogList;
 import com.example.finalexam.info.InfoProject;
 import com.example.finalexam.info.InfoProjectList;
+import com.example.finalexam.info.InfoShowAllLog;
 import com.example.finalexam.info.InfoShowAllProject;
 import com.example.finalexam.info.InfoString;
 import com.example.finalexam.info.InfoUser;
 import com.example.finalexam.info.InfoUserList;
+import com.example.finalexam.model.ProjectData;
 import com.example.finalexam.model.sendmodel.FreezeProjectSend;
 import com.example.finalexam.model.sendmodel.FreezeUserSend;
 import com.example.finalexam.model.sendmodel.MonitorSend;
@@ -13,6 +16,7 @@ import com.example.finalexam.model.sendmodel.PublishSend;
 import com.example.finalexam.model.sendmodel.RegisterSend;
 import com.example.finalexam.model.sendmodel.UpdataProjectSend;
 import com.example.finalexam.model.sendmodel.VerifyApplicationSend;
+import com.example.finalexam.model.sendmodel.ViewLogForGroupSend;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -110,5 +114,30 @@ public interface Api {
     //参数是projectId、freezeHour
     @POST("admin/freezeProject")
     Call<InfoUser> freezeProject(@Body FreezeProjectSend jsonObject);
+
+    //获取攻击服务器日志
+    @GET("log/queryAttackServerLog")
+    Call<InfoLogList> queryAttackServerLog(@Query("page") int page,@Query("pageSize") int pageSize);
+
+    //获取所有用户操作的日志
+    @GET("log/queryAllUserOperationLog")
+    Call<InfoLogList> queryAllUserOperationLog(@Query("page") int page,@Query("pageSize") int pageSize);
+
+    //查看的不同组的日志（页面、服务器、移动app）jsonObject包含groupType（后台0、前端1、移动2）、pageSize、page、projectId、logType日志类型(0异常/1其他包括性能，正常日志/2后台自定义日志)
+    @GET("log/viewLogForGroup")
+    Call<InfoShowAllLog> viewLogForGroup(@Body ViewLogForGroupSend jsonObject);
+
+    //最近一周内的项目的访问数据和报错统计
+    @GET("log/projectPresentationDateOneWeek")
+    Call<InfoLogList> projectPresentationDateOneWeek(@Query("projectId") int projectId);
+
+    //查看项目操作日志(包括项目发布，更新日志)
+    @GET("log/ViewProjectOperateLog")
+    Call<InfoLogList> viewProjectOperateLog(@Query("projectId") int projectId);
+
+    //用户查看项目发送请求，项目访问量加一,InfoUser任意,projectData只包含id
+    @POST("log/increaseVisits")
+    Call<InfoUser> increaseVisits(@Body ProjectData projectData);
+
 
 }
