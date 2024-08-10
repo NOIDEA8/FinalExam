@@ -1,4 +1,4 @@
-package com.example.finalexam.activity;
+package com.example.finalexam.baseappcompatactivity;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -9,7 +9,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.finalexam.info.InfoUser;
+import com.example.finalexam.activity.LogActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +19,14 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         ActivityCollector.addActivity(this);
     }
+
     @Override
     protected void onResume() {
         super.onResume();

@@ -5,19 +5,18 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.finalexam.R;
 import com.example.finalexam.adapter.ProjectAdapter;
+import com.example.finalexam.baseappcompatactivity.BaseActivity;
 import com.example.finalexam.helper.UserDataShowInterface;
 import com.example.finalexam.model.ProjectData;
 import com.example.finalexam.overrideview.DoubleGraphView;
 import com.example.finalexam.presenter.UserPresenter;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 

@@ -2,22 +2,20 @@ package com.example.finalexam.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.finalexam.baseappcompatactivity.BaseActivity;
 import com.example.finalexam.helper.ManagerDataShowInterface;
 import com.example.finalexam.helper.UserDataShowInterface;
-import com.example.finalexam.presenter.SPPresenter;
 import com.example.finalexam.presenter.UserPresenter;
 import com.example.finalexam.R;
 
-public class MainActivity extends BaseActivity  implements UserDataShowInterface, ManagerDataShowInterface {
+public class MainActivity extends BaseActivity implements UserDataShowInterface, ManagerDataShowInterface {
     private static final String TAG = "MainActivity";
     private UserPresenter userPresenter = UserPresenter.getInstance(this);
     private String userName;
