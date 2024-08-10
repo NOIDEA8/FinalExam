@@ -112,6 +112,36 @@ public class RegisterActivity extends AppCompatActivity implements UserDataShowI
     }
 
     @Override
+    public void attackServerLogList(int STATUS) {
+
+    }
+
+    @Override
+    public void allUserOperationLogList(int STATUS) {
+
+    }
+
+    @Override
+    public void logDataListByGroup(int STATUS) {
+
+    }
+
+    @Override
+    public void projectPresentationDateOneWeek(int STATUS) {
+
+    }
+
+    @Override
+    public void ViewProjectOperateLog(int STATUS) {
+
+    }
+
+    @Override
+    public void increaseView(int STATUS) {
+
+    }
+
+    @Override
     public void projectPublishResult(int STATUS) {
 
     }
