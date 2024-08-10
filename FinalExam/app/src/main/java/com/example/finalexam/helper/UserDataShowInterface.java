@@ -38,4 +38,11 @@ public interface UserDataShowInterface {
 
     void verify(int STATUS);//审核项目
     void application(int STATUS);//获取我收到的申请
+    void attackServerLogList(int STATUS);//获取攻击服务器日志
+    void allUserOperationLogList(int STATUS);//获取所有用户操作日志
+    void logDataListByGroup(int STATUS);//按照前端后台移动这样子拿的一个项目的日志
+    void projectPresentationDateOneWeek(int STATUS);//最近一周内的项目的访问数据和报错统计
+    void ViewProjectOperateLog(int STATUS);//查看项目操作日志(包括项目发布，更新日志)
+    void increaseView(int STATUS);//增加项目的访问次数
+
 }

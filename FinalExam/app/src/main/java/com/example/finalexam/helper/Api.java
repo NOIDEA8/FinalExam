@@ -119,7 +119,7 @@ public interface Api {
     @GET("log/queryAttackServerLog")
     Call<InfoLogList> queryAttackServerLog(@Query("page") int page,@Query("pageSize") int pageSize);
 
-    //获取所有用户操作日志
+    //获取所有用户操作的日志
     @GET("log/queryAllUserOperationLog")
     Call<InfoLogList> queryAllUserOperationLog(@Query("page") int page,@Query("pageSize") int pageSize);
 
@@ -132,8 +132,8 @@ public interface Api {
     Call<InfoLogList> projectPresentationDateOneWeek(@Query("projectId") int projectId);
 
     //查看项目操作日志(包括项目发布，更新日志)
-    @GET("log/ViewProjectOpearteLog")
-    Call<InfoLogList> ViewProjectOpearteLog(@Query("projectId") int projectId);
+    @GET("log/ViewProjectOperateLog")
+    Call<InfoLogList> viewProjectOperateLog(@Query("projectId") int projectId);
 
     //用户查看项目发送请求，项目访问量加一,InfoUser任意,projectData只包含id
     @POST("log/increaseVisits")
