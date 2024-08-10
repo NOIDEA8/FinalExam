@@ -11,11 +11,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.finalexam.R;
-import com.example.finalexam.activity.UserDesktop;
 import com.example.finalexam.adapter.ProjectAdapter;
+import com.example.finalexam.helper.ProjectListSortHelper;
 import com.example.finalexam.helper.UserDataShowInterface;
 import com.example.finalexam.model.ProjectData;
 import com.example.finalexam.presenter.UserPresenter;
@@ -29,10 +28,6 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
     private static final String TAG = "ProjectFragment";
     private View view;
 
-    private final int ALL_PROJECT = 0;
-    private final int SELF_PROJECT = 1;
-    private final int MONITOR_PROJECT = 2;
-    private int projectType = 0;
     private int requestNum = 0;
     private static final List<ProjectData> allProjectList = new ArrayList<>();
     private static final List<ProjectData> selfProjectList = new ArrayList<>();
@@ -179,6 +174,7 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
         } else if (STATUS == UserPresenter.STATUS_SUCCESS) {
             allProjectList.clear();
             allProjectList.addAll(UserPresenter.getInstance(this).getProjectList());
+            ProjectListSortHelper.sortWithCreator(allProjectList);
         }
 
         if (++requestNum == 3) {
@@ -196,6 +192,7 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
         } else if (STATUS == UserPresenter.STATUS_SUCCESS) {
             selfProjectList.clear();
             selfProjectList.addAll(UserPresenter.getInstance(this).getProjectList());
+            ProjectListSortHelper.sortWithCreator(selfProjectList);
         }
 
         if (++requestNum == 3) {
@@ -213,6 +210,7 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
         } else if (STATUS == UserPresenter.STATUS_SUCCESS) {
             monitorProjectList.clear();
             monitorProjectList.addAll(UserPresenter.getInstance(this).getProjectList());
+            ProjectListSortHelper.sortWithCreator(monitorProjectList);
         }
 
         if (++requestNum == 3) {
