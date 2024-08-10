@@ -19,7 +19,10 @@ import com.example.finalexam.helper.ManagerDataShowInterface;
 import com.example.finalexam.helper.UserDataShowInterface;
 import com.example.finalexam.presenter.UserPresenter;
 import com.example.finalexam.R;
+import com.example.finalexam.presenter.WebSocketPresenter;
 import com.google.android.material.textfield.TextInputEditText;
+
+import org.java_websocket.client.WebSocketClient;
 
 import java.util.Objects;
 
@@ -117,6 +120,16 @@ public class LogActivity extends BaseActivity implements UserDataShowInterface, 
             Toast.makeText(this,"密码错误，请检查后再登录",Toast.LENGTH_SHORT).show();
         } else if (STATUS==UserPresenter.STATUS_SUCCESS) {
             Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
+
+            WebSocketClient webSocketClient=WebSocketPresenter.getInstance(getApplicationContext())
+                    .getWebSocketClient(UserPresenter.getInstance(LogActivity.this).getUserId());
+            webSocketClient.connect();
+            if(webSocketClient.isOpen()){
+                webSocketClient.send("getOnlineUsers");
+            }else{
+                Toast.makeText(this,"用户列表获取失败",Toast.LENGTH_SHORT).show();
+            }
+
             startActivity(new Intent(this,UserDesktop.class));
             Log.d(TAG,"in userLog:finish()活动");
             finish();//这一套下来要是能到达这一步的话应该Presenter的Userdata应该是有值的

@@ -46,7 +46,7 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface,
                                 throw new RuntimeException(e);
                             } finally {
                                 //startActivity(new Intent(MainActivity.this, UserDesktop.class));
-                                startActivity(new Intent(MainActivity.this, UserDesktop.class));
+                                startActivity(new Intent(MainActivity.this, LogActivity.class));
                                 finish();
                             }
                         }

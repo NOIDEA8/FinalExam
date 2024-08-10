@@ -58,7 +58,7 @@ public class UserPresenter {
     private UserData userDetail;
     private ProjectData projectDetail;
     private String checkResult;
-    private Context context;//接cookie用
+    private static Context context;//接cookie用
 
     private Retrofit Retrofit;
 
@@ -1004,6 +1004,13 @@ public class UserPresenter {
     public AllLog getLogDataListByGroup() {return logDataListByGroup;}
 
     public void setContext(Context context){this.context=context;}
+
+    public static Context getContext() {return context;}
+    //重置userPresent，在退出时用
+
+    public static void resetPresenter() {
+        presenter=new UserPresenter();
+    }
 
     public Retrofit getRetrofit() {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
