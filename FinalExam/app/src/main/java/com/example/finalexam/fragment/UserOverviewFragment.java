@@ -44,7 +44,7 @@ public class UserOverviewFragment extends Fragment {
         return view;
     }
 
-    public static void setUserOnlineList(List<UserData> userOnlineList) {
-        UserOverviewFragment.userOnlineList = userOnlineList;
+    public static List<UserData> getUserOnlineList() {
+        return userOnlineList;
     }
 }

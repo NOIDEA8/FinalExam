@@ -18,7 +18,7 @@ public class WebSocketPresenter {
     private static Context context;
 
     public static WebSocketPresenter getInstance(Context context) {
-        setContext(context);
+        WebSocketPresenter.context = context;
         return webSocketPresenter;
     }
 
@@ -38,9 +38,7 @@ public class WebSocketPresenter {
         return context;
     }
 
-    public static void setContext(Context context) {
-        WebSocketPresenter.context = context;
-    }
+
 
     public List<UserData> getUserList() {
         return userList;
