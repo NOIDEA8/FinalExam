@@ -19,10 +19,11 @@ public class ColorHelper {
         sb.append("#");
 
         Random random = new Random(seed);
+        int padding = 10;
 
         try {
             for (int i = 0; i < 3; i++) {
-                int RGB = random.nextInt(256);
+                int RGB = padding + random.nextInt(256 - padding * 2);
                 sb.append(String.format("%02X", RGB));
             }
             hexString = sb.toString();
@@ -35,10 +36,7 @@ public class ColorHelper {
 
     public static boolean isBrightColor(int colorR, int colorG, int colorB) {
         int brightness = colorR + colorG + colorB;
-        if (brightness < 300)
-            return false;
-        else
-            return true;
+        return brightness >= 550;
     }
 
     public static boolean isBrightColor(String RGBHex) {
