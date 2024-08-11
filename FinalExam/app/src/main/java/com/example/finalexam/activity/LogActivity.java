@@ -125,7 +125,7 @@ public class LogActivity extends BaseActivity implements UserDataShowInterface{
         } else if (STATUS==UserPresenter.STATUS_SUCCESS) {
             Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
 
-            MyWebSocketClient client= WebSocketPresenter.getInstance(getApplicationContext(),this)
+            MyWebSocketClient client= WebSocketPresenter.getInstance(getApplicationContext())
                     .getWebSocketClient(UserPresenter.getInstance(LogActivity.this).getUserId());
             if(!client.isOpen()){
                 client.connect();

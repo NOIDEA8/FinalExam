@@ -98,7 +98,7 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface,
         } else if (STATUS==UserPresenter.STATUS_SUCCESS) {
             Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
 
-           WebSocketClient client= WebSocketPresenter.getInstance(getApplicationContext(),MainActivity.this)
+           WebSocketClient client= WebSocketPresenter.getInstance(getApplicationContext())
                     .getWebSocketClient(UserPresenter.getInstance(this).getUserId());
            if(client!=null&&client.isClosed()){
                client.connect();
