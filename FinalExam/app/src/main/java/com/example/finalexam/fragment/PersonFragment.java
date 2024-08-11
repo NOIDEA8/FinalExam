@@ -20,6 +20,7 @@ import com.example.finalexam.activity.OtherApplyActivity;
 import com.example.finalexam.helper.ColorHelper;
 import com.example.finalexam.helper.UserDataShowInterface;
 import com.example.finalexam.model.ProjectData;
+import com.example.finalexam.model.UserData;
 import com.example.finalexam.presenter.SPPresenter;
 import com.example.finalexam.presenter.UserPresenter;
 import com.example.finalexam.presenter.WebSocketPresenter;
@@ -91,7 +92,7 @@ public class PersonFragment extends Fragment implements UserDataShowInterface {
             SPPresenter.accordLoggedStatus(UserPresenter.getContext(), false);
             startActivity(new Intent(UserPresenter.getContext(), LogActivity.class));
             int userId = UserPresenter.getInstance(this).getUserId();//关闭WebSocket
-            WebSocketPresenter.getInstance(UserPresenter.getContext()).getWebSocketClient(userId).close();
+            WebSocketPresenter.getInstance(UserPresenter.getContext(),this).getWebSocketClient(userId).close();
             requireActivity().finish();
         });
         toMineButton.setOnClickListener(v -> {
@@ -266,6 +267,11 @@ public class PersonFragment extends Fragment implements UserDataShowInterface {
 
     @Override
     public void increaseView(int STATUS) {
+
+    }
+
+    @Override
+    public void UserOnlineOrNotList(List<UserData> userData) {
 
     }
 }

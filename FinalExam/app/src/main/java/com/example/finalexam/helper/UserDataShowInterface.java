@@ -1,6 +1,9 @@
 package com.example.finalexam.helper;
 
 
+import com.example.finalexam.model.UserData;
+
+import java.util.List;
 
 public interface UserDataShowInterface {
     //TODO 以下四个方法均为回调方法，如果需要使用，可以查看UserPresenter
@@ -44,5 +47,5 @@ public interface UserDataShowInterface {
     void projectPresentationDateOneWeek(int STATUS);//最近一周内的项目的访问数据和报错统计
     void ViewProjectOperateLog(int STATUS);//查看项目操作日志(包括项目发布，更新日志)
     void increaseView(int STATUS);//增加项目的访问次数
-
+    void UserOnlineOrNotList(List<UserData> userData);
 }

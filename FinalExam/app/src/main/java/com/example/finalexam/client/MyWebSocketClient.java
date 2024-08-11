@@ -1,5 +1,10 @@
 package com.example.finalexam.client;
 
+import android.content.Context;
+import android.content.Intent;
+
+import com.example.finalexam.activity.UserDetailActivity;
+import com.example.finalexam.helper.UserDataShowInterface;
 import com.example.finalexam.info.InfoUserList;
 import com.example.finalexam.presenter.WebSocketPresenter;
 import com.google.gson.Gson;
@@ -12,11 +17,12 @@ import java.util.ArrayList;
 
 public class MyWebSocketClient extends WebSocketClient {
     //网址：ws://47.113.224.195:31110/websocket/admin(管理员的话)
-    private WebSocketPresenter webSocketPresenter;
-
-    public MyWebSocketClient(URI serverUri,WebSocketPresenter webSocketPresenter) {
+    private UserDataShowInterface activity;
+    private Context context;
+    public MyWebSocketClient(URI serverUri,Context context,UserDataShowInterface activity) {
         super(serverUri);
-        this.webSocketPresenter=webSocketPresenter;
+        this.context=context;
+        this.activity=activity;
     }
 
     @Override
@@ -27,15 +33,15 @@ public class MyWebSocketClient extends WebSocketClient {
     @Override
     public void onMessage(String message) {
         if(message.equals("offSet")){
-            webSocketPresenter.offSet();
+            context.sendBroadcast(new Intent("com.example.FinalExam.FORCE_OFFSET"));
         } else {
             Gson gson=new Gson();
             InfoUserList info=gson.fromJson(message,InfoUserList.class);
             if(info!=null){//msg?
                 if(!info.getData().isEmpty()){
-                    webSocketPresenter.setUserList(info.getData());
+                    activity.UserOnlineOrNotList(new ArrayList<>());
                 }else {
-                    webSocketPresenter.setUserList(new ArrayList<>());
+                    activity.UserOnlineOrNotList(info.getData());
                 }
             }
         }
