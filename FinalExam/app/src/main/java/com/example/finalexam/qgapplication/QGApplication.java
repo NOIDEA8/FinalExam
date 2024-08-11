@@ -17,7 +17,7 @@ public class QGApplication extends Application {
         handler.setExceptionToast("有会导致崩溃的错误");
 
         FPSCounter.initFPSCounter();
-        MemoryInfoProvider.initMemoryInfoProvider(this);
+        MemoryInfoProvider.initMemoryInfoProvider();
 
         UploadPresenter.initUploadPresenter(this, "http://47.113.224.195:31108/sdk/", 114);
     }

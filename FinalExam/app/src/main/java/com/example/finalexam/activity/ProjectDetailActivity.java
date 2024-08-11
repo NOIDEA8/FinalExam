@@ -3,6 +3,7 @@ package com.example.finalexam.activity;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.core.graphics.Insets;
@@ -194,7 +195,7 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
     @Override
     public void projectDetail(int STATUS) {
         if (STATUS == UserPresenter.STATUS_NO_INTERNET) {
-            //Toast.makeText(this, "无网络，请稍后再试", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "无网络，请稍后再试", Toast.LENGTH_SHORT).show();
         } else if (STATUS == UserPresenter.STATUS_SUCCESS) {
             data = UserPresenter.getInstance(this).getProjectDetail();
             showData();

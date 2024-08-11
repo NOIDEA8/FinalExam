@@ -207,7 +207,7 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
     @Override
     public void monitorProjectList(int STATUS) {
         if (STATUS == UserPresenter.STATUS_NO_DATA) {
-            Toast.makeText(requireContext(), "暂无项目", Toast.LENGTH_SHORT).show();
+            Toast.makeText(UserPresenter.getContext(), "暂无项目", Toast.LENGTH_SHORT).show();
         } else if (STATUS == UserPresenter.STATUS_SUCCESS) {
             monitorProjectList.clear();
             monitorProjectList.addAll(UserPresenter.getInstance(this).getProjectList());
