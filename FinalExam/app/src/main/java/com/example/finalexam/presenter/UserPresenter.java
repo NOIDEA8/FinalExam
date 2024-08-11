@@ -16,6 +16,8 @@ import com.example.finalexam.info.InfoShowAllProject;
 import com.example.finalexam.info.InfoString;
 import com.example.finalexam.info.InfoUser;
 import com.example.finalexam.info.InfoUserList;
+import com.example.finalexam.info.InfoUserLogin;
+import com.example.finalexam.info.data.UserLoginData;
 import com.example.finalexam.model.AllLog;
 import com.example.finalexam.model.LogData;
 import com.example.finalexam.model.ProjectData;
@@ -48,6 +50,7 @@ public class UserPresenter {
     private static final String TAG = "UserPresenter";
     private static final String baseUrl="http://47.113.224.195:31111/";
     public UserDataShowInterface activity;
+    private String token;
     private static UserPresenter presenter=new UserPresenter();
     private UserData user =new UserData();//一个用户一个presenter
     private List<ProjectData> projectList;
@@ -105,12 +108,12 @@ public class UserPresenter {
         Api userApi = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
-        Call<InfoUser> dataCall = userApi.log(account,password);
-        dataCall.enqueue(new Callback<InfoUser>() {
+        Call<InfoUserLogin> dataCall = userApi.log(account,password);
+        dataCall.enqueue(new Callback<InfoUserLogin>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
-            public void onResponse(@NonNull Call<InfoUser> call, @NonNull Response<InfoUser> response) {
-                InfoUser info = response.body();
+            public void onResponse(@NonNull Call<InfoUserLogin> call, @NonNull Response<InfoUserLogin> response) {
+                InfoUserLogin info = response.body();
                 if(info==null){
                     activity.userLog(STATUS_NO_INTERNET);
                 } else if (info.getMsg().equals("账号不存在")) {
@@ -120,20 +123,21 @@ public class UserPresenter {
                 } else if (info.getMsg().equals("密码错误")) {
                     activity.userLog(STATUS_PASSWORD_INCORRECT);
                 }else {
-                    UserData tempData=info.getData();
+                    UserLoginData tempData=info.getData();
                     SPPresenter.accordUsername(context, account);
                     SPPresenter.accordPassword(context, password);
                     SPPresenter.accordLoggedStatus(context, true);
                     user.setUsername(account);
                     user.setPassword(password);
                     user.setUserId(tempData.getUserId());
+                    token=tempData.getToken();
                     Log.d(TAG,"useData已在log方法中赋值");
                     activity.userLog(STATUS_SUCCESS);
                 }
 
             }
             @Override
-            public void onFailure(@NonNull Call<InfoUser> call, @NonNull Throwable throwable) {
+            public void onFailure(@NonNull Call<InfoUserLogin> call, @NonNull Throwable throwable) {
                 Log.d(TAG, throwable.toString());
                 activity.userLog(STATUS_NO_INTERNET);
             }
@@ -186,7 +190,7 @@ public class UserPresenter {
         Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
-        Call<InfoShowAllProject> dataCall = api.getAllProjectForUser(1,0,null) ;//拿取所有数据
+        Call<InfoShowAllProject> dataCall = api.getAllProjectForUser(token,1,0,null) ;//拿取所有数据
 
         dataCall.enqueue(new Callback<InfoShowAllProject>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
@@ -218,7 +222,7 @@ public class UserPresenter {
         Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
-        Call<InfoProject> dataCall = api.getProjectDetail(projectId) ;
+        Call<InfoProject> dataCall = api.getProjectDetail(token,projectId) ;
 
         dataCall.enqueue(new Callback<InfoProject>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
@@ -250,7 +254,7 @@ public class UserPresenter {
         Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
-        Call<InfoProjectList> dataCall = api.getSelfProjects(user.getUserId());
+        Call<InfoProjectList> dataCall = api.getSelfProjects(token,user.getUserId());
         dataCall.enqueue(new Callback<InfoProjectList>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
@@ -281,7 +285,7 @@ public class UserPresenter {
         Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
-        Call<InfoProjectList> dataCall = api.getApplication(user.getUserId());
+        Call<InfoProjectList> dataCall = api.getApplication(token,user.getUserId());
         dataCall.enqueue(new Callback<InfoProjectList>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
@@ -312,7 +316,7 @@ public class UserPresenter {
         Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
-        Call<InfoProjectList> dataCall = api.getHaveMonitorProjects(user.getUserId());
+        Call<InfoProjectList> dataCall = api.getHaveMonitorProjects(token,user.getUserId());
         dataCall.enqueue(new Callback<InfoProjectList>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
@@ -342,7 +346,7 @@ public class UserPresenter {
         Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
-        Call<InfoProjectList> dataCall = api.getApplyingMonitorProject(user.getUserId());
+        Call<InfoProjectList> dataCall = api.getApplyingMonitorProject(token,user.getUserId());
         dataCall.enqueue(new Callback<InfoProjectList>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
@@ -372,7 +376,7 @@ public class UserPresenter {
         Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
-        Call<InfoProjectList> dataCall = api.getMyApplicationProject(user.getUserId());
+        Call<InfoProjectList> dataCall = api.getMyApplicationProject(token,user.getUserId());
         dataCall.enqueue(new Callback<InfoProjectList>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
@@ -410,7 +414,7 @@ public class UserPresenter {
         publishData.setProjectUrl(projectUrl);
         publishData.setProjectPassword(projectPassword);
 
-        Call<InfoUser> dataCall=api.publishProject(publishData);
+        Call<InfoUser> dataCall=api.publishProject(token,publishData);
         dataCall.enqueue(new Callback<InfoUser>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
@@ -440,7 +444,7 @@ public class UserPresenter {
         applyMonitorSend.setProjectId(projectId);
         applyMonitorSend.setUserId(userId);
 
-        Call<InfoUser> dataCall=api.applyMonitorPermission(applyMonitorSend);
+        Call<InfoUser> dataCall=api.applyMonitorPermission(token,applyMonitorSend);
 
         dataCall.enqueue(new Callback<InfoUser>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
@@ -472,7 +476,7 @@ public class UserPresenter {
         updataProjectSend.setDescription(description);
         updataProjectSend.setProjectPassword(projectPassword);
         updataProjectSend.setUserId(userId);
-        Call<InfoUser> dataCall=api.updateProject(updataProjectSend);
+        Call<InfoUser> dataCall=api.updateProject(token,updataProjectSend);
 
         dataCall.enqueue(new Callback<InfoUser>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
@@ -497,7 +501,7 @@ public class UserPresenter {
     //获取一个项目的所有监管者
     public void fetchMonitorUser(int projectId){
         Api api = getRetrofit().create(Api.class);
-        Call<InfoUserList> dataCall=api.queryMonitorUser(projectId);
+        Call<InfoUserList> dataCall=api.queryMonitorUser(token,projectId);
 
         dataCall.enqueue(new Callback<InfoUserList>() {
             @Override
@@ -532,7 +536,7 @@ public class UserPresenter {
         cancelMontorSend.setProjectId(projectId);
         cancelMontorSend.setUserId(userId);
 
-        Call<InfoUser> dataCall=api.cancelUserMoitorPermission(cancelMontorSend);
+        Call<InfoUser> dataCall=api.cancelUserMoitorPermission(token,cancelMontorSend);
         dataCall.enqueue(new Callback<InfoUser>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
@@ -558,7 +562,7 @@ public class UserPresenter {
 
         Api api = getRetrofit().create(Api.class);
 
-        Call<InfoUser> dataCall=api.deleteProject(projectId,projectPassword);
+        Call<InfoUser> dataCall=api.deleteProject(token,projectId,projectPassword);
 
         dataCall.enqueue(new Callback<InfoUser>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
@@ -586,7 +590,7 @@ public class UserPresenter {
         MonitorSend checkMonitorSend=new MonitorSend();
         checkMonitorSend.setProjectId(projectId);
         checkMonitorSend.setUserId(userId);
-        Call<InfoString> dataCall=api.checkMonitorAuth(checkMonitorSend);
+        Call<InfoString> dataCall=api.checkMonitorAuth(token,checkMonitorSend);
         dataCall.enqueue(new Callback<InfoString>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
@@ -617,7 +621,7 @@ public class UserPresenter {
 
         Api api = getRetrofit().create(Api.class);
 
-        Call<InfoShowAllProject> dataCall=api.getFrezonOrNotProject(projectType);
+        Call<InfoShowAllProject> dataCall=api.getFrezonOrNotProject(token,projectType);
 
         dataCall.enqueue(new Callback<InfoShowAllProject>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
@@ -648,7 +652,7 @@ public class UserPresenter {
 
         Api api = getRetrofit().create(Api.class);
 
-        Call<InfoShowAllProject> dataCall=api.getReviewOrNotProject(projectType);
+        Call<InfoShowAllProject> dataCall=api.getReviewOrNotProject(token,projectType);
 
         dataCall.enqueue(new Callback<InfoShowAllProject>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
@@ -679,7 +683,7 @@ public class UserPresenter {
 
         Api api = getRetrofit().create(Api.class);
         VerifyApplicationSend verifyApplicationSend=new VerifyApplicationSend(projectId,reviewResult,rejectResason);
-        Call<InfoUser> dataCall=api.verifyApplication(verifyApplicationSend);
+        Call<InfoUser> dataCall=api.verifyApplication(token,verifyApplicationSend);
 
         dataCall.enqueue(new Callback<InfoUser>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
@@ -705,7 +709,7 @@ public class UserPresenter {
     public void fetchUserDetail(int userId){
 
         Api api = getRetrofit().create(Api.class);
-        Call<InfoUser> dataCall=api.userDetail(userId);
+        Call<InfoUser> dataCall=api.userDetail(token,userId);
         dataCall.enqueue(new Callback<InfoUser>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
@@ -736,7 +740,7 @@ public class UserPresenter {
         FreezeUserSend freezeUserSend=new FreezeUserSend();
         freezeUserSend.setUserId(userId);
         freezeUserSend.setFreezeHour(freezeHour);
-        Call<InfoUser> dataCall=api.freezeUser(freezeUserSend);
+        Call<InfoUser> dataCall=api.freezeUser(token,freezeUserSend);
         dataCall.enqueue(new Callback<InfoUser>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
@@ -766,7 +770,7 @@ public class UserPresenter {
         FreezeProjectSend freezeProjectSend=new FreezeProjectSend();
         freezeProjectSend.setProjectId(projectId);
         freezeProjectSend.setFreezeHour(freezeHour);
-        Call<InfoUser> dataCall=api.freezeProject(freezeProjectSend);
+        Call<InfoUser> dataCall=api.freezeProject(token,freezeProjectSend);
         dataCall.enqueue(new Callback<InfoUser>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
@@ -790,7 +794,7 @@ public class UserPresenter {
     //查看服务器攻击日志
     public void fetchAttackServerLog(int page,int pageSize){//得到记录条数是page*pageSize
         Api api=getRetrofit().create(Api.class);
-        Call<InfoLogList> dataCall=api.queryAttackServerLog(page,pageSize);
+        Call<InfoLogList> dataCall=api.queryAttackServerLog(token,page,pageSize);
         dataCall.enqueue(new Callback<InfoLogList>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
@@ -819,7 +823,7 @@ public class UserPresenter {
     //获取所有用户操作的日志
     public void fetchAllUserOperationLog(int page,int pageSize){//得到记录条数是page*pageSize
         Api api=getRetrofit().create(Api.class);
-        Call<InfoLogList> dataCall=api.queryAttackServerLog(page,pageSize);
+        Call<InfoLogList> dataCall=api.queryAttackServerLog(token,page,pageSize);
         dataCall.enqueue(new Callback<InfoLogList>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
@@ -849,7 +853,7 @@ public class UserPresenter {
     public void fetchLogForGroup(int groupType,int pageSize,int page,int projectId,int logType){
         Api api=getRetrofit().create(Api.class);
         ViewLogForGroupSend send=new ViewLogForGroupSend(groupType,pageSize,page,projectId,logType);
-        Call<InfoShowAllLog> dataCall=api.viewLogForGroup(send);
+        Call<InfoShowAllLog> dataCall=api.viewLogForGroup(token,send);
         dataCall.enqueue(new Callback<InfoShowAllLog>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
@@ -877,7 +881,7 @@ public class UserPresenter {
     //最近一周内的项目的访问数据和报错统计
     public void fetchProjectPresentationDateOneWeek(int projectId){
         Api api=getRetrofit().create(Api.class);
-        Call<InfoLogList> dataCall=api.projectPresentationDateOneWeek(projectId);
+        Call<InfoLogList> dataCall=api.projectPresentationDateOneWeek(token,projectId);
         dataCall.enqueue(new Callback<InfoLogList>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
@@ -906,7 +910,7 @@ public class UserPresenter {
     //查看项目操作日志(包括项目发布，更新日志)
     public void fetchViewProjectOpearteLog(int projectId){
         Api api=getRetrofit().create(Api.class);
-        Call<InfoLogList> dataCall=api.viewProjectOperateLog(projectId);
+        Call<InfoLogList> dataCall=api.viewProjectOperateLog(token,projectId);
         dataCall.enqueue(new Callback<InfoLogList>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
@@ -937,7 +941,7 @@ public class UserPresenter {
         Api api=getRetrofit().create(Api.class);
         ProjectData send=new ProjectData();
         send.setProjectId(projectId);
-        Call<InfoUser> dataCall=api.increaseVisits(send);
+        Call<InfoUser> dataCall=api.increaseVisits(token,send);
         dataCall.enqueue(new Callback<InfoUser>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
@@ -1013,43 +1017,11 @@ public class UserPresenter {
     }
 
     public Retrofit getRetrofit() {
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .cookieJar(new PersistentCookieJar(context))
-                .build();
-
         Retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(okHttpClient)
                 .build();
         return Retrofit;
-    }
-}
-class PersistentCookieJar implements CookieJar {
-    private Context context;
-    SharedPreferences sharedPreferences ;
-    public PersistentCookieJar(Context context) {
-        this.context=context;
-        sharedPreferences = context.getSharedPreferences("cookieData", Context.MODE_PRIVATE);
-    }
-
-    @Override
-    public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        for (Cookie cookie : cookies) {
-            editor.putString(cookie.name(), cookie.toString());
-        }
-        editor.apply();
-    }
-
-    @Override
-    public List<Cookie> loadForRequest(HttpUrl url) {
-        List<Cookie> cookieList = new ArrayList<>();
-        for (String cookieName : sharedPreferences.getAll().keySet()) {
-            String cookieValue = sharedPreferences.getString(cookieName, "");
-            cookieList.add(Cookie.parse(url, cookieValue));
-        }
-        return cookieList;
     }
 }
 

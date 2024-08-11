@@ -19,20 +19,6 @@ public class UserData {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public int getEnabled() {
         return enabled;
     }

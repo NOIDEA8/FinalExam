@@ -14,6 +14,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.finalexam.baseappcompatactivity.BaseActivity;
+import com.example.finalexam.client.MyWebSocketClient;
 import com.example.finalexam.fragment.ManagerLogFragment;
 import com.example.finalexam.helper.ManagerDataShowInterface;
 import com.example.finalexam.helper.UserDataShowInterface;
@@ -22,16 +23,15 @@ import com.example.finalexam.R;
 import com.example.finalexam.presenter.WebSocketPresenter;
 import com.google.android.material.textfield.TextInputEditText;
 
-import org.java_websocket.client.WebSocketClient;
-
 import java.util.Objects;
 
-public class LogActivity extends BaseActivity implements UserDataShowInterface, ManagerDataShowInterface {
+public class LogActivity extends BaseActivity implements UserDataShowInterface{
 
     private static final String TAG = "LogActivity";
     private TextInputEditText account;
     private TextInputEditText password;
     private ManagerLogFragment managerLogFragment;
+    private UserPresenter userPresenter = UserPresenter.getInstance(this);
     private TextView toRegister;
     private Button logButton;
     private ImageView logo;
@@ -47,6 +47,9 @@ public class LogActivity extends BaseActivity implements UserDataShowInterface, 
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        userPresenter.setContext(getApplicationContext());
+
+
         initView();
         initListener();
     }
@@ -121,16 +124,18 @@ public class LogActivity extends BaseActivity implements UserDataShowInterface, 
         } else if (STATUS==UserPresenter.STATUS_SUCCESS) {
             Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
 
-            WebSocketClient webSocketClient=WebSocketPresenter.getInstance(getApplicationContext())
+            MyWebSocketClient client= WebSocketPresenter.getInstance(getApplicationContext())
                     .getWebSocketClient(UserPresenter.getInstance(LogActivity.this).getUserId());
-            webSocketClient.connect();
-            if(webSocketClient.isOpen()){
-                webSocketClient.send("getOnlineUsers");
-            }else{
-                Toast.makeText(this,"用户列表获取失败",Toast.LENGTH_SHORT).show();
+            if(!client.isOpen()){
+                client.connect();
             }
 
-            startActivity(new Intent(this,UserDesktop.class));
+            if(UserPresenter.getInstance(this).getUserName(this).equals("admin")){
+                startActivity(new Intent(this,ManagerDesktop.class));
+            }else{
+                startActivity(new Intent(this,UserDesktop.class));
+            }
+
             Log.d(TAG,"in userLog:finish()活动");
             finish();//这一套下来要是能到达这一步的话应该Presenter的Userdata应该是有值的
             //这里的finish是为了自动结束活动到主页面
@@ -252,16 +257,4 @@ public class LogActivity extends BaseActivity implements UserDataShowInterface, 
     public void applyOrNotProjectList(int STATUS) {
 
     }
-
-    @Override
-    public void managerLog(int STATUS) {
-
-    }
-
-    @Override
-    public void updateManagerData(int STATUS) {
-
-    }
-
-
 }
