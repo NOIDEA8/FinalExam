@@ -1,5 +1,9 @@
 package com.example.finalexam.client;
 
+import android.content.Context;
+import android.content.Intent;
+
+import com.example.finalexam.fragment.UserOverviewFragment;
 import com.example.finalexam.info.InfoUserList;
 import com.example.finalexam.presenter.WebSocketPresenter;
 import com.google.gson.Gson;
@@ -12,11 +16,11 @@ import java.util.ArrayList;
 
 public class MyWebSocketClient extends WebSocketClient {
     //网址：ws://47.113.224.195:31110/websocket/admin(管理员的话)
-    private WebSocketPresenter webSocketPresenter;
+    private Context context;
 
-    public MyWebSocketClient(URI serverUri,WebSocketPresenter webSocketPresenter) {
+    public MyWebSocketClient(URI serverUri,Context context) {
         super(serverUri);
-        this.webSocketPresenter=webSocketPresenter;
+        this.context=context;
     }
 
     @Override
@@ -27,15 +31,15 @@ public class MyWebSocketClient extends WebSocketClient {
     @Override
     public void onMessage(String message) {
         if(message.equals("offSet")){
-            webSocketPresenter.offSet();
+            context.sendBroadcast(new Intent("com.example.FinalExam.FORCE_OFFSET"));
         } else {
             Gson gson=new Gson();
             InfoUserList info=gson.fromJson(message,InfoUserList.class);
             if(info!=null){//msg?
                 if(!info.getData().isEmpty()){
-                    webSocketPresenter.setUserList(info.getData());
+                    UserOverviewFragment.setUserOnlineList(info.getData());
                 }else {
-                    webSocketPresenter.setUserList(new ArrayList<>());
+                    UserOverviewFragment.setUserOnlineList(new ArrayList<>());
                 }
             }
         }

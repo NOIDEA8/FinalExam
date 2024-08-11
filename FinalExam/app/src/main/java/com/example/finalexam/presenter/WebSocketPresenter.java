@@ -27,7 +27,7 @@ public class WebSocketPresenter {
     public MyWebSocketClient getWebSocketClient(int userId){
         String url="ws://47.113.224.195:31110/websocket/"+userId;
         try {
-            webSocketClient=new MyWebSocketClient(new URI(url),getInstance(context));
+            webSocketClient=new MyWebSocketClient(new URI(url),context);
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
@@ -49,7 +49,5 @@ public class WebSocketPresenter {
     public void setUserList(List<UserData> userList) {
         this.userList = userList;
     }
-    public void offSet(){
-        context.sendBroadcast(new Intent("com.example.FinalExam.FORCE_OFFSET"));
-    }
+
 }
