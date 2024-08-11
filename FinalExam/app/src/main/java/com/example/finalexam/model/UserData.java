@@ -8,8 +8,8 @@ public class UserData {
 
 
 
-    private int enabled;//0未冻结、1冻结?
-    private String online;
+    private String enabled;//0未冻结、1冻结?
+    private String isOnline;
     private String password;
     private String registerTime;
     private String username;//这个就是账号
@@ -19,12 +19,12 @@ public class UserData {
 
 
 
-    public int getEnabled() {
+    public String getEnabled() {
         return enabled;
     }
 
     public String getOnline() {
-        return online;
+        return isOnline;
     }
 
     public String getRegisterTime() {

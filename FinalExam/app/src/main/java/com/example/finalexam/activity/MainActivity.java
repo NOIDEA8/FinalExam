@@ -84,7 +84,7 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface,
     public void userLog(int STATUS) {
         if(STATUS==UserPresenter.STATUS_NO_INTERNET){
             Toast.makeText(this,"无网络，稍后重试",Toast.LENGTH_SHORT).show();
-            if (userName == "admin") {
+            if (userName.equals("admin")) {
                 startActivity(new Intent(MainActivity.this,ManagerDesktop.class));
             }else{
                 startActivity(new Intent(MainActivity.this,UserDesktop.class));
@@ -101,9 +101,7 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface,
                client.connect();
                Log.d("MainActivity","UserLog中websocket连接");
            }
-
-
-            if (userName == "admin") {
+            if (userName.equals("admin")) {
                 startActivity(new Intent(MainActivity.this,ManagerDesktop.class));
             }else{
                 startActivity(new Intent(MainActivity.this,UserDesktop.class));
