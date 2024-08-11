@@ -18,11 +18,13 @@ import com.example.finalexam.client.MyWebSocketClient;
 import com.example.finalexam.fragment.ManagerLogFragment;
 import com.example.finalexam.helper.ManagerDataShowInterface;
 import com.example.finalexam.helper.UserDataShowInterface;
+import com.example.finalexam.model.UserData;
 import com.example.finalexam.presenter.UserPresenter;
 import com.example.finalexam.R;
 import com.example.finalexam.presenter.WebSocketPresenter;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.List;
 import java.util.Objects;
 
 public class LogActivity extends BaseActivity implements UserDataShowInterface{
@@ -31,7 +33,6 @@ public class LogActivity extends BaseActivity implements UserDataShowInterface{
     private TextInputEditText account;
     private TextInputEditText password;
     private ManagerLogFragment managerLogFragment;
-    private UserPresenter userPresenter = UserPresenter.getInstance(this);
     private TextView toRegister;
     private Button logButton;
     private ImageView logo;
@@ -47,7 +48,7 @@ public class LogActivity extends BaseActivity implements UserDataShowInterface{
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        userPresenter.setContext(getApplicationContext());
+        UserPresenter.setContext(getApplicationContext());
 
 
         initView();
@@ -124,7 +125,7 @@ public class LogActivity extends BaseActivity implements UserDataShowInterface{
         } else if (STATUS==UserPresenter.STATUS_SUCCESS) {
             Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
 
-            MyWebSocketClient client= WebSocketPresenter.getInstance(getApplicationContext())
+            MyWebSocketClient client= WebSocketPresenter.getInstance(getApplicationContext(),this)
                     .getWebSocketClient(UserPresenter.getInstance(LogActivity.this).getUserId());
             if(!client.isOpen()){
                 client.connect();
@@ -194,6 +195,11 @@ public class LogActivity extends BaseActivity implements UserDataShowInterface{
 
     @Override
     public void increaseView(int STATUS) {
+
+    }
+
+    @Override
+    public void UserOnlineOrNotList(List<UserData> userData) {
 
     }
 

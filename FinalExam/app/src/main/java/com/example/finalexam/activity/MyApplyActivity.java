@@ -9,8 +9,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.finalexam.R;
+import com.example.finalexam.baseappcompatactivity.BaseActivity;
 
-public class MyApplyActivity extends AppCompatActivity {
+public class MyApplyActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

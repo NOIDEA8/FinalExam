@@ -7,7 +7,7 @@
     tools:context=".fragment.UserOverviewFragment">
 
     <TextView
-        android:id="@+id/user_list_text"
+        android:id="@+id/user_overview_list_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/user_list"
+        android:id="@+id/user_overview_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="10dp"
@@ -29,6 +29,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/user_list_text" />
+        app:layout_constraintTop_toBottomOf="@id/user_overview_list_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
