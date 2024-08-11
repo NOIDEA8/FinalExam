@@ -115,6 +115,7 @@ public class PersonFragment extends Fragment implements UserDataShowInterface {
             int userId = UserPresenter.getInstance(this).getUserId();//关闭WebSocket
             WebSocketPresenter.getInstance(UserPresenter.getContext()).getWebSocketClient(userId).close();
             requireActivity().finish();
+            UserPresenter.resetPresenter();
         });
         toMineButton.setOnClickListener(v -> startActivity(new Intent(UserPresenter.getContext(), MyApplyActivity.class)));
         toOtherButton.setOnClickListener(v -> startActivity(new Intent(UserPresenter.getContext(), OtherApplyActivity.class)));

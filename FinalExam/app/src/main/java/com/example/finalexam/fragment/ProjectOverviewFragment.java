@@ -12,7 +12,7 @@ public class ProjectOverviewFragment extends Fragment {
     private View view;
 
     public ProjectOverviewFragment() {
-        // Required empty public constructor
+
     }
 
     @Override
