@@ -21,13 +21,11 @@ import com.example.finalexam.presenter.WebSocketPresenter;
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Retrofit;
-
-public class UserOverviewFragment extends Fragment{
+public class UserOverviewFragment extends Fragment {
 
     private View view;
-    private RecyclerView userListView;
     private static final String TAG = "UserOverviewFragment";
+    private static List<UserData> userOnlineList;
 
 
     public UserOverviewFragment() {
@@ -41,9 +39,12 @@ public class UserOverviewFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.fragment_user_overview, container, false);
+
+
         return view;
     }
-    public void initView(){
-        userListView=view.findViewById(R.id.user_overview_list);
+
+    public static void setUserOnlineList(List<UserData> userOnlineList) {
+        UserOverviewFragment.userOnlineList = userOnlineList;
     }
 }
