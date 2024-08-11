@@ -2,6 +2,7 @@ package com.example.finalexam.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -14,6 +15,9 @@ import com.example.finalexam.helper.ManagerDataShowInterface;
 import com.example.finalexam.helper.UserDataShowInterface;
 import com.example.finalexam.presenter.UserPresenter;
 import com.example.finalexam.R;
+import com.example.finalexam.presenter.WebSocketPresenter;
+
+import org.java_websocket.client.WebSocketClient;
 
 public class MainActivity extends BaseActivity implements UserDataShowInterface, ManagerDataShowInterface {
     private static final String TAG = "MainActivity";
@@ -90,6 +94,15 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface,
             Toast.makeText(this,"账号被冻结，请联系管理员",Toast.LENGTH_SHORT).show();
         } else if (STATUS==UserPresenter.STATUS_SUCCESS) {
             Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
+
+           WebSocketClient client= WebSocketPresenter.getInstance(this)
+                    .getWebSocketClient(UserPresenter.getInstance(this).getUserId());
+           if(client!=null&&client.isClosed()){
+               client.connect();
+               Log.d("MainActivity","UserLog中websocket连接");
+           }
+
+
             if (userName == "admin") {
                 startActivity(new Intent(MainActivity.this,ManagerDesktop.class));
             }else{
