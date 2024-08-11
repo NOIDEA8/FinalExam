@@ -15,6 +15,7 @@ import com.example.finalexam.adapter.ProjectAdapter;
 import com.example.finalexam.baseappcompatactivity.BaseActivity;
 import com.example.finalexam.helper.UserDataShowInterface;
 import com.example.finalexam.model.ProjectData;
+import com.example.finalexam.model.UserData;
 import com.example.finalexam.overrideview.DoubleGraphView;
 import com.example.finalexam.presenter.UserPresenter;
 
@@ -159,6 +160,11 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
 
     @Override
     public void increaseView(int STATUS) {
+
+    }
+
+    @Override
+    public void UserOnlineOrNotList(List<UserData> userData) {
 
     }
 

@@ -18,6 +18,10 @@ import com.example.finalexam.fragment.ManagerPageFragment;
 import com.example.finalexam.fragment.ProjectOverviewFragment;
 import com.example.finalexam.fragment.UserOverviewFragment;
 import com.example.finalexam.helper.UserDataShowInterface;
+import com.example.finalexam.model.UserData;
+import com.example.finalexam.presenter.WebSocketPresenter;
+
+import java.util.List;
 
 public class ManagerDesktop extends BaseActivity implements UserDataShowInterface {
 
@@ -234,6 +238,11 @@ public class ManagerDesktop extends BaseActivity implements UserDataShowInterfac
 
     @Override
     public void increaseView(int STATUS) {
+
+    }
+
+    @Override
+    public void UserOnlineOrNotList(List<UserData> userData) {
 
     }
 }

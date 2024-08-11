@@ -12,10 +12,12 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.finalexam.baseappcompatactivity.BaseActivity;
 import com.example.finalexam.helper.UserDataShowInterface;
+import com.example.finalexam.model.UserData;
 import com.example.finalexam.presenter.UserPresenter;
 import com.example.finalexam.R;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.List;
 import java.util.Objects;
 
 public class RegisterActivity extends BaseActivity implements UserDataShowInterface {
@@ -138,6 +140,11 @@ public class RegisterActivity extends BaseActivity implements UserDataShowInterf
 
     @Override
     public void increaseView(int STATUS) {
+
+    }
+
+    @Override
+    public void UserOnlineOrNotList(List<UserData> userData) {
 
     }
 

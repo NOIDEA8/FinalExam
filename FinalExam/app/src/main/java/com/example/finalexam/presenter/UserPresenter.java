@@ -1007,7 +1007,7 @@ public class UserPresenter {
     //获取一个项目的一个组（前后移动端）的所有日志，fetchLogForGroup的时候会被赋值，其他全部赋值到logDataList
     public AllLog getLogDataListByGroup() {return logDataListByGroup;}
 
-    public void setContext(Context context){this.context=context;}
+    public static void setContext(Context context){UserPresenter.context=context;}
 
     public static Context getContext() {return context;}
     //重置userPresent，在退出时用

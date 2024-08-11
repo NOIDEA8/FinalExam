@@ -13,11 +13,14 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.finalexam.baseappcompatactivity.BaseActivity;
 import com.example.finalexam.helper.ManagerDataShowInterface;
 import com.example.finalexam.helper.UserDataShowInterface;
+import com.example.finalexam.model.UserData;
 import com.example.finalexam.presenter.UserPresenter;
 import com.example.finalexam.R;
 import com.example.finalexam.presenter.WebSocketPresenter;
 
 import org.java_websocket.client.WebSocketClient;
+
+import java.util.List;
 
 public class MainActivity extends BaseActivity implements UserDataShowInterface, ManagerDataShowInterface {
     private static final String TAG = "MainActivity";
@@ -36,7 +39,7 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface,
             return insets;
         });
 
-        userPresenter.setContext(getApplicationContext());
+        UserPresenter.setContext(getApplicationContext());
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -95,7 +98,7 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface,
         } else if (STATUS==UserPresenter.STATUS_SUCCESS) {
             Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
 
-           WebSocketClient client= WebSocketPresenter.getInstance(this)
+           WebSocketClient client= WebSocketPresenter.getInstance(getApplicationContext(),MainActivity.this)
                     .getWebSocketClient(UserPresenter.getInstance(this).getUserId());
            if(client!=null&&client.isClosed()){
                client.connect();
@@ -162,6 +165,11 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface,
 
     @Override
     public void increaseView(int STATUS) {
+
+    }
+
+    @Override
+    public void UserOnlineOrNotList(List<UserData> userData) {
 
     }
 
