@@ -1,5 +1,6 @@
 package com.example.finalexam.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -18,6 +19,7 @@ import com.example.finalexam.activity.LogActivity;
 import com.example.finalexam.activity.MyApplyActivity;
 import com.example.finalexam.activity.OtherApplyActivity;
 import com.example.finalexam.helper.ColorHelper;
+import com.example.finalexam.helper.ProjectListSortHelper;
 import com.example.finalexam.helper.UserDataShowInterface;
 import com.example.finalexam.model.ProjectData;
 import com.example.finalexam.presenter.SPPresenter;
@@ -27,10 +29,8 @@ import com.example.finalexam.presenter.WebSocketPresenter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class PersonFragment extends Fragment implements UserDataShowInterface {
-    private static final String TAG = "PersonFragment";
     private View view;
 
     private TextView greetView;
@@ -52,6 +52,7 @@ public class PersonFragment extends Fragment implements UserDataShowInterface {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_person, container, false);
 
+        addTestData();
         initView();
         initListener();
         requestData();
@@ -59,7 +60,23 @@ public class PersonFragment extends Fragment implements UserDataShowInterface {
         return view;
     }
 
+    private void addTestData() {
+        ProjectData test1 = new ProjectData();
+        test1.setCreator("Poria");
+        myProjects.add(test1);
+
+        ProjectData test2 = new ProjectData();
+        test2.setCreator("YOASOBI");
+        myApplications.add(test2);
+
+        ProjectData test3 = new ProjectData();
+        test3.setCreator("たぶん");
+        otherApplications.add(test3);
+    }
+
+    @SuppressLint("SetTextI18n")
     private void showData() {
+        //问候语
         int hour = LocalDateTime.now().getHour();
         String greet = "您好";
         if (hour < 5) greet = "凌晨了";
@@ -69,15 +86,19 @@ public class PersonFragment extends Fragment implements UserDataShowInterface {
         else if (hour < 24) greet = "晚上好";
         greetView.setText(greet);
 
+        //名字，以及头像
         String name = UserPresenter.getInstance(this).getUserName(UserPresenter.getContext());
         name = name == null ? "null" : name;
         nameView.setText(name);
-
         int color = Color.parseColor(ColorHelper.createColorHex(name));
         colorView.setText(name.substring(0, 1));
         colorView.setBackgroundTintList(ColorStateList.valueOf(color));
         if (!ColorHelper.isBrightColor(color))
             colorView.setTextColor(Color.WHITE);
+
+        //显示申请数
+        mineNumView.setText("共" + (myProjects.size() + myApplications.size()) + "条");
+        otherNumView.setText("共" + otherApplications.size() + "条");
     }
 
     private void requestData() {
@@ -94,12 +115,8 @@ public class PersonFragment extends Fragment implements UserDataShowInterface {
             WebSocketPresenter.getInstance(UserPresenter.getContext()).getWebSocketClient(userId).close();
             requireActivity().finish();
         });
-        toMineButton.setOnClickListener(v -> {
-            startActivity(new Intent(UserPresenter.getContext(), MyApplyActivity.class));
-        });
-        toOtherButton.setOnClickListener(v -> {
-            startActivity(new Intent(UserPresenter.getContext(), OtherApplyActivity.class));
-        });
+        toMineButton.setOnClickListener(v -> startActivity(new Intent(UserPresenter.getContext(), MyApplyActivity.class)));
+        toOtherButton.setOnClickListener(v -> startActivity(new Intent(UserPresenter.getContext(), OtherApplyActivity.class)));
     }
 
     private void initView() {
@@ -152,6 +169,7 @@ public class PersonFragment extends Fragment implements UserDataShowInterface {
     public void applyingMonitorProjectList(int STATUS) {
         if (STATUS == UserPresenter.STATUS_SUCCESS) {
             myApplications.addAll(UserPresenter.getInstance(this).getProjectList());
+            ProjectListSortHelper.sortWithCreator(myApplications);
         }
 
         if (++requestNum == 3) {
@@ -164,6 +182,7 @@ public class PersonFragment extends Fragment implements UserDataShowInterface {
     public void applyingProjectList(int STATUS) {
         if (STATUS == UserPresenter.STATUS_SUCCESS) {
             myProjects.addAll(UserPresenter.getInstance(this).getProjectList());
+            ProjectListSortHelper.sortWithCreator(myProjects);
         }
 
         if (++requestNum == 3) {
@@ -231,6 +250,7 @@ public class PersonFragment extends Fragment implements UserDataShowInterface {
     public void application(int STATUS) {
         if (STATUS == UserPresenter.STATUS_SUCCESS) {
             otherApplications.addAll(UserPresenter.getInstance(this).getProjectList());
+            ProjectListSortHelper.sortWithCreator(otherApplications);
         }
 
         if (++requestNum == 3) {
