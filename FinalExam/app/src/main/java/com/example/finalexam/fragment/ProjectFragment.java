@@ -18,6 +18,7 @@ import com.example.finalexam.adapter.ProjectAdapter;
 import com.example.finalexam.helper.ProjectListSortHelper;
 import com.example.finalexam.helper.UserDataShowInterface;
 import com.example.finalexam.model.ProjectData;
+import com.example.finalexam.model.UserData;
 import com.example.finalexam.presenter.UserPresenter;
 
 import java.util.ArrayList;
@@ -159,6 +160,11 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
 
     @Override
     public void increaseView(int STATUS) {
+
+    }
+
+    @Override
+    public void UserOnlineOrNotList(List<UserData> userData) {
 
     }
 
