@@ -290,8 +290,5 @@ public class PersonFragment extends Fragment implements UserDataShowInterface {
 
     }
 
-    @Override
-    public void UserOnlineOrNotList(List<UserData> userData) {
 
-    }
 }

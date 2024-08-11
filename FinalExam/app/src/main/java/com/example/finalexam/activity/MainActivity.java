@@ -168,10 +168,7 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface,
 
     }
 
-    @Override
-    public void UserOnlineOrNotList(List<UserData> userData) {
 
-    }
 
     @Override
     public void projectPublishResult(int STATUS) {

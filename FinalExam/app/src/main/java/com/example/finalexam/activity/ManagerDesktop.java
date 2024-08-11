@@ -241,8 +241,5 @@ public class ManagerDesktop extends BaseActivity implements UserDataShowInterfac
 
     }
 
-    @Override
-    public void UserOnlineOrNotList(List<UserData> userData) {
 
-    }
 }

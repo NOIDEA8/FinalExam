@@ -244,8 +244,4 @@ public class AddProjectActivity extends BaseActivity implements UserDataShowInte
 
     }
 
-    @Override
-    public void UserOnlineOrNotList(List<UserData> userData) {
-
-    }
 }

@@ -163,10 +163,7 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
 
     }
 
-    @Override
-    public void UserOnlineOrNotList(List<UserData> userData) {
 
-    }
 
     @Override
     public void projectPublishResult(int STATUS) {

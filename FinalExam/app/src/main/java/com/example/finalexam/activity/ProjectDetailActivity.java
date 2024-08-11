@@ -163,10 +163,8 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
 
     }
 
-    @Override
-    public void UserOnlineOrNotList(List<UserData> userData) {
 
-    }
+
 
     @Override
     public void projectPublishResult(int STATUS) {
