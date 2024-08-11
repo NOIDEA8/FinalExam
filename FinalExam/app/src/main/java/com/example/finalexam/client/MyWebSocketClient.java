@@ -31,7 +31,7 @@ public class MyWebSocketClient extends WebSocketClient {
         } else {
             Gson gson=new Gson();
             InfoUserList info=gson.fromJson(message,InfoUserList.class);
-            if(info!=null){
+            if(info!=null){//msg?
                 if(!info.getData().isEmpty()){
                     webSocketPresenter.setUserList(info.getData());
                 }else {

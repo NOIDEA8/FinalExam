@@ -43,6 +43,31 @@ public class UserOverviewFragment extends Fragment implements UserDataShowInterf
         return view;
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     @Override
     public void applyMonitorPermission(int STATUS) {
 
