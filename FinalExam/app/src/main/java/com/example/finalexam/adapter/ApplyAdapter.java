@@ -7,11 +7,13 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.finalexam.R;
+import com.example.finalexam.activity.OtherApplyActivity;
 import com.example.finalexam.helper.ColorHelper;
 import com.example.finalexam.model.ProjectData;
 
@@ -44,7 +46,7 @@ public class ApplyAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHolder
         showProjectData(holder, data);
         if (!canBeClick) return;
         holder.projectRVItem.setOnClickListener(v -> {
-
+            OtherApplyActivity.callDealLayout();
         });
     }
 

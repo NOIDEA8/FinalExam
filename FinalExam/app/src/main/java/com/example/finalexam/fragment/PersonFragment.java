@@ -88,7 +88,7 @@ public class PersonFragment extends Fragment implements UserDataShowInterface {
 
         //名字，以及头像
         String name = UserPresenter.getInstance(this).getUserName(UserPresenter.getContext());
-        name = name == null ? "null" : name;
+        name = name == null ? "Null" : name;
         nameView.setText(name);
         int color = Color.parseColor(ColorHelper.createColorHex(name));
         colorView.setText(name.substring(0, 1));

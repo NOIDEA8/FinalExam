@@ -1,6 +1,7 @@
 package com.example.finalexam.helper;
 
 import android.graphics.Color;
+import android.util.Log;
 
 import java.util.Random;
 
@@ -28,7 +29,7 @@ public class ColorHelper {
             }
             hexString = sb.toString();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("ColorHex", "createColorHex Exception", e);
         }
 
         return hexString;
