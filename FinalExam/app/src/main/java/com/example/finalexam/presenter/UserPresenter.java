@@ -525,6 +525,93 @@ public class UserPresenter {
             }
         });
     }
+    //查看的不同组的日志（页面、服务器、移动app）jsonObject包含groupType（后台0、前端1、移动2）、pageSize、page、projectId、logType日志类型(0异常/1其他包括性能，正常日志/2后台自定义日志)
+    public void fetchLogForGroup(int groupType,int pageSize,int page,int projectId,int logType){
+        Api api=getRetrofit().create(Api.class);
+        ViewLogForGroupSend send=new ViewLogForGroupSend(groupType,pageSize,page,projectId,logType);
+        Call<InfoShowAllLog> dataCall=api.viewLogForGroup(token,send);
+        dataCall.enqueue(new Callback<InfoShowAllLog>() {
+            UserDataShowInterface activity = UserPresenter.this.activity;
+            @Override
+            public void onResponse(Call<InfoShowAllLog> call, Response<InfoShowAllLog> response) {
+                InfoShowAllLog info= response.body();
+                if(info==null){
+                    logDataListByGroup=new AllLog();
+                    activity.logDataListByGroup(STATUS_NO_INTERNET);
+                } else if (info.getData()==null) {
+                    logDataListByGroup=new AllLog();
+                    activity.logDataListByGroup(STATUS_NO_DATA);
+                }else{
+                    logDataListByGroup=info.getData();
+                    activity.logDataListByGroup(STATUS_SUCCESS);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<InfoShowAllLog> call, Throwable t) {
+                logDataListByGroup=new AllLog();
+                activity.logDataListByGroup(STATUS_NO_INTERNET);
+            }
+        });
+    }
+    //最近一周内的项目的访问数据和报错统计
+    public void fetchProjectPresentationDateOneWeek(int projectId){
+        Api api=getRetrofit().create(Api.class);
+        Call<InfoLogList> dataCall=api.projectPresentationDateOneWeek(token,projectId);
+        dataCall.enqueue(new Callback<InfoLogList>() {
+            UserDataShowInterface activity = UserPresenter.this.activity;
+            @Override
+            public void onResponse(Call<InfoLogList> call, Response<InfoLogList> response) {
+                InfoLogList info=response.body();
+                if (info==null){
+                    logDataList=new ArrayList<>();
+                    activity.projectPresentationDateOneWeek(STATUS_NO_INTERNET);
+
+                } else if (info.getData()==null) {
+                    logDataList=new ArrayList<>();
+                    activity.projectPresentationDateOneWeek(STATUS_NO_DATA);
+                }else {
+                    logDataList=info.getData();
+                    activity.projectPresentationDateOneWeek(STATUS_SUCCESS);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<InfoLogList> call, Throwable t) {
+                logDataList=new ArrayList<>();
+                activity.projectPresentationDateOneWeek(STATUS_NO_INTERNET);
+            }
+        });
+    }
+    //查看项目操作日志(包括项目发布，更新日志)
+    public void fetchViewProjectOpearteLog(int projectId){
+        Api api=getRetrofit().create(Api.class);
+        Call<InfoLogList> dataCall=api.viewProjectOperateLog(token,projectId);
+        dataCall.enqueue(new Callback<InfoLogList>() {
+            UserDataShowInterface activity = UserPresenter.this.activity;
+            @Override
+            public void onResponse(Call<InfoLogList> call, Response<InfoLogList> response) {
+                InfoLogList info=response.body();
+                if (info==null){
+                    logDataList=new ArrayList<>();
+                    activity.ViewProjectOperateLog(STATUS_NO_INTERNET);
+
+                } else if (info.getData()==null) {
+                    logDataList=new ArrayList<>();
+                    activity.ViewProjectOperateLog(STATUS_NO_DATA);
+                }else {
+                    logDataList=info.getData();
+                    activity.ViewProjectOperateLog(STATUS_SUCCESS);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<InfoLogList> call, Throwable t) {
+                logDataList=new ArrayList<>();
+                activity.ViewProjectOperateLog(STATUS_NO_INTERNET);
+            }
+        });
+    }
     //获取一个项目的所有监管者
     public void fetchMonitorUser(int projectId){
         Api api = getRetrofit().create(Api.class);
@@ -873,93 +960,6 @@ public class UserPresenter {
             public void onFailure(Call<InfoLogList> call, Throwable t) {
                 logDataList=new ArrayList<>();
                 activity.allUserOperationLogList(STATUS_NO_INTERNET);
-            }
-        });
-    }
-    //查看的不同组的日志（页面、服务器、移动app）jsonObject包含groupType（后台0、前端1、移动2）、pageSize、page、projectId、logType日志类型(0异常/1其他包括性能，正常日志/2后台自定义日志)
-    public void fetchLogForGroup(int groupType,int pageSize,int page,int projectId,int logType){
-        Api api=getRetrofit().create(Api.class);
-        ViewLogForGroupSend send=new ViewLogForGroupSend(groupType,pageSize,page,projectId,logType);
-        Call<InfoShowAllLog> dataCall=api.viewLogForGroup(token,send);
-        dataCall.enqueue(new Callback<InfoShowAllLog>() {
-            UserDataShowInterface activity = UserPresenter.this.activity;
-            @Override
-            public void onResponse(Call<InfoShowAllLog> call, Response<InfoShowAllLog> response) {
-                InfoShowAllLog info= response.body();
-                if(info==null){
-                    logDataListByGroup=new AllLog();
-                    activity.logDataListByGroup(STATUS_NO_INTERNET);
-                } else if (info.getData()==null) {
-                    logDataListByGroup=new AllLog();
-                    activity.logDataListByGroup(STATUS_NO_DATA);
-                }else{
-                    logDataListByGroup=info.getData();
-                    activity.logDataListByGroup(STATUS_SUCCESS);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<InfoShowAllLog> call, Throwable t) {
-                logDataListByGroup=new AllLog();
-                activity.logDataListByGroup(STATUS_NO_INTERNET);
-            }
-        });
-    }
-    //最近一周内的项目的访问数据和报错统计
-    public void fetchProjectPresentationDateOneWeek(int projectId){
-        Api api=getRetrofit().create(Api.class);
-        Call<InfoLogList> dataCall=api.projectPresentationDateOneWeek(token,projectId);
-        dataCall.enqueue(new Callback<InfoLogList>() {
-            UserDataShowInterface activity = UserPresenter.this.activity;
-            @Override
-            public void onResponse(Call<InfoLogList> call, Response<InfoLogList> response) {
-                InfoLogList info=response.body();
-                if (info==null){
-                    logDataList=new ArrayList<>();
-                    activity.projectPresentationDateOneWeek(STATUS_NO_INTERNET);
-
-                } else if (info.getData()==null) {
-                    logDataList=new ArrayList<>();
-                    activity.projectPresentationDateOneWeek(STATUS_NO_DATA);
-                }else {
-                    logDataList=info.getData();
-                    activity.projectPresentationDateOneWeek(STATUS_SUCCESS);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<InfoLogList> call, Throwable t) {
-                logDataList=new ArrayList<>();
-                activity.projectPresentationDateOneWeek(STATUS_NO_INTERNET);
-            }
-        });
-    }
-    //查看项目操作日志(包括项目发布，更新日志)
-    public void fetchViewProjectOpearteLog(int projectId){
-        Api api=getRetrofit().create(Api.class);
-        Call<InfoLogList> dataCall=api.viewProjectOperateLog(token,projectId);
-        dataCall.enqueue(new Callback<InfoLogList>() {
-            UserDataShowInterface activity = UserPresenter.this.activity;
-            @Override
-            public void onResponse(Call<InfoLogList> call, Response<InfoLogList> response) {
-                InfoLogList info=response.body();
-                if (info==null){
-                    logDataList=new ArrayList<>();
-                    activity.ViewProjectOperateLog(STATUS_NO_INTERNET);
-
-                } else if (info.getData()==null) {
-                    logDataList=new ArrayList<>();
-                    activity.ViewProjectOperateLog(STATUS_NO_DATA);
-                }else {
-                    logDataList=info.getData();
-                    activity.ViewProjectOperateLog(STATUS_SUCCESS);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<InfoLogList> call, Throwable t) {
-                logDataList=new ArrayList<>();
-                activity.ViewProjectOperateLog(STATUS_NO_INTERNET);
             }
         });
     }
