@@ -65,24 +65,25 @@ public class UserPresenter {
     private static Context context;//接cookie用
 
     private Retrofit Retrofit;
+    //管理员获取项目列表时的两种状态码
 
     public static final int PROJECT_FROZEN=0;
     public static final int PROJECT_ACTIVE=1;
-
+    //管理员获取审核时的状态码
 
     public static final int PROJECT_PROCESSING=0;
     public static final int PROJECT_REJECTED=2;
 
-
+    //过审或不过审
 
     public static final int PASS_REVIEW=1;
     public static final int REJECT_REVIEW=2;
 
-
+    //拿取哪个组的log
     public static final int SERVER_LOG=0;
     public static final int FRONT_LOG=1;
     public static final int MOBILE_LOG=2;
-
+    //获取哪种类型的日志
     public static final int EXCEPTION_LOG=0;
     public static final int NORMAL_LOG=1;//其他包括性能，正常日志
     public static final int SERVER_DEFINE_LOG=2;
