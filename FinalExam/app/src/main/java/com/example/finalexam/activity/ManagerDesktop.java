@@ -49,6 +49,10 @@ public class ManagerDesktop extends BaseActivity implements UserDataShowInterfac
         initListener();
     }
 
+    public static void callUserLayout(){
+
+    }
+
     @Override
     public void onClick(View v) {
         int id = v.getId();
