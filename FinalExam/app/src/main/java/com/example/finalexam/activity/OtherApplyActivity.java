@@ -1,5 +1,6 @@
 package com.example.finalexam.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -20,9 +21,11 @@ import com.example.finalexam.adapter.DealAdapter;
 import com.example.finalexam.fragment.PersonFragment;
 import com.example.finalexam.helper.UserDataShowInterface;
 import com.example.finalexam.model.ProjectData;
+import com.example.finalexam.presenter.UserPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class OtherApplyActivity extends AppCompatActivity implements UserDataShowInterface, View.OnClickListener {
 
@@ -73,14 +76,21 @@ public class OtherApplyActivity extends AppCompatActivity implements UserDataSho
         dealBackground.setVisibility(View.VISIBLE);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.deal_other_apply_background)
             dealBackground.setVisibility(View.INVISIBLE);
         else if (id == R.id.deal_other_apply_yes_button) {
+            list.remove(DealAdapter.tempData);
+            Objects.requireNonNull(otherRV.getAdapter()).notifyDataSetChanged();
+            UserPresenter.getInstance(this).verifyMonitorApplication(DealAdapter.applicationId, 1, null);
             dealBackground.setVisibility(View.INVISIBLE);
         } else if (id == R.id.deal_other_apply_no_button) {
+            list.remove(DealAdapter.tempData);
+            Objects.requireNonNull(otherRV.getAdapter()).notifyDataSetChanged();
+            UserPresenter.getInstance(this).verifyMonitorApplication(DealAdapter.applicationId, 2, "哒咩");
             dealBackground.setVisibility(View.INVISIBLE);
         }
     }

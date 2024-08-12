@@ -22,16 +22,17 @@ import java.util.List;
 public class DealAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHolder> {
 
     private final Context context;
-    private final List<ProjectData> list = new ArrayList<>();
+    private final List<ProjectData> list;
     private boolean canBeClick = false;
+    public static ProjectData tempData;
+    public static int applicationId = 0;
     public static int clickId = 0;
     public static String clickName = null;
     public static String clickProject = null;
 
     public DealAdapter(Context context, List<ProjectData> list, boolean canBeClick) {
         this.context = context;
-        this.list.clear();
-        this.list.addAll(list);
+        this.list = list;
         this.canBeClick = canBeClick;
     }
 
@@ -48,6 +49,8 @@ public class DealAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHolder>
         showProjectData(holder, data);
         if (!canBeClick) return;
         holder.projectRVItem.setOnClickListener(v -> {
+            tempData = data;
+            applicationId = data.getApplyMonitorProjectId();
             clickId = data.getProjectId();
             clickName = data.getCreator();
             clickProject = data.getProjectName();
