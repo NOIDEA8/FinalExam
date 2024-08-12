@@ -13,7 +13,21 @@ public class UserData {
     private int userId;//操作必要
 
 
+    public void setEnabled(String enabled) {
+        this.enabled = enabled;
+    }
 
+    public String getIsOnline() {
+        return isOnline;
+    }
+
+    public void setIsOnline(String isOnline) {
+        this.isOnline = isOnline;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
 
     public String getEnabled() {
         return enabled;
