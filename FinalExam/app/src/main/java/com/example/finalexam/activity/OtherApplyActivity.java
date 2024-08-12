@@ -243,4 +243,9 @@ public class OtherApplyActivity extends AppCompatActivity implements UserDataSho
     public void increaseView(int STATUS) {
 
     }
+
+    @Override
+    public void verifyMonitorApplication(int STATUS) {
+
+    }
 }

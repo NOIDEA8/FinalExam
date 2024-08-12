@@ -94,7 +94,7 @@ public class UserDesktop extends BaseActivity implements UserDataShowInterface, 
         else if (id == R.id.project_apply_background)
             applyBackground.setVisibility(View.INVISIBLE);
         else if (id == R.id.project_apply_yes_button) {
-            UserPresenter.getInstance(this).applyMonitorPermission(UserPresenter.getInstance(this).getUserId(), ProjectAdapter.clickId);
+            UserPresenter.getInstance(this).applyMonitorPermission(ProjectAdapter.clickId);
             applyBackground.setVisibility(View.INVISIBLE);
             Toast.makeText(this, "已发送申请", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.project_apply_no_button)
@@ -283,6 +283,11 @@ public class UserDesktop extends BaseActivity implements UserDataShowInterface, 
 
     @Override
     public void increaseView(int STATUS) {
+
+    }
+
+    @Override
+    public void verifyMonitorApplication(int STATUS) {
 
     }
 }

@@ -16,7 +16,6 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.finalexam.baseappcompatactivity.BaseActivity;
 import com.example.finalexam.client.MyWebSocketClient;
 import com.example.finalexam.fragment.ManagerLogFragment;
-import com.example.finalexam.helper.ManagerDataShowInterface;
 import com.example.finalexam.helper.UserDataShowInterface;
 import com.example.finalexam.model.UserData;
 import com.example.finalexam.presenter.UserPresenter;
