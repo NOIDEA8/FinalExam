@@ -40,7 +40,7 @@ public class applyOverviewFragment extends Fragment implements UserDataShowInter
     }
 
     private void requestData() {
-        UserPresenter.getInstance(this).fetchReviewOrNotProject(0);
+        UserPresenter.getInstance(this).fetchReviewOrNotProject(UserPresenter.PROJECT_PROCESSING);
     }
 
     private void addTestData() {
