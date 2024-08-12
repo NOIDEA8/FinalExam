@@ -1,6 +1,7 @@
 package com.example.finalexam.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.finalexam.R;
+import com.example.finalexam.activity.VerifyActivity;
 import com.example.finalexam.helper.ColorHelper;
 import com.example.finalexam.model.ProjectData;
 
@@ -19,6 +21,7 @@ import java.util.List;
 public class ApplyAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHolder> {
     private final Context context;
     private final List<ProjectData> list;
+    public static ProjectData clickData;
 
     public ApplyAdapter(Context context, List<ProjectData> list) {
         this.context = context;
@@ -36,6 +39,10 @@ public class ApplyAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHolder
     public void onBindViewHolder(@NonNull ProjectAdapter.ItemHolder holder, int position) {
         ProjectData data = list.get(position);
         showProjectData(holder, data);
+        holder.projectRVItem.setOnClickListener(v -> {
+            clickData = data;
+            context.startActivity(new Intent(context, VerifyActivity.class));
+        });
     }
 
     private void showProjectData(ProjectAdapter.ItemHolder holder, ProjectData data) {
