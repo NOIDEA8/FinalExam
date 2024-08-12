@@ -10,10 +10,6 @@ public class ProjectData {
         return applyMonitorProjectId;
     }
 
-    public void setApplyMonitorProjectId(int applyMonitorProjectId) {
-        this.applyMonitorProjectId = applyMonitorProjectId;
-    }
-
     private String createTime;//申请通过时间
     private String creator;
     private String description;
@@ -21,6 +17,20 @@ public class ProjectData {
     private int projectId;
     private String projectPassword;
     private String rejectedReason;
+    private String projectUrl;
+
+    public String getProjectUrl() {
+        return projectUrl;
+    }
+
+    public void setProjectUrl(String projectUrl) {
+        this.projectUrl = projectUrl;
+    }
+
+    public void setApplyMonitorProjectId(int applyMonitorProjectId) {
+        this.applyMonitorProjectId = applyMonitorProjectId;
+    }
+
 
     public String getApplyTime() {
         return applyTime;
