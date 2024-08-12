@@ -1,7 +1,7 @@
 package com.example.finalexam.activity;
 
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import androidx.activity.EdgeToEdge;
@@ -14,29 +14,23 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.finalexam.R;
 import com.example.finalexam.baseappcompatactivity.BaseActivity;
-import com.example.finalexam.fragment.ManagerPageFragment;
+import com.example.finalexam.fragment.applyOverviewFragment;
 import com.example.finalexam.fragment.ProjectOverviewFragment;
 import com.example.finalexam.fragment.UserOverviewFragment;
 import com.example.finalexam.helper.UserDataShowInterface;
-import com.example.finalexam.model.UserData;
-import com.example.finalexam.presenter.WebSocketPresenter;
 
-import java.util.List;
-
-public class ManagerDesktop extends BaseActivity implements UserDataShowInterface {
+public class ManagerDesktop extends BaseActivity implements UserDataShowInterface, View.OnClickListener {
 
     private static final String TAG = "ManagerDesktop";
 
-    private FragmentManager fragmentManager;
-    private FrameLayout container;
-    private UserOverviewFragment userOverviewFragment;
-    private ManagerPageFragment managerPageFragment;
-    private ProjectOverviewFragment projectFragment;
+    private FrameLayout projectContainer;
+    private FrameLayout applyContainer;
+    private FrameLayout userContainer;
     private int pagePosition = 0;
 
-    private ConstraintLayout userOverviewButton;
-    private ConstraintLayout applicationPageButton;
-    private ConstraintLayout personPageButton;
+    private ConstraintLayout projectButton;
+    private ConstraintLayout applyButton;
+    private ConstraintLayout userButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,55 +48,67 @@ public class ManagerDesktop extends BaseActivity implements UserDataShowInterfac
         initPage();
         initListener();
     }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        if (id == 0) {
+
+        } else if (id == R.id.manager_project_page_button)
+            changePageTo(0);
+        else if (id == R.id.manager_apply_page_button)
+            changePageTo(1);
+        else if (id == R.id.manager_user_page_button)
+            changePageTo(2);
+    }
+
     private void initPage() {
-        userOverviewFragment=new UserOverviewFragment();
-        managerPageFragment=new ManagerPageFragment();
-        projectFragment=new ProjectOverviewFragment();
+        ProjectOverviewFragment projectFragment = new ProjectOverviewFragment();
+        applyOverviewFragment applyFragment = new applyOverviewFragment();
+        UserOverviewFragment userFragment = new UserOverviewFragment();
 
-
-        fragmentManager = getSupportFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.user_pagerContainer, userOverviewFragment);
+        transaction.add(R.id.manager_project_container, projectFragment);
+        transaction.add(R.id.manager_apply_container, applyFragment);
+        transaction.add(R.id.manager_user_container, userFragment);
         transaction.commit();
     }
 
     private void initListener() {
-        userOverviewButton.setOnClickListener(v->{
-            changePageTo(0);
-        });
-        applicationPageButton.setOnClickListener(v->{
-            changePageTo(1);
-        });
-        personPageButton.setOnClickListener(v->{
-            changePageTo(2);
-        });
+        projectButton.setOnClickListener(this);
+        applyButton.setOnClickListener(this);
+        userButton.setOnClickListener(this);
     }
 
     private void initView() {
-        container = findViewById(R.id.user_pagerContainer);
-        userOverviewButton = findViewById(R.id.user_overview_button);
-        applicationPageButton = findViewById(R.id.application_page_button);
-        personPageButton = findViewById(R.id.person_page_button);
+        projectContainer = findViewById(R.id.manager_project_container);
+        applyContainer = findViewById(R.id.manager_apply_container);
+        userContainer = findViewById(R.id.manager_user_container);
+        projectButton = findViewById(R.id.manager_project_page_button);
+        applyButton = findViewById(R.id.manager_apply_page_button);
+        userButton = findViewById(R.id.manager_user_page_button);
     }
 
-    private void changePageTo(int pagePosition){
+    private void changePageTo(int pagePosition) {
         //防止浪费算力或丢失已经绘制的画面
         if (this.pagePosition == pagePosition) return;
         else this.pagePosition = pagePosition;
 
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        if (pagePosition == 0){
-            transaction.replace(R.id.user_pagerContainer, userOverviewFragment);
-            Log.d(TAG, "ManagerDeskTop change page to userOverviewFragment");
+        if (pagePosition == 0) {
+            projectContainer.setVisibility(View.VISIBLE);
+            applyContainer.setVisibility(View.INVISIBLE);
+            userContainer.setVisibility(View.INVISIBLE);
         } else if (pagePosition == 1) {
-            transaction.replace(R.id.user_pagerContainer, projectFragment);
-            Log.d(TAG, "ManagerDeskTop change page to ProjectFragment");
-        } else{
-            transaction.replace(R.id.user_pagerContainer, managerPageFragment);
-            Log.d(TAG, "ManagerDeskTop change page to managerPageFragment");
+            projectContainer.setVisibility(View.INVISIBLE);
+            applyContainer.setVisibility(View.VISIBLE);
+            userContainer.setVisibility(View.INVISIBLE);
+        } else if (pagePosition == 2) {
+            projectContainer.setVisibility(View.INVISIBLE);
+            applyContainer.setVisibility(View.INVISIBLE);
+            userContainer.setVisibility(View.VISIBLE);
         }
-        transaction.commit();//
     }
 
 
@@ -245,6 +251,4 @@ public class ManagerDesktop extends BaseActivity implements UserDataShowInterfac
     public void verifyMonitorApplication(int STATUS) {
 
     }
-
-
 }

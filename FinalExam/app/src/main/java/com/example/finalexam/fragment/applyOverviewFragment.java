@@ -11,10 +11,10 @@ import android.view.ViewGroup;
 import com.example.finalexam.R;
 
 
-public class ManagerPageFragment extends Fragment {
+public class applyOverviewFragment extends Fragment {
 
     private View view;
-    public ManagerPageFragment() {
+    public applyOverviewFragment() {
 
     }
 
