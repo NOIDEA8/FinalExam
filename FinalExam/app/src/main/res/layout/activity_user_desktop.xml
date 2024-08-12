@@ -9,9 +9,16 @@
     tools:context=".activity.UserDesktop">
 
     <FrameLayout
-        android:id="@+id/user_pagerContainer"
+        android:id="@+id/user_project_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:visibility="visible" />
+
+    <FrameLayout
+        android:id="@+id/user_person_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible" />
 
     <View
         android:layout_width="match_parent"

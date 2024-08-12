@@ -6,18 +6,23 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.finalexam.baseappcompatactivity.BaseActivity;
 import com.example.finalexam.helper.ManagerDataShowInterface;
 import com.example.finalexam.helper.UserDataShowInterface;
-import com.example.finalexam.presenter.SPPresenter;
+import com.example.finalexam.model.UserData;
 import com.example.finalexam.presenter.UserPresenter;
 import com.example.finalexam.R;
+import com.example.finalexam.presenter.WebSocketPresenter;
 
-public class MainActivity extends AppCompatActivity  implements UserDataShowInterface, ManagerDataShowInterface {
+import org.java_websocket.client.WebSocketClient;
+
+import java.util.List;
+
+public class MainActivity extends BaseActivity implements UserDataShowInterface, ManagerDataShowInterface {
     private static final String TAG = "MainActivity";
     private UserPresenter userPresenter = UserPresenter.getInstance(this);
     private String userName;
@@ -34,9 +39,7 @@ public class MainActivity extends AppCompatActivity  implements UserDataShowInte
             return insets;
         });
 
-
-
-
+        UserPresenter.setContext(getApplicationContext());
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -49,6 +52,7 @@ public class MainActivity extends AppCompatActivity  implements UserDataShowInte
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             } finally {
+                                //startActivity(new Intent(MainActivity.this, UserDesktop.class));
                                 startActivity(new Intent(MainActivity.this, UserDesktop.class));
                                 finish();
                             }
@@ -62,11 +66,15 @@ public class MainActivity extends AppCompatActivity  implements UserDataShowInte
                 }
             }
         }).start();
-
     }
 
     @Override
     public void applyMonitorPermission(int STATUS) {
+
+    }
+
+    @Override
+    public void checkMonitorResult(int STATUS) {
 
     }
 
@@ -79,11 +87,24 @@ public class MainActivity extends AppCompatActivity  implements UserDataShowInte
     public void userLog(int STATUS) {
         if(STATUS==UserPresenter.STATUS_NO_INTERNET){
             Toast.makeText(this,"无网络，稍后重试",Toast.LENGTH_SHORT).show();
+            if (userName.equals("admin")) {
+                startActivity(new Intent(MainActivity.this,ManagerDesktop.class));
+            }else{
+                startActivity(new Intent(MainActivity.this,UserDesktop.class));
+            }
+            finish();
         } else if (STATUS==UserPresenter.STATUS_ACCOUNT_FROZEN) {
             Toast.makeText(this,"账号被冻结，请联系管理员",Toast.LENGTH_SHORT).show();
         } else if (STATUS==UserPresenter.STATUS_SUCCESS) {
             Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
-            if (userName == "admin") {
+
+           WebSocketClient client= WebSocketPresenter.getInstance(getApplicationContext())
+                    .getWebSocketClient(UserPresenter.getInstance(this).getUserId());
+           if(client!=null&&client.isClosed()){
+               client.connect();
+               Log.d("MainActivity","UserLog中websocket连接");
+           }
+            if (userName.equals("admin")) {
                 startActivity(new Intent(MainActivity.this,ManagerDesktop.class));
             }else{
                 startActivity(new Intent(MainActivity.this,UserDesktop.class));
@@ -98,7 +119,7 @@ public class MainActivity extends AppCompatActivity  implements UserDataShowInte
     }
 
     @Override
-    public void userListResult(int STATUS) {
+    public void monitorUserListResult(int STATUS) {
 
     }
 
@@ -113,14 +134,72 @@ public class MainActivity extends AppCompatActivity  implements UserDataShowInte
     }
 
     @Override
+    public void application(int STATUS) {
+
+    }
+
+    @Override
+    public void attackServerLogList(int STATUS) {
+
+    }
+
+    @Override
+    public void allUserOperationLogList(int STATUS) {
+
+    }
+
+    @Override
+    public void logDataListByGroup(int STATUS) {
+
+    }
+
+    @Override
+    public void projectPresentationDateOneWeek(int STATUS) {
+
+    }
+
+    @Override
+    public void ViewProjectOperateLog(int STATUS) {
+
+    }
+
+    @Override
+    public void increaseView(int STATUS) {
+
+    }
+
+
+
+    @Override
     public void projectPublishResult(int STATUS) {
 
     }
 
     @Override
-    public void projectListResult(int STATUS) {
+    public void briefProjectList(int STATUS) {
 
     }
+
+    @Override
+    public void selfProjectList(int STATUS) {
+
+    }
+
+    @Override
+    public void monitorProjectList(int STATUS) {
+
+    }
+
+    @Override
+    public void applyingMonitorProjectList(int STATUS) {
+
+    }
+
+    @Override
+    public void applyingProjectList(int STATUS) {
+
+    }
+
 
     @Override
     public void projectDetail(int STATUS) {
@@ -128,7 +207,27 @@ public class MainActivity extends AppCompatActivity  implements UserDataShowInte
     }
 
     @Override
-    public void updata(int STATUS) {
+    public void updateProject(int STATUS) {
+
+    }
+
+    @Override
+    public void cancelMonitor(int STATUS) {
+
+    }
+
+    @Override
+    public void deleteProject(int STATUS) {
+
+    }
+
+    @Override
+    public void freezeOrNotProjectList(int STATUS) {
+
+    }
+
+    @Override
+    public void applyOrNotProjectList(int STATUS) {
 
     }
 

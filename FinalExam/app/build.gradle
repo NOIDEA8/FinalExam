@@ -37,9 +37,10 @@ dependencies {
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
 
+    implementation "org.java-websocket:Java-WebSocket:1.4.0"
     implementation 'com.squareup.retrofit2:retrofit:2.6.3'
     implementation 'com.squareup.retrofit2:converter-gson:2.6.3'
     implementation 'com.google.code.gson:gson:2.8.0'
-
-    implementation files("./libs/monitor-debug.aar")
+    implementation 'com.alibaba:fastjson:1.2.76'
+    implementation files("./libs/QGSDK.aar")
 }

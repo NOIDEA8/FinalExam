@@ -6,19 +6,21 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.finalexam.baseappcompatactivity.BaseActivity;
 import com.example.finalexam.helper.UserDataShowInterface;
+import com.example.finalexam.model.UserData;
 import com.example.finalexam.presenter.UserPresenter;
 import com.example.finalexam.R;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.List;
 import java.util.Objects;
 
-public class RegisterActivity extends AppCompatActivity implements UserDataShowInterface {
+public class RegisterActivity extends BaseActivity implements UserDataShowInterface {
     private static final String TAG = "RegisterActivity";
     private TextInputEditText account;
     private TextInputEditText password;
@@ -61,6 +63,11 @@ public class RegisterActivity extends AppCompatActivity implements UserDataShowI
     }
 
     @Override
+    public void checkMonitorResult(int STATUS) {
+
+    }
+
+    @Override
     public void freeze(int STATUS) {
 
     }
@@ -87,7 +94,7 @@ public class RegisterActivity extends AppCompatActivity implements UserDataShowI
     }
 
     @Override
-    public void userListResult(int STATUS) {
+    public void monitorUserListResult(int STATUS) {
 
     }
 
@@ -102,12 +109,69 @@ public class RegisterActivity extends AppCompatActivity implements UserDataShowI
     }
 
     @Override
+    public void application(int STATUS) {
+
+    }
+
+    @Override
+    public void attackServerLogList(int STATUS) {
+
+    }
+
+    @Override
+    public void allUserOperationLogList(int STATUS) {
+
+    }
+
+    @Override
+    public void logDataListByGroup(int STATUS) {
+
+    }
+
+    @Override
+    public void projectPresentationDateOneWeek(int STATUS) {
+
+    }
+
+    @Override
+    public void ViewProjectOperateLog(int STATUS) {
+
+    }
+
+    @Override
+    public void increaseView(int STATUS) {
+
+    }
+
+
+
+    @Override
     public void projectPublishResult(int STATUS) {
 
     }
 
     @Override
-    public void projectListResult(int STATUS) {
+    public void briefProjectList(int STATUS) {
+
+    }
+
+    @Override
+    public void selfProjectList(int STATUS) {
+
+    }
+
+    @Override
+    public void monitorProjectList(int STATUS) {
+
+    }
+
+    @Override
+    public void applyingMonitorProjectList(int STATUS) {
+
+    }
+
+    @Override
+    public void applyingProjectList(int STATUS) {
 
     }
 
@@ -117,7 +181,27 @@ public class RegisterActivity extends AppCompatActivity implements UserDataShowI
     }
 
     @Override
-    public void updata(int STATUS) {
+    public void updateProject(int STATUS) {
+
+    }
+
+    @Override
+    public void cancelMonitor(int STATUS) {
+
+    }
+
+    @Override
+    public void deleteProject(int STATUS) {
+
+    }
+
+    @Override
+    public void freezeOrNotProjectList(int STATUS) {
+
+    }
+
+    @Override
+    public void applyOrNotProjectList(int STATUS) {
 
     }
 
