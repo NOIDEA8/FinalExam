@@ -97,9 +97,7 @@ public class ProjectOverviewFragment extends Fragment implements UserDataShowInt
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void briefProjectList(int STATUS) {
-        if (STATUS == UserPresenter.STATUS_NO_INTERNET){
-            Toast.makeText(UserPresenter.getContext(), "无网络", Toast.LENGTH_SHORT).show();
-        }else if (STATUS == UserPresenter.STATUS_SUCCESS){
+        if (STATUS == UserPresenter.STATUS_SUCCESS) {
             list.clear();
             list.addAll(UserPresenter.getInstance(this).getProjectList());
             ProjectListSortHelper.sortWithCreator(list);

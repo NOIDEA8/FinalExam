@@ -14,7 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.finalexam.R;
 import com.example.finalexam.baseappcompatactivity.BaseActivity;
-import com.example.finalexam.fragment.applyOverviewFragment;
+import com.example.finalexam.fragment.ApplyOverviewFragment;
 import com.example.finalexam.fragment.ProjectOverviewFragment;
 import com.example.finalexam.fragment.UserOverviewFragment;
 import com.example.finalexam.helper.UserDataShowInterface;
@@ -64,7 +64,7 @@ public class ManagerDesktop extends BaseActivity implements UserDataShowInterfac
 
     private void initPage() {
         ProjectOverviewFragment projectFragment = new ProjectOverviewFragment();
-        applyOverviewFragment applyFragment = new applyOverviewFragment();
+        ApplyOverviewFragment applyFragment = new ApplyOverviewFragment();
         UserOverviewFragment userFragment = new UserOverviewFragment();
 
         FragmentManager fragmentManager = getSupportFragmentManager();

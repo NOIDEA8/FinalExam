@@ -23,10 +23,10 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class applyOverviewFragment extends Fragment implements UserDataShowInterface {
+public class ApplyOverviewFragment extends Fragment implements UserDataShowInterface {
     private View view;
     public static final List<ProjectData> list = new ArrayList<>();
-    private RecyclerView applyRV;
+    private static RecyclerView applyRV;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,6 +47,8 @@ public class applyOverviewFragment extends Fragment implements UserDataShowInter
         ProjectData data1 = new ProjectData();
         data1.setCreator("醒觉");
         data1.setProjectName("HuiDianWo");
+        data1.setDescription("感觉不如原神");
+        data1.setProjectUrl("https://apifox.com/apidoc/shared-0176effd-6d34-4849-8bd7-54759c5a0e9a/api-203512238");
 
         ProjectData data2 = new ProjectData();
         data2.setCreator("如泣似诉");
@@ -58,6 +60,11 @@ public class applyOverviewFragment extends Fragment implements UserDataShowInter
     private void initRV() {
         applyRV.setLayoutManager(new LinearLayoutManager(requireContext()));
         applyRV.setAdapter(new ApplyAdapter(requireContext(), list));
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public static void notifyChange(){
+        Objects.requireNonNull(applyRV.getAdapter()).notifyDataSetChanged();
     }
 
     private void initView() {
@@ -137,7 +144,7 @@ public class applyOverviewFragment extends Fragment implements UserDataShowInter
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void applyOrNotProjectList(int STATUS) {
-        if (STATUS == UserPresenter.STATUS_SUCCESS){
+        if (STATUS == UserPresenter.STATUS_SUCCESS) {
             list.clear();
             list.addAll(UserPresenter.getInstance(this).getProjectList());
             ProjectListSortHelper.sortWithCreator(list);
