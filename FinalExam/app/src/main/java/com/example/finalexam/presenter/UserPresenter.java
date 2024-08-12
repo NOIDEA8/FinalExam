@@ -144,7 +144,7 @@ public class UserPresenter {
         });
     }
 
-    public void register(Context context, String account, String password, String passwordAgain) {
+    public void register( String account, String password, String passwordAgain) {
         if (!password.equals(passwordAgain)) {
             activity.userRegister(STATUS_PASSWORDS_INCONSISTENT);
             return;
@@ -402,7 +402,7 @@ public class UserPresenter {
         });
     }
     //自己发布项目
-    public void pushProject(String projectName,String description,int userId,String projectUrl,String projectPassword){
+    public void pushProject(String projectName,String description,String projectUrl,String projectPassword){
         Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
@@ -410,7 +410,7 @@ public class UserPresenter {
         PublishSend publishData=new PublishSend();
         publishData.setDescription(description);
         publishData.setProjectName(projectName);
-        publishData.setUserId(userId);
+        publishData.setUserId(presenter.getUserId());
         publishData.setProjectUrl(projectUrl);
         publishData.setProjectPassword(projectPassword);
 
@@ -436,13 +436,13 @@ public class UserPresenter {
         });
     }
     //请求项目的监控权限
-    public void applyMonitorPermission(int userId,int projectId){
+    public void applyMonitorPermission(int projectId){
         Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
         MonitorSend applyMonitorSend=new MonitorSend();
         applyMonitorSend.setProjectId(projectId);
-        applyMonitorSend.setUserId(userId);
+        applyMonitorSend.setUserId(presenter.getUserId());
 
         Call<InfoUser> dataCall=api.applyMonitorPermission(token,applyMonitorSend);
 
@@ -467,7 +467,7 @@ public class UserPresenter {
         });
     }
     //发布者进行项目数据更新
-    public void updateProject(String projectUrl,int projectId,String description,String projectPassword,int userId){
+    public void updateProject(String projectUrl,int projectId,String description,String projectPassword){
         Api api = getRetrofit().create(Api.class);
         //项目URL、项目id、项目描述
         UpdataProjectSend updataProjectSend=new UpdataProjectSend();
@@ -475,7 +475,7 @@ public class UserPresenter {
         updataProjectSend.setProjectId(projectId);
         updataProjectSend.setDescription(description);
         updataProjectSend.setProjectPassword(projectPassword);
-        updataProjectSend.setUserId(userId);
+        updataProjectSend.setUserId(presenter.getUserId());
         Call<InfoUser> dataCall=api.updateProject(token,updataProjectSend);
 
         dataCall.enqueue(new Callback<InfoUser>() {

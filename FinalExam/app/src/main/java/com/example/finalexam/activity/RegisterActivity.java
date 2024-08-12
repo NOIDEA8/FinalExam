@@ -52,7 +52,7 @@ public class RegisterActivity extends BaseActivity implements UserDataShowInterf
             String accountStr = Objects.requireNonNull(account.getText()).toString();
             String passwordStr = Objects.requireNonNull(password.getText()).toString();
             String passwordAgainStr = Objects.requireNonNull(passwordAgain.getText()).toString();
-            UserPresenter.getInstance(this).register(this, accountStr, passwordStr, passwordAgainStr);
+            UserPresenter.getInstance(this).register( accountStr, passwordStr, passwordAgainStr);
         });
     }
 

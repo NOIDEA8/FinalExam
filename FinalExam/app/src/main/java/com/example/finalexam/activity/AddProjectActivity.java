@@ -85,7 +85,6 @@ public class AddProjectActivity extends BaseActivity implements UserDataShowInte
             UserPresenter.getInstance(this).pushProject(
                     name,
                     description,
-                    UserPresenter.getInstance(this).getUserId(),
                     url,
                     password
             );
