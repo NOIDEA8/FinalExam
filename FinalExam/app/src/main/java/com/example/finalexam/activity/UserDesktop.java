@@ -5,8 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -15,12 +19,15 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.finalexam.R;
+import com.example.finalexam.adapter.ProjectAdapter;
 import com.example.finalexam.baseappcompatactivity.BaseActivity;
 import com.example.finalexam.fragment.PersonFragment;
 import com.example.finalexam.fragment.ProjectFragment;
+import com.example.finalexam.helper.UserDataShowInterface;
 import com.example.finalexam.overrideview.AddButton;
+import com.example.finalexam.presenter.UserPresenter;
 
-public class UserDesktop extends BaseActivity {
+public class UserDesktop extends BaseActivity implements UserDataShowInterface, View.OnClickListener {
 
     private FrameLayout projectContainer;
     private FrameLayout personContainer;
@@ -29,6 +36,14 @@ public class UserDesktop extends BaseActivity {
     private AddButton addButton;
     private ConstraintLayout projectPageButton;
     private ConstraintLayout personPageButton;
+
+    private static ConstraintLayout applyBackground;
+    private static ConstraintLayout applyLayout;
+    private static TextView applyProject;
+    private static TextView yesButton;
+    private static TextView noButton;
+
+    public static boolean canBack = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +57,48 @@ public class UserDesktop extends BaseActivity {
         });
         getWindow().setNavigationBarColor(getColor(R.color.white));
 
+        overrideBackMethod();
         initView();
         initPage();
         initListener();
+    }
+
+    private void overrideBackMethod() {
+        //重写回退方法
+        OnBackPressedDispatcher dispatcher = getOnBackPressedDispatcher();
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (applyBackground.getVisibility() == View.VISIBLE)
+                    applyBackground.setVisibility(View.INVISIBLE);
+                else finish();
+            }
+        };
+        dispatcher.addCallback(callback);
+    }
+
+    public static void callApplyLayout() {
+        applyProject.setText(ProjectAdapter.clickName);
+        applyBackground.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        if (id == R.id.add_button)
+            startActivity(new Intent(this, AddProjectActivity.class));
+        else if (id == R.id.user_project_page_button)
+            changePageTo(0);
+        else if (id == R.id.user_person_page_button)
+            changePageTo(1);
+        else if (id == R.id.project_apply_background)
+            applyBackground.setVisibility(View.INVISIBLE);
+        else if (id == R.id.project_apply_yes_button) {
+            UserPresenter.getInstance(this).applyMonitorPermission(UserPresenter.getInstance(this).getUserId(), ProjectAdapter.clickId);
+            applyBackground.setVisibility(View.INVISIBLE);
+            Toast.makeText(this, "已发送申请", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.project_apply_no_button)
+            applyBackground.setVisibility(View.INVISIBLE);
     }
 
     @SuppressLint("CommitTransaction")
@@ -61,9 +115,13 @@ public class UserDesktop extends BaseActivity {
     }
 
     private void initListener() {
-        addButton.setOnClickListener(v -> startActivity(new Intent(this, AddProjectActivity.class)));
-        projectPageButton.setOnClickListener(v -> changePageTo(0));
-        personPageButton.setOnClickListener(v -> changePageTo(1));
+        addButton.setOnClickListener(this);
+        projectPageButton.setOnClickListener(this);
+        personPageButton.setOnClickListener(this);
+        applyBackground.setOnClickListener(this);
+        applyLayout.setOnClickListener(this);
+        yesButton.setOnClickListener(this);
+        noButton.setOnClickListener(this);
     }
 
     private void initView() {
@@ -72,6 +130,11 @@ public class UserDesktop extends BaseActivity {
         addButton = findViewById(R.id.add_button);
         projectPageButton = findViewById(R.id.user_project_page_button);
         personPageButton = findViewById(R.id.user_person_page_button);
+        applyBackground = findViewById(R.id.project_apply_background);
+        applyLayout = findViewById(R.id.project_apply_layout);
+        applyProject = findViewById(R.id.project_apply_project);
+        yesButton = findViewById(R.id.project_apply_yes_button);
+        noButton = findViewById(R.id.project_apply_no_button);
     }
 
     private void changePageTo(int pagePosition) {
@@ -86,5 +149,140 @@ public class UserDesktop extends BaseActivity {
             projectContainer.setVisibility(View.INVISIBLE);
             personContainer.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void applyMonitorPermission(int STATUS) {
+
+    }
+
+    @Override
+    public void checkMonitorResult(int STATUS) {
+
+    }
+
+    @Override
+    public void freeze(int STATUS) {
+
+    }
+
+    @Override
+    public void projectPublishResult(int STATUS) {
+
+    }
+
+    @Override
+    public void briefProjectList(int STATUS) {
+
+    }
+
+    @Override
+    public void selfProjectList(int STATUS) {
+
+    }
+
+    @Override
+    public void monitorProjectList(int STATUS) {
+
+    }
+
+    @Override
+    public void applyingMonitorProjectList(int STATUS) {
+
+    }
+
+    @Override
+    public void applyingProjectList(int STATUS) {
+
+    }
+
+    @Override
+    public void projectDetail(int STATUS) {
+
+    }
+
+    @Override
+    public void updateProject(int STATUS) {
+
+    }
+
+    @Override
+    public void cancelMonitor(int STATUS) {
+
+    }
+
+    @Override
+    public void deleteProject(int STATUS) {
+
+    }
+
+    @Override
+    public void freezeOrNotProjectList(int STATUS) {
+
+    }
+
+    @Override
+    public void applyOrNotProjectList(int STATUS) {
+
+    }
+
+    @Override
+    public void userLog(int STATUS) {
+
+    }
+
+    @Override
+    public void userRegister(int STATUS) {
+
+    }
+
+    @Override
+    public void monitorUserListResult(int STATUS) {
+
+    }
+
+    @Override
+    public void userDetail(int STATUS) {
+
+    }
+
+    @Override
+    public void verify(int STATUS) {
+
+    }
+
+    @Override
+    public void application(int STATUS) {
+
+    }
+
+    @Override
+    public void attackServerLogList(int STATUS) {
+
+    }
+
+    @Override
+    public void allUserOperationLogList(int STATUS) {
+
+    }
+
+    @Override
+    public void logDataListByGroup(int STATUS) {
+
+    }
+
+    @Override
+    public void projectPresentationDateOneWeek(int STATUS) {
+
+    }
+
+    @Override
+    public void ViewProjectOperateLog(int STATUS) {
+
+    }
+
+    @Override
+    public void increaseView(int STATUS) {
+
     }
 }

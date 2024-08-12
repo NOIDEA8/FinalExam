@@ -3,7 +3,6 @@ package com.example.finalexam.activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
@@ -17,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.finalexam.R;
-import com.example.finalexam.adapter.ApplyAdapter;
+import com.example.finalexam.adapter.DealAdapter;
 import com.example.finalexam.fragment.PersonFragment;
 import com.example.finalexam.helper.UserDataShowInterface;
 import com.example.finalexam.model.ProjectData;
@@ -30,12 +29,12 @@ public class OtherApplyActivity extends AppCompatActivity implements UserDataSho
     private RecyclerView otherRV;
     private final List<ProjectData> list = new ArrayList<>();
 
-    public static ConstraintLayout dealBackground;
-    private ConstraintLayout dealLayout;
-    private TextView dealName;
-    private TextView dealProject;
-    private TextView yesButton;
-    private TextView noButton;
+    private static ConstraintLayout dealBackground;
+    private static ConstraintLayout dealLayout;
+    private static TextView dealName;
+    private static TextView dealProject;
+    private static TextView yesButton;
+    private static TextView noButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +68,8 @@ public class OtherApplyActivity extends AppCompatActivity implements UserDataSho
     }
 
     public static void callDealLayout() {
+        dealName.setText(DealAdapter.clickName);
+        dealProject.setText(DealAdapter.clickProject);
         dealBackground.setVisibility(View.VISIBLE);
     }
 
@@ -78,9 +79,9 @@ public class OtherApplyActivity extends AppCompatActivity implements UserDataSho
         if (id == R.id.deal_other_apply_background)
             dealBackground.setVisibility(View.INVISIBLE);
         else if (id == R.id.deal_other_apply_yes_button) {
-
+            dealBackground.setVisibility(View.INVISIBLE);
         } else if (id == R.id.deal_other_apply_no_button) {
-
+            dealBackground.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -88,7 +89,7 @@ public class OtherApplyActivity extends AppCompatActivity implements UserDataSho
         otherRV.setLayoutManager(new LinearLayoutManager(this));
         list.clear();
         list.addAll(PersonFragment.otherApplications);
-        otherRV.setAdapter(new ApplyAdapter(this, list, true));
+        otherRV.setAdapter(new DealAdapter(this, list, true));
     }
 
     private void initListener() {

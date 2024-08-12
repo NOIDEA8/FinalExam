@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,13 +19,16 @@ import com.example.finalexam.model.ProjectData;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ApplyAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHolder> {
+public class DealAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHolder> {
 
     private final Context context;
     private final List<ProjectData> list = new ArrayList<>();
     private boolean canBeClick = false;
+    public static int clickId = 0;
+    public static String clickName = null;
+    public static String clickProject = null;
 
-    public ApplyAdapter(Context context, List<ProjectData> list, boolean canBeClick) {
+    public DealAdapter(Context context, List<ProjectData> list, boolean canBeClick) {
         this.context = context;
         this.list.clear();
         this.list.addAll(list);
@@ -46,6 +48,9 @@ public class ApplyAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHolder
         showProjectData(holder, data);
         if (!canBeClick) return;
         holder.projectRVItem.setOnClickListener(v -> {
+            clickId = data.getProjectId();
+            clickName = data.getCreator();
+            clickProject = data.getProjectName();
             OtherApplyActivity.callDealLayout();
         });
     }

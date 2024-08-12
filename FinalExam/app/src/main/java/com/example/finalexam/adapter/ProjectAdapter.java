@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.finalexam.R;
 import com.example.finalexam.activity.ProjectDetailActivity;
+import com.example.finalexam.activity.UserDesktop;
 import com.example.finalexam.helper.ColorHelper;
 import com.example.finalexam.model.ProjectData;
 
@@ -27,6 +28,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHold
 
     private static final String TAG = "ItemAdapter";
     public static int clickId = 114;
+    public static String clickName = null;
     public static boolean canBeEdited = false;
 
     private final List<ProjectData> all;
@@ -94,7 +96,8 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHold
     private void setApplyListener(ItemHolder holder, ProjectData data) {
         holder.projectRVItem.setOnClickListener(v -> {
             clickId = data.getProjectId();
-            Toast.makeText(context, "哒咩", Toast.LENGTH_SHORT).show();
+            clickName = data.getProjectName();
+            UserDesktop.callApplyLayout();
         });
     }
 
