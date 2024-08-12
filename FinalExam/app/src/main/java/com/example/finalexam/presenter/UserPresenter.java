@@ -68,14 +68,21 @@ public class UserPresenter {
 
     public static final int PROJECT_FROZEN=0;
     public static final int PROJECT_ACTIVE=1;
+
+
     public static final int PROJECT_PROCESSING=0;
-    public static final int PROJECT_ACCEPTED=1;
+    public static final int PROJECT_REJECTED=2;
+
+
 
     public static final int PASS_REVIEW=1;
     public static final int REJECT_REVIEW=2;
+
+
     public static final int SERVER_LOG=0;
     public static final int FRONT_LOG=1;
     public static final int MOBILE_LOG=2;
+
     public static final int EXCEPTION_LOG=0;
     public static final int NORMAL_LOG=1;//其他包括性能，正常日志
     public static final int SERVER_DEFINE_LOG=2;

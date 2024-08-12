@@ -6,14 +6,12 @@ import android.content.Intent;
 import com.example.finalexam.fragment.UserOverviewFragment;
 import com.example.finalexam.info.InfoUserList;
 import com.example.finalexam.model.UserData;
-import com.example.finalexam.presenter.WebSocketPresenter;
 import com.google.gson.Gson;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MyWebSocketClient extends WebSocketClient {
@@ -39,7 +37,7 @@ public class MyWebSocketClient extends WebSocketClient {
             InfoUserList info=gson.fromJson(message,InfoUserList.class);
             if(info!=null){//msg?
                 if(!info.getData().isEmpty()){
-                    List<UserData> list=UserOverviewFragment.getUserOnlineList();
+                    List<UserData> list=UserOverviewFragment.list;
                     list.clear();
                     list.addAll(info.getData());
                 }

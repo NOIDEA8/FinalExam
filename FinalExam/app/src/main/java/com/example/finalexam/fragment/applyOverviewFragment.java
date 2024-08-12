@@ -10,10 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.finalexam.R;
-import com.example.finalexam.adapter.ProjectAdapter;
+import com.example.finalexam.adapter.ApplyAdapter;
 import com.example.finalexam.helper.ProjectListSortHelper;
 import com.example.finalexam.helper.UserDataShowInterface;
 import com.example.finalexam.model.ProjectData;
@@ -24,16 +23,15 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class ProjectOverviewFragment extends Fragment implements UserDataShowInterface {
+public class applyOverviewFragment extends Fragment implements UserDataShowInterface {
     private View view;
     public static final List<ProjectData> list = new ArrayList<>();
-    public static final List<ProjectData> tempList = new ArrayList<>();
-    private RecyclerView projectRV;
+    private RecyclerView applyRV;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_project_overview, container, false);
+        view = inflater.inflate(R.layout.fragment_manager_page, container, false);
         addTestData();
         initView();
         initRV();
@@ -42,36 +40,28 @@ public class ProjectOverviewFragment extends Fragment implements UserDataShowInt
     }
 
     private void requestData() {
-        UserPresenter.getInstance(this).fetchAllBriefProject();
+        UserPresenter.getInstance(this).fetchReviewOrNotProject(UserPresenter.PROJECT_PROCESSING);
     }
 
     private void addTestData() {
-        ProjectData monitor = new ProjectData();
-        monitor.setCreator("NOIDEA");
-        monitor.setProjectId(114);
+        ProjectData data1 = new ProjectData();
+        data1.setCreator("醒觉");
+        data1.setProjectName("HuiDianWo");
 
-        ProjectData self1 = new ProjectData();
-        self1.setCreator("Poria");
-        self1.setProjectId(514);
+        ProjectData data2 = new ProjectData();
+        data2.setCreator("如泣似诉");
 
-        ProjectData self2 = new ProjectData();
-        self2.setCreator("Poria");
-        self2.setProjectId(1919);
-
-        list.add(monitor);
-        list.add(self1);
-        list.add(self2);
-
-        tempList.addAll(list);
+        list.add(data1);
+        list.add(data2);
     }
 
     private void initRV() {
-        projectRV.setLayoutManager(new LinearLayoutManager(requireContext()));
-        projectRV.setAdapter(new ProjectAdapter(requireContext(), list, tempList, new ArrayList<>()));
+        applyRV.setLayoutManager(new LinearLayoutManager(requireContext()));
+        applyRV.setAdapter(new ApplyAdapter(requireContext(), list));
     }
 
     private void initView() {
-        projectRV = view.findViewById(R.id.manager_project_list);
+        applyRV = view.findViewById(R.id.manager_apply_list);
     }
 
     @Override
@@ -94,19 +84,9 @@ public class ProjectOverviewFragment extends Fragment implements UserDataShowInt
 
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void briefProjectList(int STATUS) {
-        if (STATUS == UserPresenter.STATUS_NO_INTERNET){
-            Toast.makeText(UserPresenter.getContext(), "无网络", Toast.LENGTH_SHORT).show();
-        }else if (STATUS == UserPresenter.STATUS_SUCCESS){
-            list.clear();
-            list.addAll(UserPresenter.getInstance(this).getProjectList());
-            ProjectListSortHelper.sortWithCreator(list);
-            tempList.clear();
-            tempList.addAll(list);
-            Objects.requireNonNull(projectRV.getAdapter()).notifyDataSetChanged();
-        }
+
     }
 
     @Override
@@ -154,9 +134,15 @@ public class ProjectOverviewFragment extends Fragment implements UserDataShowInt
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void applyOrNotProjectList(int STATUS) {
-
+        if (STATUS == UserPresenter.STATUS_SUCCESS){
+            list.clear();
+            list.addAll(UserPresenter.getInstance(this).getProjectList());
+            ProjectListSortHelper.sortWithCreator(list);
+            Objects.requireNonNull(applyRV.getAdapter()).notifyDataSetChanged();
+        }
     }
 
     @Override
