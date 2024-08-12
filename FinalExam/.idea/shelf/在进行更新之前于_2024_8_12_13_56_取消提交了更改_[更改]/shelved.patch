@@ -1,0 +1,70 @@
+Index: .idea/shelf/Uncommitted_changes_before_Merge_at_2024_8_5_10_57_[Changes]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Merge_at_2024_8_5_10_57_[Changes]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Merge_at_2024_8_5_10_57_[Changes]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Merge_at_2024_8_5_10_57_[Changes]/shelved.patch	(revision 05c4967e0faf568d993f7b88d35e8c26405fe210)
++++ /dev/null	(revision 05c4967e0faf568d993f7b88d35e8c26405fe210)
+@@ -1,27 +0,0 @@
+-diff --git a/app/src/main/res/drawable/shape/square_bottom_20.xml b/app/src/main/res/drawable/square_bottom_20.xml
+-rename from app/src/main/res/drawable/shape/square_bottom_20.xml
+-rename to app/src/main/res/drawable/square_bottom_20.xml
+-diff --git a/app/src/main/res/drawable/shape/square_all_4_stroke_2.xml b/app/src/main/res/drawable/square_all_4_stroke_2.xml
+-rename from app/src/main/res/drawable/shape/square_all_4_stroke_2.xml
+-rename to app/src/main/res/drawable/square_all_4_stroke_2.xml
+-diff --git a/app/src/main/res/drawable/shape/square_top_10.xml b/app/src/main/res/drawable/square_top_10.xml
+-rename from app/src/main/res/drawable/shape/square_top_10.xml
+-rename to app/src/main/res/drawable/square_top_10.xml
+-diff --git a/app/src/main/res/drawable/shape/square_all_10.xml b/app/src/main/res/drawable/square_all_10.xml
+-rename from app/src/main/res/drawable/shape/square_all_10.xml
+-rename to app/src/main/res/drawable/square_all_10.xml
+-diff --git a/app/src/main/res/drawable/shape/square_all.xml b/app/src/main/res/drawable/square_all.xml
+-rename from app/src/main/res/drawable/shape/square_all.xml
+-rename to app/src/main/res/drawable/square_all.xml
+-diff --git a/app/src/main/res/drawable/shape/square_all_4.xml b/app/src/main/res/drawable/square_all_4.xml
+-rename from app/src/main/res/drawable/shape/square_all_4.xml
+-rename to app/src/main/res/drawable/square_all_4.xml
+-diff --git a/app/src/main/res/drawable/shape/square_all_20.xml b/app/src/main/res/drawable/square_all_20.xml
+-rename from app/src/main/res/drawable/shape/square_all_20.xml
+-rename to app/src/main/res/drawable/square_all_20.xml
+-diff --git a/app/src/main/res/drawable/shape/oval_stroke_2.xml b/app/src/main/res/drawable/oval_stroke_2.xml
+-rename from app/src/main/res/drawable/shape/oval_stroke_2.xml
+-rename to app/src/main/res/drawable/oval_stroke_2.xml
+-diff --git a/app/src/main/res/drawable/shape/oval.xml b/app/src/main/res/drawable/oval.xml
+-rename from app/src/main/res/drawable/shape/oval.xml
+-rename to app/src/main/res/drawable/oval.xml
+Index: .idea/shelf/Uncommitted_changes_before_Merge_at_2024_8_5_10_57__Changes_.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Merge_at_2024_8_5_10_57__Changes_.xml b/.idea/shelf/Uncommitted_changes_before_Merge_at_2024_8_5_10_57__Changes_.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Merge_at_2024_8_5_10_57__Changes_.xml	(revision 05c4967e0faf568d993f7b88d35e8c26405fe210)
++++ /dev/null	(revision 05c4967e0faf568d993f7b88d35e8c26405fe210)
+@@ -1,9 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Merge_at_2024_8_5_10_57_[Changes]" date="1722826625374" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_2024_8_5_10_57_[Changes]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Merge at 2024/8/5 10:57 [Changes]" />
+-  <binary>
+-    <option name="BEFORE_PATH" />
+-    <option name="AFTER_PATH" value="app/lib/monitor-release.aar" />
+-    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_2024_8_5_10_57_[Changes]/monitor-release.aar" />
+-  </binary>
+-</changelist>
+\ No newline at end of file
+Index: app/src/main/java/com/example/finalexam/helper/Api.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.finalexam.helper;\r\n\r\nimport com.example.finalexam.info.InfoProject;\r\nimport com.example.finalexam.info.InfoShowAllProject;\r\nimport com.example.finalexam.info.InfoUserList;\r\nimport com.example.finalexam.info.InfoUser;\r\nimport com.example.finalexam.info.InfoProjectList;\r\n\r\nimport org.json.JSONObject;\r\n\r\nimport retrofit2.Call;\r\nimport retrofit2.http.Body;\r\nimport retrofit2.http.DELETE;\r\nimport retrofit2.http.Field;\r\nimport retrofit2.http.FormUrlEncoded;\r\nimport retrofit2.http.GET;\r\nimport retrofit2.http.POST;\r\nimport retrofit2.http.Query;\r\n\r\npublic interface Api {\r\n\r\n    @FormUrlEncoded\r\n    @POST(\"login\")\r\n    Call<InfoUser> log(@Field(\"username\") String username,\r\n                       @Field(\"password\") String password);\r\n\r\n    @POST(\"user/register\")\r\n    Call<InfoUser> register(@Body JSONObject jsonObject);\r\n\r\n    @FormUrlEncoded\r\n    @GET(\"user/showSelfProjects\")\r\n    Call<InfoProjectList> getSelfProjects(@Query(\"userId\") int useId);\r\n\r\n    @FormUrlEncoded\r\n    @GET(\"user/showHaveMonitorPermissionProjects\")\r\n    Call<InfoProjectList> getHaveMonitorProjects(@Query(\"userId\") int useId);\r\n\r\n    @FormUrlEncoded\r\n    @GET(\"user/myApplicationOnMonitorProject\")\r\n    Call<InfoProjectList> getApplyingProject(@Query(\"userId\") int useId);\r\n\r\n    @GET(\"project/showAllProjectForUser\")\r\n    Call<InfoShowAllProject> getAllProjectForUser(@Query(\"page\") int page, @Query(\"pagesize\") int pageSize) ;//page为零拿所有\r\n\r\n    //这里InfoUser任意，因为data不返回数据。数据体包括  项目名、项目描述、发布者id、项目url、项目口令\r\n    @POST(\"project/publishProject\")\r\n    Call<InfoUser> publishProject(@Body JSONObject jsonObject);\r\n\r\n    @GET(\"project/detailedInfo\")\r\n    Call<InfoProject> getProjectDetail(@Query(\"projectId\") int projectId);\r\n\r\n    //这里InfoUser任意，因为data不返回数据。数据体包括  用户id、项目id\r\n    @POST(\"project/applyMonitorPermission\")\r\n    Call<InfoUser> applyMonitorPermission(@Body JSONObject jsonObject);\r\n\r\n    //这里InfoUser任意，因为data不返回数据。数据体包括  项目URL、项目id、项目描述、项目口令\r\n    @POST(\"project/updateProject\")\r\n    Call<InfoUser> updateProject(@Body JSONObject jsonObject);\r\n\r\n    @GET(\"project/queryOwnMonitorUser\")\r\n    Call<InfoUserList> queryMonitorUser(@Query(\"projectId\") int projectId);\r\n\r\n    //这里InfoUser任意，因为data不返回数据。数据体包括  用户id、项目id\r\n    @POST(\"project/cancelUserMoitorPermission\")\r\n    Call<InfoUser> cancelUserMoitorPermission(@Body JSONObject jsonObject);\r\n\r\n    //这里InfoUser任意，因为data不返回数据。数据体包括  项目id、项目口令\r\n    @DELETE(\"project/deleteProject\")\r\n    Call<InfoUser> deleteProject(@Body JSONObject jsonObject);\r\n\r\n    //获取不同冻结状态的项目\r\n    @GET(\"admin/pagedQueryPublishedProject\")\r\n    Call<InfoShowAllProject> getFrezonOrNotProject(@Query(\"projectStatus\") int projectStatus);//0冻结，1未冻结\r\n\r\n    //获取不同审核状态的项目\r\n    @GET(\"admin/pagedQueryProjectApplication\")\r\n    Call<InfoShowAllProject> getReviewOrNotProject(@Query(\"applicationStatus\") int applicationStatus);//0待审核，2被拒绝\r\n\r\n    //这里InfoUser任意，因为data不返回数据。数据体包括  applicationId、status(1通过2拒绝）（字符串形式）、rejectResason\r\n    @POST(\"admin/verifyApplication\")\r\n    Call<InfoUser> verifyApplication(@Body JSONObject jsonObject);\r\n\r\n    //获得单个用户的信息，InfoUser不是任意的\r\n    @POST(\"admin/showUserDetailedInfo\")\r\n    Call<InfoUser> userDetail(@Query(\"userId\")int userId);\r\n\r\n    //冻结用户，InfoUser是任意的\r\n    //参数是userId、freezeHour\r\n    @POST(\"admin/freezeUser\")\r\n    Call<InfoUser> freezeUser(@Body JSONObject jsonObject);\r\n\r\n    //冻结项目，InfoUser是任意的\r\n    //参数是projectId、freezeHour\r\n    @POST(\"admin/freezeProject\")\r\n    Call<InfoUser> freezeProject(@Body JSONObject jsonObject);\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/finalexam/helper/Api.java b/app/src/main/java/com/example/finalexam/helper/Api.java
+--- a/app/src/main/java/com/example/finalexam/helper/Api.java	(revision 05c4967e0faf568d993f7b88d35e8c26405fe210)
++++ b/app/src/main/java/com/example/finalexam/helper/Api.java	(date 1723180558727)
+@@ -65,7 +65,7 @@
+     Call<InfoUser> cancelUserMoitorPermission(@Body JSONObject jsonObject);
+ 
+     //这里InfoUser任意，因为data不返回数据。数据体包括  项目id、项目口令
+-    @DELETE("project/deleteProject")
++    @DELETE("project/deletedProject")
+     Call<InfoUser> deleteProject(@Body JSONObject jsonObject);
+ 
+     //获取不同冻结状态的项目
