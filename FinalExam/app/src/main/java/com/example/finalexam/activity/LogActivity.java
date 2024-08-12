@@ -17,13 +17,11 @@ import com.example.finalexam.baseappcompatactivity.BaseActivity;
 import com.example.finalexam.client.MyWebSocketClient;
 import com.example.finalexam.fragment.ManagerLogFragment;
 import com.example.finalexam.helper.UserDataShowInterface;
-import com.example.finalexam.model.UserData;
 import com.example.finalexam.presenter.UserPresenter;
 import com.example.finalexam.R;
 import com.example.finalexam.presenter.WebSocketPresenter;
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.util.List;
 import java.util.Objects;
 
 public class LogActivity extends BaseActivity implements UserDataShowInterface{
@@ -41,7 +39,7 @@ public class LogActivity extends BaseActivity implements UserDataShowInterface{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_log);
+        setContentView(R.layout.activity_login);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);

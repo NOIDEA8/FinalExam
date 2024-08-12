@@ -12,7 +12,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.finalexam.baseappcompatactivity.BaseActivity;
 import com.example.finalexam.helper.UserDataShowInterface;
-import com.example.finalexam.model.UserData;
 import com.example.finalexam.presenter.UserPresenter;
 import com.example.finalexam.R;
 import com.example.finalexam.presenter.WebSocketPresenter;
