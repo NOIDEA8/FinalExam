@@ -11,10 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.finalexam.R;
-import com.example.finalexam.adapter.ApplyAdapter;
-import com.example.finalexam.adapter.ProjectAdapter;
+import com.example.finalexam.adapter.DealAdapter;
 import com.example.finalexam.fragment.PersonFragment;
-import com.example.finalexam.fragment.ProjectFragment;
 import com.example.finalexam.model.ProjectData;
 
 import java.util.ArrayList;
@@ -46,7 +44,7 @@ public class MyApplyActivity extends AppCompatActivity {
         list.clear();
         list.addAll(PersonFragment.myProjects);
         list.addAll(PersonFragment.myApplications);
-        mineRV.setAdapter(new ApplyAdapter(this, list, false));
+        mineRV.setAdapter(new DealAdapter(this, list, false));
     }
 
     private void initListener() {

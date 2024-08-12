@@ -1,6 +1,7 @@
 package com.example.finalexam.helper;
 
 import android.graphics.Color;
+import android.util.Log;
 
 import java.util.Random;
 
@@ -19,15 +20,16 @@ public class ColorHelper {
         sb.append("#");
 
         Random random = new Random(seed);
+        int padding = 10;
 
         try {
             for (int i = 0; i < 3; i++) {
-                int RGB = random.nextInt(256);
+                int RGB = padding + random.nextInt(256 - padding * 2);
                 sb.append(String.format("%02X", RGB));
             }
             hexString = sb.toString();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("ColorHex", "createColorHex Exception", e);
         }
 
         return hexString;
@@ -35,10 +37,7 @@ public class ColorHelper {
 
     public static boolean isBrightColor(int colorR, int colorG, int colorB) {
         int brightness = colorR + colorG + colorB;
-        if (brightness < 300)
-            return false;
-        else
-            return true;
+        return brightness >= 550;
     }
 
     public static boolean isBrightColor(String RGBHex) {
