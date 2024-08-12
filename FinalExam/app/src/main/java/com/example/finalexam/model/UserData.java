@@ -1,9 +1,5 @@
 package com.example.finalexam.model;
 
-import com.google.gson.annotations.Expose;
-
-import kotlin.jvm.Transient;
-
 public class UserData {
 
 
@@ -11,7 +7,7 @@ public class UserData {
     private String enabled;//0未冻结、1冻结?
     private String isOnline;
     private String password;
-    private String registerTime;
+    private String createTime;
     private String username;//这个就是账号
 
     private int userId;//操作必要
@@ -27,8 +23,8 @@ public class UserData {
         return isOnline;
     }
 
-    public String getRegisterTime() {
-        return registerTime;
+    public String getCreateTime() {
+        return createTime;
     }
 
     public String getUsername() {
