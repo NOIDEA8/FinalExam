@@ -17,6 +17,7 @@ import com.example.finalexam.model.sendmodel.PublishSend;
 import com.example.finalexam.model.sendmodel.RegisterSend;
 import com.example.finalexam.model.sendmodel.UpdataProjectSend;
 import com.example.finalexam.model.sendmodel.VerifyApplicationSend;
+import com.example.finalexam.model.sendmodel.VertifyMonitorSend;
 import com.example.finalexam.model.sendmodel.ViewLogForGroupSend;
 
 import retrofit2.Call;
@@ -57,6 +58,9 @@ public interface Api {
     //收到的申请
     @GET("user/receivedMonitorApplication")
     Call<InfoProjectList> getApplication(@Header ("token") String token,@Query("userId") int useId);
+    //用户同意别人的申请
+    @POST("user/verifyMonitorApplication")
+    Call<InfoUser> verifyMonitorApplication(@Header ("token") String token, @Body VertifyMonitorSend jsonObject);
 
     @GET("project/showAllProjectForUser")
     Call<InfoShowAllProject> getAllProjectForUser(@Header ("token") String token,@Query("page") int page, @Query("pagesize") int pageSize, @Query("projectName")String projectName) ;//page为零拿所有
@@ -140,6 +144,5 @@ public interface Api {
     //用户查看项目发送请求，项目访问量加一,InfoUser任意,projectData只包含id
     @POST("log/increaseVisits")
     Call<InfoUser> increaseVisits(@Header ("token") String token,@Body ProjectData projectData);
-
 
 }

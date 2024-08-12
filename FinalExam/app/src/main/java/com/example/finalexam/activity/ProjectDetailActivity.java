@@ -163,7 +163,10 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
 
     }
 
+    @Override
+    public void verifyMonitorApplication(int STATUS) {
 
+    }
 
 
     @Override

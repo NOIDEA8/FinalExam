@@ -11,7 +11,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.finalexam.baseappcompatactivity.BaseActivity;
-import com.example.finalexam.helper.ManagerDataShowInterface;
 import com.example.finalexam.helper.UserDataShowInterface;
 import com.example.finalexam.model.UserData;
 import com.example.finalexam.presenter.UserPresenter;
@@ -22,7 +21,7 @@ import org.java_websocket.client.WebSocketClient;
 
 import java.util.List;
 
-public class MainActivity extends BaseActivity implements UserDataShowInterface, ManagerDataShowInterface {
+public class MainActivity extends BaseActivity implements UserDataShowInterface {
     private static final String TAG = "MainActivity";
     private UserPresenter userPresenter = UserPresenter.getInstance(this);
     private String userName;
@@ -168,6 +167,10 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface,
 
     }
 
+    @Override
+    public void verifyMonitorApplication(int STATUS) {
+
+    }
 
 
     @Override
@@ -232,13 +235,4 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface,
     }
 
 
-    @Override
-    public void managerLog(int STATUS) {
-
-    }
-
-    @Override
-    public void updateManagerData(int STATUS) {
-
-    }
 }

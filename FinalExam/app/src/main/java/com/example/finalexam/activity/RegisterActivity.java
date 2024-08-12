@@ -143,6 +143,10 @@ public class RegisterActivity extends BaseActivity implements UserDataShowInterf
 
     }
 
+    @Override
+    public void verifyMonitorApplication(int STATUS) {
+
+    }
 
 
     @Override

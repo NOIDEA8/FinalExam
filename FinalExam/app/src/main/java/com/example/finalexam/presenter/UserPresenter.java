@@ -29,6 +29,7 @@ import com.example.finalexam.model.sendmodel.RegisterSend;
 import com.example.finalexam.model.UserData;
 import com.example.finalexam.model.sendmodel.UpdataProjectSend;
 import com.example.finalexam.model.sendmodel.VerifyApplicationSend;
+import com.example.finalexam.model.sendmodel.VertifyMonitorSend;
 import com.example.finalexam.model.sendmodel.ViewLogForGroupSend;
 
 import org.json.JSONObject;
@@ -309,6 +310,32 @@ public class UserPresenter {
                 activity.application(STATUS_NO_INTERNET);
             }
         });
+    }
+    //用户同意或拒绝别人的监控申请,status中1为通过，2为拒绝，rejectReason在同意时传空
+    public void verifyMonitorApplication(int applicationId,int status,String rejectReason){
+        Api api=getRetrofit().create(Api.class);
+        VertifyMonitorSend send=new VertifyMonitorSend(applicationId,status,rejectReason);
+        Call<InfoUser> dataCall=api.verifyMonitorApplication(token,send);
+        dataCall.enqueue(new Callback<InfoUser>() {
+            UserDataShowInterface activity=UserPresenter.this.activity;
+            @Override
+            public void onResponse(Call<InfoUser> call, Response<InfoUser> response) {
+                InfoUser info=response.body();
+                if(info==null){
+                    activity.verifyMonitorApplication(STATUS_NO_INTERNET);
+                } else if (info.getCode() != 1) {
+                    activity.verifyMonitorApplication(STATUS_FAILED);
+                }else{
+                    activity.verifyMonitorApplication(STATUS_SUCCESS);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<InfoUser> call, Throwable t) {
+                activity.verifyMonitorApplication(STATUS_NO_INTERNET);
+            }
+        });
+
     }
     //获取自己监控的项目
     public void fetchMonitorProjects(){

@@ -243,4 +243,9 @@ public class AddProjectActivity extends BaseActivity implements UserDataShowInte
 
     }
 
+    @Override
+    public void verifyMonitorApplication(int STATUS) {
+
+    }
+
 }

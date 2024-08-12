@@ -163,6 +163,10 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
 
     }
 
+    @Override
+    public void verifyMonitorApplication(int STATUS) {
+
+    }
 
 
     @Override
