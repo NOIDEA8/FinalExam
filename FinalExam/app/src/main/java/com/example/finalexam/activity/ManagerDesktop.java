@@ -1,5 +1,6 @@
 package com.example.finalexam.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -76,12 +77,19 @@ public class ManagerDesktop extends BaseActivity implements UserDataShowInterfac
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                if (userBackground.getVisibility() == View.VISIBLE)
+                if (enabledBackground.getVisibility() == View.VISIBLE)
+                    enabledBackground.setVisibility(View.INVISIBLE);
+                else if (userBackground.getVisibility() == View.VISIBLE)
                     userBackground.setVisibility(View.INVISIBLE);
-                else finish();
+                else toLog();
             }
         };
         dispatcher.addCallback(callback);
+    }
+
+    private void toLog() {
+        startActivity(new Intent(this, LogActivity.class));
+        finish();
     }
 
     public static void callUserLayout() {
