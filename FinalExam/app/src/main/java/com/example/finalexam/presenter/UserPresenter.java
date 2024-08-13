@@ -40,10 +40,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.Cookie;
-import okhttp3.CookieJar;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -52,7 +48,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class UserPresenter {
     private static final String TAG = "UserPresenter";
-    private static final String baseUrl="http://47.113.224.195:31101/api/";
+    private static final String baseUrl="http://47.113.224.195:31111/";
     public UserDataShowInterface activity;
     private String token;
     private static UserPresenter presenter=new UserPresenter();
@@ -122,6 +118,7 @@ public class UserPresenter {
         Api userApi = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
+
         Call<InfoUserLogin> dataCall = userApi.log(account,password);
         dataCall.enqueue(new Callback<InfoUserLogin>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
@@ -145,6 +142,7 @@ public class UserPresenter {
                     user.setPassword(password);
                     user.setUserId(tempData.getUserId());
                     token=tempData.getToken();
+                    Log.d(TAG, "onResponse: "+token);
                     Log.d(TAG,"useData已在log方法中赋值");
                     activity.userLog(STATUS_SUCCESS);
                 }
@@ -203,8 +201,9 @@ public class UserPresenter {
 
         Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
+        Log.d(TAG, "token = " + token);
 
-        Call<InfoShowAllProject> dataCall = api.getAllProjectForUser(token,1,0,null) ;//拿取所有数据
+        Call<InfoShowAllProject> dataCall = api.getAllProjectForUser(token,1,0,"") ;//拿取所有数据
 
         dataCall.enqueue(new Callback<InfoShowAllProject>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
@@ -218,14 +217,14 @@ public class UserPresenter {
                     projectList =new ArrayList<>();
                     activity.briefProjectList(STATUS_NO_DATA);
                 } else{
-                    projectList =info.getData().getList();
+                    projectList =info.getData().getData();
                     activity.briefProjectList(STATUS_SUCCESS);
                 }
             }
 
             @Override
             public void onFailure(Call<InfoShowAllProject> call, Throwable t) {
-                projectList =new ArrayList<>();
+                presenter.projectList =new ArrayList<>();
                 activity.briefProjectList(STATUS_NO_INTERNET);
             }
         });
@@ -762,7 +761,7 @@ public class UserPresenter {
                     projectList=new ArrayList<>();
                     activity.freezeOrNotProjectList(STATUS_NO_DATA);
                 }else{
-                    projectList=info.getData().getList();
+                    projectList=info.getData().getData();
                     activity.freezeOrNotProjectList(STATUS_SUCCESS);
                 }
             }
@@ -793,7 +792,7 @@ public class UserPresenter {
                     projectList=new ArrayList<>();
                     activity.applyOrNotProjectList(STATUS_NO_DATA);
                 }else{
-                    projectList=info.getData().getList();
+                    projectList=info.getData().getData();
                     activity.applyOrNotProjectList(STATUS_SUCCESS);
                 }
             }

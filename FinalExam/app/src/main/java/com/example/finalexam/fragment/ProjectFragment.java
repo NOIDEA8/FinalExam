@@ -41,7 +41,7 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_project, container, false);
 
-        addTestData();
+       // addTestData();
         initView();
         initRV();
         requestData();
@@ -196,7 +196,8 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
             Toast.makeText(requireContext(), "暂无项目", Toast.LENGTH_SHORT).show();
         } else if (STATUS == UserPresenter.STATUS_SUCCESS) {
             allProjectList.clear();
-            allProjectList.addAll(UserPresenter.getInstance(this).getProjectList());
+            List<ProjectData> list=UserPresenter.getInstance(this).getProjectList();
+            allProjectList.addAll(list);
             ProjectListSortHelper.sortWithCreator(allProjectList);
         }
 

@@ -66,7 +66,7 @@ public interface Api {
     Call<InfoUser> verifyMonitorApplication(@Header ("token") String token, @Body VertifyMonitorSend jsonObject);
 
     @GET("project/showAllProjectForUser")
-    Call<InfoShowAllProject> getAllProjectForUser(@Header ("token") String token,@Query("page") int page, @Query("pagesize") int pageSize, @Query("projectName")String projectName) ;//page为零拿所有
+    Call<InfoShowAllProject> getAllProjectForUser(@Header ("token") String token,@Query("page") int page, @Query("pageSize") int pageSize, @Query("projectName")String projectName) ;//page为零拿所有
 
     //这里InfoUser任意，因为data不返回数据。数据体包括  项目名、项目描述、发布者id、项目url、项目口令
     @POST("project/publishProject")
