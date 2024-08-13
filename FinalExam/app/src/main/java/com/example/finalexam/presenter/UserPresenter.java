@@ -60,8 +60,9 @@ public class UserPresenter {
     private List<ProjectData> projectList;
     private List<UserData> userList;
     private List<LogData> logDataList;//正常日志列
-    //logDataListByGroup指按照后台，前端、移动这样的分组来做日志拿取，和上面的分开是因为这个会返回一个总页数，我认为日志太多不要一次性那全部，于是为了适应他们的分页查询而来
-    private AllLog logDataListByGroup;
+
+    private AllLog logDataListByGroup;//只在  根据不同组查询一周的日志数量  和  查看日志（页面、服务器、移动app）  这两个接口使用
+
     private UserData userDetail;
     private ProjectData projectDetail;
     private LogData logDetail;

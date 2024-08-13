@@ -59,8 +59,12 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface 
                 } else {
                     userName = userPresenter.getUserName(MainActivity.this);
                     password = userPresenter.getPassword(MainActivity.this);
+                    if(userName.equals("admin")){
+                        startActivity(new Intent(MainActivity.this, LogActivity.class));
+                    }else{
+                        userPresenter.userLog(MainActivity.this,userName,password);
+                    }
 
-                    userPresenter.userLog(MainActivity.this,userName,password);
                 }
             }
         }).start();
