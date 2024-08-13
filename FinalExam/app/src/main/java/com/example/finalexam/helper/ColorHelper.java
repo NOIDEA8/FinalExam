@@ -37,7 +37,7 @@ public class ColorHelper {
 
     public static boolean isBrightColor(int colorR, int colorG, int colorB) {
         int brightness = colorR + colorG + colorB;
-        return brightness >= 550;
+        return brightness >= 500;
     }
 
     public static boolean isBrightColor(String RGBHex) {

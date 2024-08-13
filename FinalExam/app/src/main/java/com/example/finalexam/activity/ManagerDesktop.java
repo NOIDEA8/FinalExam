@@ -3,8 +3,12 @@ package com.example.finalexam.activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.NumberPicker;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -13,11 +17,13 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.finalexam.R;
+import com.example.finalexam.adapter.UsersAdapter;
 import com.example.finalexam.baseappcompatactivity.BaseActivity;
 import com.example.finalexam.fragment.ApplyOverviewFragment;
 import com.example.finalexam.fragment.ProjectOverviewFragment;
 import com.example.finalexam.fragment.UserOverviewFragment;
 import com.example.finalexam.helper.UserDataShowInterface;
+import com.example.finalexam.model.UserData;
 
 public class ManagerDesktop extends BaseActivity implements UserDataShowInterface, View.OnClickListener {
 
@@ -32,6 +38,21 @@ public class ManagerDesktop extends BaseActivity implements UserDataShowInterfac
     private ConstraintLayout applyButton;
     private ConstraintLayout userButton;
 
+    private static ConstraintLayout userBackground;
+    private static ConstraintLayout userLayout;
+    private static TextView nameView;
+    private static TextView createTimeView;
+    private static TextView enabledView;
+    private static TextView onlineView;
+    private static TextView toEnabledButton;
+    private static TextView onlineButton;
+    private ConstraintLayout enabledBackground;
+    private ConstraintLayout enabledLayout;
+    private NumberPicker enabledDayView;
+    private NumberPicker enabledHourView;
+    private TextView enabledButton;
+    private static UserData data;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,14 +64,33 @@ public class ManagerDesktop extends BaseActivity implements UserDataShowInterfac
             return insets;
         });
         getWindow().setNavigationBarColor(getColor(R.color.white));
-
+        overrideBackMethod();
         initView();
         initPage();
         initListener();
     }
 
-    public static void callUserLayout(){
+    private void overrideBackMethod() {
+        //重写回退方法
+        OnBackPressedDispatcher dispatcher = getOnBackPressedDispatcher();
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (userBackground.getVisibility() == View.VISIBLE)
+                    userBackground.setVisibility(View.INVISIBLE);
+                else finish();
+            }
+        };
+        dispatcher.addCallback(callback);
+    }
 
+    public static void callUserLayout() {
+        data = UsersAdapter.data;
+        userBackground.setVisibility(View.VISIBLE);
+        nameView.setText(data.getUsername());
+        createTimeView.setText(data.getCreateTime());
+        enabledView.setText(data.getEnabled());
+        onlineView.setText(data.getIsOnline());
     }
 
     @Override
@@ -64,6 +104,17 @@ public class ManagerDesktop extends BaseActivity implements UserDataShowInterfac
             changePageTo(1);
         else if (id == R.id.manager_user_page_button)
             changePageTo(2);
+        else if (id == R.id.user_background)
+            userBackground.setVisibility(View.INVISIBLE);
+        else if (id == R.id.user_enabled_button)
+            enabledBackground.setVisibility(View.VISIBLE);
+        else if (id == R.id.user_online_button) {
+
+        } else if (id == R.id.enabled_background)
+            enabledBackground.setVisibility(View.INVISIBLE);
+        else if (id == R.id.enabled_button) {
+
+        }
     }
 
     private void initPage() {
@@ -84,6 +135,13 @@ public class ManagerDesktop extends BaseActivity implements UserDataShowInterfac
         projectButton.setOnClickListener(this);
         applyButton.setOnClickListener(this);
         userButton.setOnClickListener(this);
+        userBackground.setOnClickListener(this);
+        userLayout.setOnClickListener(this);
+        toEnabledButton.setOnClickListener(this);
+        onlineButton.setOnClickListener(this);
+        enabledBackground.setOnClickListener(this);
+        enabledLayout.setOnClickListener(this);
+        enabledButton.setOnClickListener(this);
     }
 
     private void initView() {
@@ -93,6 +151,23 @@ public class ManagerDesktop extends BaseActivity implements UserDataShowInterfac
         projectButton = findViewById(R.id.manager_project_page_button);
         applyButton = findViewById(R.id.manager_apply_page_button);
         userButton = findViewById(R.id.manager_user_page_button);
+        userBackground = findViewById(R.id.user_background);
+        userLayout = findViewById(R.id.user_layout);
+        nameView = findViewById(R.id.user_name);
+        createTimeView = findViewById(R.id.user_create_time);
+        enabledView = findViewById(R.id.user_enabled);
+        onlineView = findViewById(R.id.user_online);
+        toEnabledButton = findViewById(R.id.user_enabled_button);
+        onlineButton = findViewById(R.id.user_online_button);
+        enabledBackground = findViewById(R.id.enabled_background);
+        enabledLayout = findViewById(R.id.enabled_layout);
+        enabledButton = findViewById(R.id.enabled_button);
+        enabledDayView = findViewById(R.id.enabled_day);
+        enabledHourView = findViewById(R.id.enabled_hour);
+        enabledDayView.setMinValue(0);
+        enabledDayView.setMaxValue(3650);//上限十年
+        enabledHourView.setMinValue(0);
+        enabledHourView.setMaxValue(24);
     }
 
     private void changePageTo(int pagePosition) {
