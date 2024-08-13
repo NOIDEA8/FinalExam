@@ -14,4 +14,9 @@ public class ViewLogForGroupSend {
         this.projectId = projectId;
         this.logType = logType;
     }
+    public ViewLogForGroupSend(int groupType ,int logType,int projectId) {
+        this.groupType = groupType;
+        this.projectId = projectId;
+        this.logType = logType;
+    }
 }

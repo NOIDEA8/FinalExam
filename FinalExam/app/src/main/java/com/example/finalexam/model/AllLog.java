@@ -1,19 +1,16 @@
 package com.example.finalexam.model;
 
-import com.example.finalexam.model.LogData;
-import com.example.finalexam.model.ProjectData;
-
 import java.util.List;
 
 public class AllLog {
     private int total;
-    private List<LogData> list;
+    private List<LogData> data;
 
     public int getTotal() {
         return total;
     }
 
-    public List<LogData> getList() {
-        return list;
+    public List<LogData> getData() {
+        return data;
     }
 }

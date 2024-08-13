@@ -171,6 +171,21 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface 
 
     }
 
+    @Override
+    public void setErrorRate(int STATUS) {
+
+    }
+
+    @Override
+    public void logDetail(int STATUS) {
+
+    }
+
+    @Override
+    public void weekLogNum(int STATUS) {
+
+    }
+
 
     @Override
     public void projectPublishResult(int STATUS) {

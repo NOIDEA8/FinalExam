@@ -296,5 +296,20 @@ public class PersonFragment extends Fragment implements UserDataShowInterface {
 
     }
 
+    @Override
+    public void setErrorRate(int STATUS) {
+
+    }
+
+    @Override
+    public void logDetail(int STATUS) {
+
+    }
+
+    @Override
+    public void weekLogNum(int STATUS) {
+
+    }
+
 
 }

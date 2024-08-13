@@ -48,4 +48,7 @@ public interface UserDataShowInterface {
     void ViewProjectOperateLog(int STATUS);//查看项目操作日志(包括项目发布，更新日志)
     void increaseView(int STATUS);//增加项目的访问次数
     void verifyMonitorApplication(int STATUS);//用户同意或拒绝别人的监控申请
+    void setErrorRate(int STATUS);///设置报警阈值
+    void logDetail(int STATUS);//一条log的详细信息
+    void weekLogNum(int STATUS);//一周的Log数量
 }

@@ -210,4 +210,19 @@ public class VerifyActivity extends AppCompatActivity implements UserDataShowInt
     public void verifyMonitorApplication(int STATUS) {
 
     }
+
+    @Override
+    public void setErrorRate(int STATUS) {
+
+    }
+
+    @Override
+    public void logDetail(int STATUS) {
+
+    }
+
+    @Override
+    public void weekLogNum(int STATUS) {
+
+    }
 }

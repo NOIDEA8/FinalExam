@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 
 import com.example.finalexam.helper.Api;
 import com.example.finalexam.helper.UserDataShowInterface;
+import com.example.finalexam.info.InfoLog;
 import com.example.finalexam.info.InfoLogList;
 import com.example.finalexam.info.InfoProject;
 import com.example.finalexam.info.InfoProjectList;
@@ -27,6 +28,8 @@ import com.example.finalexam.model.sendmodel.MonitorSend;
 import com.example.finalexam.model.sendmodel.PublishSend;
 import com.example.finalexam.model.sendmodel.RegisterSend;
 import com.example.finalexam.model.UserData;
+import com.example.finalexam.model.sendmodel.SetErrorRateSend;
+import com.example.finalexam.model.sendmodel.ShowDetailedLogSend;
 import com.example.finalexam.model.sendmodel.UpdataProjectSend;
 import com.example.finalexam.model.sendmodel.VerifyApplicationSend;
 import com.example.finalexam.model.sendmodel.VertifyMonitorSend;
@@ -61,6 +64,7 @@ public class UserPresenter {
     private AllLog logDataListByGroup;
     private UserData userDetail;
     private ProjectData projectDetail;
+    private LogData logDetail;
     private String checkResult;
     private static Context context;//接cookie用
 
@@ -263,7 +267,7 @@ public class UserPresenter {
         Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
-        Call<InfoProjectList> dataCall = api.getSelfProjects(token,user.getUserId());
+        Call<InfoProjectList> dataCall = api.getSelfProjects(token,user.getUserId(),1,0);
         dataCall.enqueue(new Callback<InfoProjectList>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
@@ -294,7 +298,7 @@ public class UserPresenter {
         Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
-        Call<InfoProjectList> dataCall = api.getApplication(token,user.getUserId());
+        Call<InfoProjectList> dataCall = api.getApplication(token,user.getUserId(),1,0);
         dataCall.enqueue(new Callback<InfoProjectList>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
@@ -351,7 +355,7 @@ public class UserPresenter {
         Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
-        Call<InfoProjectList> dataCall = api.getHaveMonitorProjects(token,user.getUserId());
+        Call<InfoProjectList> dataCall = api.getHaveMonitorProjects(token,user.getUserId(),1,0);
         dataCall.enqueue(new Callback<InfoProjectList>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
@@ -381,7 +385,7 @@ public class UserPresenter {
         Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
-        Call<InfoProjectList> dataCall = api.getApplyingMonitorProject(token,user.getUserId());
+        Call<InfoProjectList> dataCall = api.getApplyingMonitorProject(token,user.getUserId(),1,0);
         dataCall.enqueue(new Callback<InfoProjectList>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
@@ -411,7 +415,7 @@ public class UserPresenter {
         Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
-        Call<InfoProjectList> dataCall = api.getMyApplicationProject(token,user.getUserId());
+        Call<InfoProjectList> dataCall = api.getMyApplicationProject(token,user.getUserId(),1,0);
         dataCall.enqueue(new Callback<InfoProjectList>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
@@ -743,7 +747,7 @@ public class UserPresenter {
 
         Api api = getRetrofit().create(Api.class);
 
-        Call<InfoShowAllProject> dataCall=api.getFrezonOrNotProject(token,projectType);
+        Call<InfoShowAllProject> dataCall=api.getFrezonOrNotProject(token,projectType,1,0);
 
         dataCall.enqueue(new Callback<InfoShowAllProject>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
@@ -774,7 +778,7 @@ public class UserPresenter {
 
         Api api = getRetrofit().create(Api.class);
 
-        Call<InfoShowAllProject> dataCall=api.getReviewOrNotProject(token,projectType);
+        Call<InfoShowAllProject> dataCall=api.getReviewOrNotProject(token,projectType,1,0,null);
 
         dataCall.enqueue(new Callback<InfoShowAllProject>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
@@ -1000,6 +1004,87 @@ public class UserPresenter {
         });
     }
 
+    public void setErrorRate(int projectId,double errorRate){
+        Api api=getRetrofit().create(Api.class);
+        Call<InfoUser> dataCall=api.setErrorRate(token,new SetErrorRateSend(projectId,errorRate));
+
+        dataCall.enqueue(new Callback<InfoUser>() {
+            UserDataShowInterface activity=UserPresenter.this.activity;
+            @Override
+            public void onResponse(Call<InfoUser> call, Response<InfoUser> response) {
+                InfoUser info=response.body();
+                if(info==null){
+                    activity.setErrorRate(STATUS_NO_INTERNET);
+                } else if (info.getCode()!=1) {
+                    activity.setErrorRate(STATUS_FAILED);
+                }else{
+                    activity.setErrorRate(STATUS_SUCCESS);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<InfoUser> call, Throwable t) {
+                activity.setErrorRate(STATUS_NO_INTERNET);
+            }
+        });
+    }
+    public void fetchLogDetail(int groupType,int logId,int logType){
+        Api api=getRetrofit().create(Api.class);
+        Call<InfoLog> dataCall=api.showDetaliedLog(token,new ShowDetailedLogSend(groupType,logId,logType));
+
+        dataCall.enqueue(new Callback<InfoLog>() {
+            UserDataShowInterface activity=UserPresenter.this.activity;
+            @Override
+            public void onResponse(Call<InfoLog> call, Response<InfoLog> response) {
+                InfoLog info=response.body();
+                if(info==null){
+                    logDetail=new LogData();
+                    activity.logDetail(STATUS_NO_INTERNET);
+                } else if (info.getCode()!=1) {
+                    logDetail=new LogData();
+                    activity.logDetail(STATUS_FAILED);
+                }else{
+                    logDetail=info.getData();
+                    activity.logDetail(STATUS_SUCCESS);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<InfoLog> call, Throwable t) {
+                logDetail=new LogData();
+                activity.logDetail(STATUS_NO_INTERNET);
+            }
+        });
+    }
+    //根据不同组查询一周的日志数量
+    public void fetchWeekLogNum(int groupType,int logType,int projectId){
+        Api api=getRetrofit().create(Api.class);
+        Call<InfoShowAllLog> dataCall=api.showLogNumberOneWeekForGroup(token,new ViewLogForGroupSend(groupType,logType,projectId));
+
+        dataCall.enqueue(new Callback<InfoShowAllLog>() {
+            UserDataShowInterface activity=UserPresenter.this.activity;
+            @Override
+            public void onResponse(Call<InfoShowAllLog> call, Response<InfoShowAllLog> response) {
+                InfoShowAllLog info=response.body();
+                if(info==null){
+                    logDataListByGroup=new AllLog();
+                    activity.weekLogNum(STATUS_NO_INTERNET);
+                } else if (info.getCode()!=1) {
+                    logDataListByGroup=new AllLog();
+                    activity.weekLogNum(STATUS_FAILED);
+                }else{
+                    logDataListByGroup=info.getData();
+                    activity.weekLogNum(STATUS_SUCCESS);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<InfoShowAllLog> call, Throwable t) {
+                logDataListByGroup=new AllLog();
+                activity.weekLogNum(STATUS_NO_INTERNET);
+            }
+        });
+    }
 
 
 
@@ -1038,6 +1123,9 @@ public class UserPresenter {
     public String getCheckResult(){return checkResult;}
     public List<LogData> getLogDataList() {return logDataList;}
 
+    public LogData getLogDetail() {
+        return logDetail;
+    }
 
     //获取一个项目的一个组（前后移动端）的所有日志，fetchLogForGroup的时候会被赋值，其他全部赋值到logDataList
     public AllLog getLogDataListByGroup() {return logDataListByGroup;}
