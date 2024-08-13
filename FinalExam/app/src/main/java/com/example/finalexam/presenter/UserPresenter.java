@@ -155,8 +155,7 @@ public class UserPresenter {
             }
         });
     }
-
-    public void register( String account, String password, String passwordAgain) {
+    public void register(String account, String password, String passwordAgain) {
         if (!password.equals(passwordAgain)) {
             activity.userRegister(STATUS_PASSWORDS_INCONSISTENT);
             return;
@@ -596,7 +595,7 @@ public class UserPresenter {
         });
     }
     //查看项目操作日志(包括项目发布，更新日志)
-    public void fetchViewProjectOpearteLog(int projectId){
+    public void fetchViewProjectOperateLog(int projectId){
         Api api=getRetrofit().create(Api.class);
         Call<InfoLogList> dataCall=api.viewProjectOperateLog(token,projectId);
         dataCall.enqueue(new Callback<InfoLogList>() {
