@@ -3,36 +3,47 @@ package com.example.finalexam.activity;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.finalexam.R;
 import com.example.finalexam.adapter.ProjectAdapter;
 import com.example.finalexam.baseappcompatactivity.BaseActivity;
 import com.example.finalexam.helper.UserDataShowInterface;
+import com.example.finalexam.model.AllLog;
+import com.example.finalexam.model.LogData;
 import com.example.finalexam.model.ProjectData;
-import com.example.finalexam.model.UserData;
-import com.example.finalexam.overrideview.DoubleGraphView;
 import com.example.finalexam.presenter.UserPresenter;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class ProjectDetailActivity extends BaseActivity implements UserDataShowInterface {
     private static final String TAG = "ProjectDetailActivity";
 
     private ProjectData data = new ProjectData();
-
+    private int requestNum = 0;
     private TextView projectName;
     private TextView projectId;
     private TextView descriptionView;
-
-    private DoubleGraphView graphView;
-    private List<Integer> FPS;
+    private ConstraintLayout optionsLayout;
+    private TextView frontOption;
+    private TextView mobileOption;
+    private RecyclerView logRV;
+    private TextView logNumView;
+    private TextView lastButton;
+    private TextView nextButton;
+    private static final List<LogData> weekList = new ArrayList<>();
+    private static AllLog log;
+    private int MorF = UserPresenter.FRONT_LOG;
+    private int page = 1;
+    private boolean canChangePage = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,26 +58,36 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
 
         initView();
         initListener();
+        initRV();
         requestData();
-        initGraph();
     }
 
-    private void initGraph() {
-        FPS = graphView.targetFPS;
-        addTestFPS();
-    }
-
-    private void addTestFPS() {
-        Random random = new Random(System.currentTimeMillis());
-        int min = 60;
-        int max = 90;
-        for (int i = 0; i < 20; i++) {
-            FPS.add(min + random.nextInt(max - min + 1));
-        }
+    private void initRV() {
+        logRV.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void initListener() {
+        frontOption.setOnClickListener(v -> {
+            MorF = UserPresenter.FRONT_LOG;
+        });
+        mobileOption.setOnClickListener(v -> {
+            MorF = UserPresenter.MOBILE_LOG;
+        });
 
+        //翻页按钮
+        lastButton.setOnClickListener(v -> {
+            if (!canChangePage) return;
+            else if (page == 1) return;
+            page--;
+            UserPresenter.getInstance(this).fetchLogForGroup(MorF, 30, page, ProjectAdapter.clickId, 2);
+            canChangePage = false;
+        });
+        nextButton.setOnClickListener(v -> {
+            if (!canChangePage) return;
+            page++;
+            UserPresenter.getInstance(this).fetchLogForGroup(MorF, 30, page, ProjectAdapter.clickId, 2);
+            canChangePage = false;
+        });
     }
 
     @SuppressLint("SetTextI18n")
@@ -78,13 +99,21 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
 
     private void requestData() {
         UserPresenter.getInstance(this).fetchProjectDetail(ProjectAdapter.clickId);
+        UserPresenter.getInstance(this).fetchProjectPresentationDateOneWeek(ProjectAdapter.clickId);//一周数据
+        UserPresenter.getInstance(this).fetchLogForGroup(MorF, 30, page, ProjectAdapter.clickId, 2);
     }
 
     private void initView() {
         projectName = findViewById(R.id.detail_project_name);
         projectId = findViewById(R.id.detail_project_id);
         descriptionView = findViewById(R.id.detail_project_description);
-        graphView = findViewById(R.id.detail_project_graph);
+        optionsLayout = findViewById(R.id.detail_options_layout);
+        frontOption = findViewById(R.id.detail_option_front);
+        mobileOption = findViewById(R.id.detail_option_mobile);
+        logRV = findViewById(R.id.detail_log);
+        logNumView = findViewById(R.id.detail_log_num);
+        lastButton = findViewById(R.id.detail_log_last);
+        nextButton = findViewById(R.id.detail_log_next);
     }
 
 
@@ -145,12 +174,27 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
 
     @Override
     public void logDataListByGroup(int STATUS) {
+        if (STATUS == UserPresenter.STATUS_SUCCESS) {
+            log = UserPresenter.getInstance(this).getLogDataListByGroup();
+        }
 
+        if (++requestNum == 3){
+            requestNum = 0;
+            showData();
+        }
     }
 
     @Override
     public void projectPresentationDateOneWeek(int STATUS) {
+        if (STATUS == UserPresenter.STATUS_SUCCESS) {
+            weekList.clear();
+            UserPresenter.getInstance(this).getLogDataList();
+        }
 
+        if (++requestNum == 3){
+            requestNum = 0;
+            showData();
+        }
     }
 
     @Override
@@ -216,9 +260,12 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
 
     @Override
     public void projectDetail(int STATUS) {
-        if (STATUS == UserPresenter.STATUS_NO_INTERNET) {
-        } else if (STATUS == UserPresenter.STATUS_SUCCESS) {
+        if (STATUS == UserPresenter.STATUS_SUCCESS) {
             data = UserPresenter.getInstance(this).getProjectDetail();
+        }
+
+        if (++requestNum == 3){
+            requestNum = 0;
             showData();
         }
     }

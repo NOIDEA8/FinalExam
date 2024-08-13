@@ -192,9 +192,7 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void briefProjectList(int STATUS) {
-        if (STATUS == UserPresenter.STATUS_NO_DATA) {
-            Toast.makeText(requireContext(), "暂无项目", Toast.LENGTH_SHORT).show();
-        } else if (STATUS == UserPresenter.STATUS_SUCCESS) {
+        if (STATUS == UserPresenter.STATUS_SUCCESS) {
             allProjectList.clear();
             List<ProjectData> list=UserPresenter.getInstance(this).getProjectList();
             allProjectList.addAll(list);
@@ -211,9 +209,7 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void selfProjectList(int STATUS) {
-        if (STATUS == UserPresenter.STATUS_NO_DATA) {
-            Toast.makeText(requireContext(), "暂无项目", Toast.LENGTH_SHORT).show();
-        } else if (STATUS == UserPresenter.STATUS_SUCCESS) {
+        if (STATUS == UserPresenter.STATUS_SUCCESS) {
             selfProjectList.clear();
             selfProjectList.addAll(UserPresenter.getInstance(this).getProjectList());
             ProjectListSortHelper.sortWithCreator(selfProjectList);
@@ -229,9 +225,7 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void monitorProjectList(int STATUS) {
-        if (STATUS == UserPresenter.STATUS_NO_DATA) {
-            Toast.makeText(UserPresenter.getContext(), "暂无项目", Toast.LENGTH_SHORT).show();
-        } else if (STATUS == UserPresenter.STATUS_SUCCESS) {
+        if (STATUS == UserPresenter.STATUS_SUCCESS) {
             monitorProjectList.clear();
             monitorProjectList.addAll(UserPresenter.getInstance(this).getProjectList());
             ProjectListSortHelper.sortWithCreator(monitorProjectList);
