@@ -48,6 +48,7 @@ public class UsersAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHolder
 
     @SuppressLint("SetTextI18n")
     private void showProjectData(ProjectAdapter.ItemHolder holder, UserData data) {
+        //和ProjectAdapter基本一致，只是把用户状态放在了原本的项目名上
         String enabled = data.getEnabled();
         String isOnline = data.getOnline();
         String name = data.getUsername();
