@@ -28,6 +28,7 @@ public class ProjectOverviewFragment extends Fragment implements UserDataShowInt
     private View view;
     public static final List<ProjectData> list = new ArrayList<>();
     public static final List<ProjectData> tempList = new ArrayList<>();
+    private int requestNum = 0;
     private RecyclerView projectRV;
 
     @Override
@@ -42,7 +43,8 @@ public class ProjectOverviewFragment extends Fragment implements UserDataShowInt
     }
 
     private void requestData() {
-        UserPresenter.getInstance(this).fetchAllBriefProject();
+        UserPresenter.getInstance(this).fetchFreezeOrNotProject(UserPresenter.PROJECT_ACTIVE);
+        UserPresenter.getInstance(this).fetchFreezeOrNotProject(UserPresenter.PROJECT_FROZEN);
     }
 
     private void addTestData() {
@@ -97,11 +99,14 @@ public class ProjectOverviewFragment extends Fragment implements UserDataShowInt
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void briefProjectList(int STATUS) {
-        if (STATUS == UserPresenter.STATUS_SUCCESS) {
+        if (requestNum++ == 0) {
             list.clear();
+            tempList.clear();
+        } else if (requestNum == 2) requestNum = 0;
+
+        if (STATUS == UserPresenter.STATUS_SUCCESS) {
             list.addAll(UserPresenter.getInstance(this).getProjectList());
             ProjectListSortHelper.sortWithCreator(list);
-            tempList.clear();
             tempList.addAll(list);
             Objects.requireNonNull(projectRV.getAdapter()).notifyDataSetChanged();
         }
