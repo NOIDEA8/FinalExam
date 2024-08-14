@@ -191,8 +191,7 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
     public void briefProjectList(int STATUS) {
         if (STATUS == UserPresenter.STATUS_SUCCESS || STATUS == UserPresenter.STATUS_NO_DATA) {
             allProjectList.clear();
-            List<ProjectData> list = UserPresenter.getInstance(this).getProjectList();
-            allProjectList.addAll(list);
+            allProjectList.addAll(UserPresenter.getInstance(this).getProjectList());
             ProjectListSortHelper.sortWithCreator(allProjectList);
         }
         UserPresenter.getInstance(this).fetchSelfProjects();
@@ -203,7 +202,10 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
         if (STATUS == UserPresenter.STATUS_SUCCESS || STATUS == UserPresenter.STATUS_NO_DATA) {
             selfProjectList.clear();
             selfProjectList.addAll(UserPresenter.getInstance(this).getProjectList());
-            ProjectListSortHelper.sortWithCreator(selfProjectList);
+            String creator = UserPresenter.getUserName(UserPresenter.getContext());
+            for (ProjectData data : selfProjectList) {
+                data.setCreator(creator);
+            }
         }
         UserPresenter.getInstance(this).fetchMonitorProjects();
     }

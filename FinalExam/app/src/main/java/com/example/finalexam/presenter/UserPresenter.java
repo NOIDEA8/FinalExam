@@ -1112,7 +1112,7 @@ public class UserPresenter {
 
 
     //获取账号名
-    public String getUserName(Context context) {
+    public static String getUserName(Context context) {
         SharedPreferences sp = context.getSharedPreferences("User", Context.MODE_PRIVATE);
         return sp.getString("username", null);
     }

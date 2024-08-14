@@ -2,6 +2,7 @@ package com.example.finalexam.activity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -150,6 +151,7 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
         editBackground.setOnClickListener(v -> editBackground.setVisibility(View.INVISIBLE));
         editSaveButton.setOnClickListener(v -> {
             String password = editPasswordView.getText().toString();
+            Log.d("Password", "input = " + password + ", truePwd = " + data.getProjectPassword());
             if (!password.equals(data.getProjectPassword())) {
                 Toast.makeText(this, "密码错误", Toast.LENGTH_SHORT).show();
                 return;
