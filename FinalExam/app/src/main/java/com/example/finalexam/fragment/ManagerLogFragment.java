@@ -61,9 +61,9 @@ public class ManagerLogFragment extends DialogFragment {
         });
 
         confirm.setOnClickListener(v->{
-            password= Objects.requireNonNull(passwordEdit.getText()).toString();;
+            password= Objects.requireNonNull(passwordEdit.getText()).toString();
             if(password.isEmpty()){
-                Toast.makeText(requireContext(),"请输入口令",Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(),"请输入密码",Toast.LENGTH_SHORT).show();
             }else {
                 Log.d(TAG,password);
                 //按了确定就把窗口去掉

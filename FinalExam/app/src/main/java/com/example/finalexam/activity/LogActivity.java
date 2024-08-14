@@ -130,8 +130,10 @@ public class LogActivity extends BaseActivity implements UserDataShowInterface{
 
             if(UserPresenter.getInstance(this).getUserName(this).equals("admin")){
                 startActivity(new Intent(this,ManagerDesktop.class));
+
             }else{
                 startActivity(new Intent(this,UserDesktop.class));
+
             }
 
             Log.d(TAG,"in userLog:finish()活动");
