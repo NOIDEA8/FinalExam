@@ -50,13 +50,13 @@ public class VerifyActivity extends AppCompatActivity implements UserDataShowInt
 
     private void initListener() {
         yesButton.setOnClickListener(v -> {
-            UserPresenter.getInstance(this).verifyApplication(data.getProjectId(), UserPresenter.PASS_REVIEW, null);
+            UserPresenter.getInstance(this).verifyApplication(data.getApplicationId(), UserPresenter.PASS_REVIEW, null);
             ApplyOverviewFragment.list.remove(data);
             ApplyOverviewFragment.notifyChange();
             finish();
         });
         noButton.setOnClickListener(v -> {
-            UserPresenter.getInstance(this).verifyApplication(data.getProjectId(), UserPresenter.REJECT_REVIEW, "哒咩");
+            UserPresenter.getInstance(this).verifyApplication(data.getApplicationId(), UserPresenter.REJECT_REVIEW, "哒咩");
             ApplyOverviewFragment.list.remove(data);
             ApplyOverviewFragment.notifyChange();
             finish();

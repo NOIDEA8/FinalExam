@@ -4,6 +4,9 @@ public class ProjectData {
     private String applyTime;//申请时间
     private String applicationStatus;//审核、待审核
     private String applicationType;//这个项目是更新还是发布
+
+    private int applicationId;//申请id
+
     private int applyMonitorProjectId;//申请id
 
     private String createTime;//申请通过时间
@@ -15,7 +18,13 @@ public class ProjectData {
     private String rejectedReason;
     private String projectUrl;
 
+    public int getApplicationId() {
+        return applicationId;
+    }
 
+    public void setApplicationId(int applicationId) {
+        this.applicationId = applicationId;
+    }
 
     public String getProjectUrl() {
         return projectUrl;
