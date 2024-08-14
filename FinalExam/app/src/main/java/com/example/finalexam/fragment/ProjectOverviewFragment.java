@@ -99,17 +99,7 @@ public class ProjectOverviewFragment extends Fragment implements UserDataShowInt
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void briefProjectList(int STATUS) {
-        if (requestNum++ == 0) {
-            list.clear();
-            tempList.clear();
-        } else if (requestNum == 2) requestNum = 0;
 
-        if (STATUS == UserPresenter.STATUS_SUCCESS) {
-            list.addAll(UserPresenter.getInstance(this).getProjectList());
-            ProjectListSortHelper.sortWithCreator(list);
-            tempList.addAll(list);
-            Objects.requireNonNull(projectRV.getAdapter()).notifyDataSetChanged();
-        }
     }
 
     @Override
@@ -154,7 +144,17 @@ public class ProjectOverviewFragment extends Fragment implements UserDataShowInt
 
     @Override
     public void freezeOrNotProjectList(int STATUS) {
+        if (requestNum++ == 0) {
+            list.clear();
+            tempList.clear();
+        } else if (requestNum == 2) requestNum = 0;
 
+        if (STATUS == UserPresenter.STATUS_SUCCESS) {
+            list.addAll(UserPresenter.getInstance(this).getProjectList());
+            ProjectListSortHelper.sortWithCreator(list);
+            tempList.addAll(list);
+            Objects.requireNonNull(projectRV.getAdapter()).notifyDataSetChanged();
+        }
     }
 
     @Override
