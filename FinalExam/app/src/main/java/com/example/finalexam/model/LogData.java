@@ -2,7 +2,7 @@ package com.example.finalexam.model;
 
 public class LogData {
     private String illegalRequest;
-    private String illegalRequestTIme;
+    private String illegalRequestTime;
     private String ipAddress;
     private int userId;
     private String operate;
@@ -30,12 +30,12 @@ public class LogData {
         this.illegalRequest = illegalRequest;
     }
 
-    public String getIllegalRequestTIme() {
-        return illegalRequestTIme;
+    public String getIllegalRequestTime() {
+        return illegalRequestTime;
     }
 
-    public void setIllegalRequestTIme(String illegalRequestTIme) {
-        this.illegalRequestTIme = illegalRequestTIme;
+    public void setIllegalRequestTime(String illegalRequestTime) {
+        this.illegalRequestTime = illegalRequestTime;
     }
 
     public String getIpAddress() {

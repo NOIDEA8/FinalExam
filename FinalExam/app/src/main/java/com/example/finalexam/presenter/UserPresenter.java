@@ -99,8 +99,8 @@ public class UserPresenter {
     public static final int STATUS_PASSWORD_INCORRECT = 21;
     public static final int STATUS_PASSWORDS_INCONSISTENT = 22;
     public static final int STATUS_NO_DATA= 32;
-
-
+    public static final int STATUS_PROJECT_PASSWORD_INCORRECT= 41;
+    public static final int STATUS_APPLICATION_EXITED= 42;
 
 
     //获取唯一present
@@ -527,7 +527,11 @@ public class UserPresenter {
                 if(info==null){
                     activity.updateProject(STATUS_NO_INTERNET);
                 } else if (info.getCode()!=1) {
-                    activity.updateProject(STATUS_FAILED);
+                    if(info.getMsg().equals("申请已存在")){
+                        activity.updateProject(STATUS_APPLICATION_EXITED);
+                    } else if (info.getMsg().equals("项目口令错误")) {
+                        activity.updateProject(STATUS_PROJECT_PASSWORD_INCORRECT);
+                    }
                 }else {
                     activity.updateProject(STATUS_SUCCESS);
                 }
@@ -545,6 +549,7 @@ public class UserPresenter {
         Call<InfoShowAllLog> dataCall=api.viewLogForGroup(token,groupType,pageSize,page,projectId,logType);
         dataCall.enqueue(new Callback<InfoShowAllLog>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
+
             @Override
             public void onResponse(Call<InfoShowAllLog> call, Response<InfoShowAllLog> response) {
                 InfoShowAllLog info= response.body();
