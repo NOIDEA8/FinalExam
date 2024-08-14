@@ -64,7 +64,7 @@ public class DealAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHolder>
         String projectName = data.getProjectName();
         String creatorName = data.getApplicant();
         projectName = projectName == null ? "projectName" : projectName;
-        creatorName = creatorName == null ? "You" : creatorName;
+        creatorName = creatorName == null ? UserPresenter.getUserName(context) : creatorName;
 
         //获取颜色
         String creatorColor;

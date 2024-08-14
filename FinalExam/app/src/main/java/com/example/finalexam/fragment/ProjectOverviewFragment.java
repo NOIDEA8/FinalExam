@@ -30,12 +30,12 @@ public class ProjectOverviewFragment extends Fragment implements UserDataShowInt
     public static final List<ProjectData> tempList = new ArrayList<>();
     private int requestNum = 0;
     private RecyclerView projectRV;
+    private ProjectAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_project_overview, container, false);
-       // addTestData();
         initView();
         initRV();
         requestData();
@@ -47,29 +47,10 @@ public class ProjectOverviewFragment extends Fragment implements UserDataShowInt
         UserPresenter.getInstance(this).fetchFreezeOrNotProject(UserPresenter.PROJECT_FROZEN);
     }
 
-    private void addTestData() {
-        ProjectData monitor = new ProjectData();
-        monitor.setCreator("NOIDEA");
-        monitor.setProjectId(114);
-
-        ProjectData self1 = new ProjectData();
-        self1.setCreator("Poria");
-        self1.setProjectId(514);
-
-        ProjectData self2 = new ProjectData();
-        self2.setCreator("Poria");
-        self2.setProjectId(1919);
-
-        list.add(monitor);
-        list.add(self1);
-        list.add(self2);
-
-        tempList.addAll(list);
-    }
-
     private void initRV() {
         projectRV.setLayoutManager(new LinearLayoutManager(requireContext()));
-        projectRV.setAdapter(new ProjectAdapter(requireContext(), list, tempList, new ArrayList<>()));
+        adapter = new ProjectAdapter(requireContext(), list, tempList, new ArrayList<>());
+        projectRV.setAdapter(adapter);
     }
 
     private void initView() {
@@ -147,14 +128,16 @@ public class ProjectOverviewFragment extends Fragment implements UserDataShowInt
         if (requestNum++ == 0) {
             list.clear();
             tempList.clear();
-        } else if (requestNum == 2) requestNum = 0;
+        }
 
         if (STATUS == UserPresenter.STATUS_SUCCESS) {
             list.addAll(UserPresenter.getInstance(this).getProjectList());
             ProjectListSortHelper.sortWithCreator(list);
             tempList.addAll(list);
-            Objects.requireNonNull(projectRV.getAdapter()).notifyDataSetChanged();
         }
+
+        if (requestNum == 2)
+            adapter.resetList();
     }
 
     @Override
