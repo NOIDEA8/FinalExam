@@ -19,6 +19,7 @@ import com.example.finalexam.activity.ProjectDetailActivity;
 import com.example.finalexam.activity.UserDesktop;
 import com.example.finalexam.helper.ColorHelper;
 import com.example.finalexam.model.ProjectData;
+import com.example.finalexam.presenter.UserPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +54,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHold
         selfNum = self.size();
         monitorNum = monitor.size();
 
+        monitor.removeAll(self);
         tempList.addAll(self);
         tempList.addAll(monitor);
         all.removeAll(self);
@@ -87,6 +89,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHold
         holder.projectRVItem.setOnClickListener(v -> {
             clickId = data.getProjectId();
             ProjectAdapter.canBeEdited = canBeEdited;
+            if (UserPresenter.getUserName(context).equals(data.getCreator())) ProjectAdapter.canBeEdited = true;
             Log.d(TAG, "click project, id: " + clickId +", canBeEdit = " + canBeEdited);
             context.startActivity(new Intent(context, ProjectDetailActivity.class));
         });
