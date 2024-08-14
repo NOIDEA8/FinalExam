@@ -563,8 +563,7 @@ public class UserPresenter {
     //查看的不同组的日志（页面、服务器、移动app）jsonObject包含groupType（后台0、前端1、移动2）、pageSize、page、projectId、logType日志类型(0异常/1其他包括性能，正常日志/2后台自定义日志)
     public void fetchLogForGroup(int groupType, int pageSize, int page, int projectId, int logType) {
         Api api = getRetrofit().create(Api.class);
-        ViewLogForGroupSend send = new ViewLogForGroupSend(groupType, pageSize, page, projectId, logType);
-        Call<InfoShowAllLog> dataCall = api.viewLogForGroup(token, send);
+        Call<InfoShowAllLog> dataCall = api.viewLogForGroup(token,groupType, pageSize, page, projectId, logType );
         dataCall.enqueue(new Callback<InfoShowAllLog>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
 

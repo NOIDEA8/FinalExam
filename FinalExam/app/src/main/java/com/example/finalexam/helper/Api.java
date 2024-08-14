@@ -137,7 +137,8 @@ public interface Api {
 
     //查看的不同组的日志（页面、服务器、移动app）jsonObject包含groupType（后台0、前端1、移动2）、pageSize、page、projectId、logType日志类型(0异常/1其他包括性能，正常日志/2后台自定义日志)
     @GET("log/viewLogForGroup")
-    Call<InfoShowAllLog> viewLogForGroup(@Header ("token") String token,@Body ViewLogForGroupSend jsonObject);
+    Call<InfoShowAllLog> viewLogForGroup(@Header ("token") String token,@Query("groupType")int groupType,
+                                         @Query("pageSize")int pageSize,@Query("page")int page,@Query("projectId") int pageId,@Query("logType")int logType);
 
     //最近一周内的项目的访问数据和报错统计
     @GET("log/projectPresentationDateOneWeek")
