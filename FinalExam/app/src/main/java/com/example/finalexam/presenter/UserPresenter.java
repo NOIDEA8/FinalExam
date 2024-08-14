@@ -1103,7 +1103,7 @@ public class UserPresenter {
                 if (info == null) {
                     logDetail = new LogData();
                     activity.logDetail(STATUS_NO_INTERNET);
-                } else if (info.getCode() != 1) {
+                } else if (info.getData()==null) {
                     logDetail = new LogData();
                     activity.logDetail(STATUS_FAILED);
                 } else {
@@ -1134,7 +1134,7 @@ public class UserPresenter {
                 if (info == null) {
                     logDataListByGroup = new AllLog();
                     activity.weekLogNum(STATUS_NO_INTERNET);
-                } else if (info.getCode() != 1) {
+                } else if (info.getData() == null) {
                     logDataListByGroup = new AllLog();
                     activity.weekLogNum(STATUS_FAILED);
                 } else {
