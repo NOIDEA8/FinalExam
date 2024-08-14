@@ -41,7 +41,7 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_project, container, false);
 
-        addTestData();
+        //addTestData();
         initView();
         initRV();
         requestData();
@@ -52,8 +52,6 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
 
     private void requestData() {
         UserPresenter.getInstance(this).fetchAllBriefProject();
-        UserPresenter.getInstance(this).fetchSelfProjects();
-        UserPresenter.getInstance(this).fetchMonitorProjects();
     }
 
     private void addTestData() {
@@ -189,53 +187,36 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
 
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void briefProjectList(int STATUS) {
-        if (STATUS == UserPresenter.STATUS_SUCCESS) {
+        if (STATUS == UserPresenter.STATUS_SUCCESS || STATUS == UserPresenter.STATUS_NO_DATA) {
             allProjectList.clear();
             List<ProjectData> list = UserPresenter.getInstance(this).getProjectList();
             allProjectList.addAll(list);
             ProjectListSortHelper.sortWithCreator(allProjectList);
         }
-
-        if (++requestNum == 3) {
-            requestNum = 0;
-            Objects.requireNonNull(projectListView.getAdapter()).notifyDataSetChanged();
-            Log.d(TAG, "RV notify set change");
-        }
+        UserPresenter.getInstance(this).fetchSelfProjects();
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void selfProjectList(int STATUS) {
-        if (STATUS == UserPresenter.STATUS_SUCCESS) {
+        if (STATUS == UserPresenter.STATUS_SUCCESS || STATUS == UserPresenter.STATUS_NO_DATA) {
             selfProjectList.clear();
             selfProjectList.addAll(UserPresenter.getInstance(this).getProjectList());
             ProjectListSortHelper.sortWithCreator(selfProjectList);
         }
-
-        if (++requestNum == 3) {
-            requestNum = 0;
-            Objects.requireNonNull(projectListView.getAdapter()).notifyDataSetChanged();
-            Log.d(TAG, "RV notify set change");
-        }
+        UserPresenter.getInstance(this).fetchMonitorProjects();
     }
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void monitorProjectList(int STATUS) {
-        if (STATUS == UserPresenter.STATUS_SUCCESS) {
+        if (STATUS == UserPresenter.STATUS_SUCCESS || STATUS == UserPresenter.STATUS_NO_DATA) {
             monitorProjectList.clear();
             monitorProjectList.addAll(UserPresenter.getInstance(this).getProjectList());
             ProjectListSortHelper.sortWithCreator(monitorProjectList);
         }
-
-        if (++requestNum == 3) {
-            requestNum = 0;
-            Objects.requireNonNull(projectListView.getAdapter()).notifyDataSetChanged();
-            Log.d(TAG, "RV notify set change");
-        }
+        Objects.requireNonNull(projectListView.getAdapter()).notifyDataSetChanged();
     }
 
     @Override
