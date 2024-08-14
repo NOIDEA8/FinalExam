@@ -184,7 +184,6 @@ public class PersonFragment extends Fragment implements UserDataShowInterface {
     @Override
     public void applyingProjectList(int STATUS) {
         if (STATUS == UserPresenter.STATUS_SUCCESS) {
-            List<ProjectData> data=UserPresenter.getInstance(this).getProjectList();
             myProjects.clear();
             myProjects.addAll(UserPresenter.getInstance(this).getProjectList());
             ProjectListSortHelper.sortWithCreator(myProjects);

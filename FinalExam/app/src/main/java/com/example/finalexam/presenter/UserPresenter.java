@@ -803,10 +803,10 @@ public class UserPresenter {
         });
     }
     //对项目进行审核
-    public void verifyApplication(int projectId, int reviewResult, String rejectResason){//applicationId、status(1通过2拒绝）、rejectResason
+    public void verifyApplication(int applicationId, int reviewResult, String rejectResason){//applicationId、status(1通过2拒绝）、rejectResason
 
         Api api = getRetrofit().create(Api.class);
-        VerifyApplicationSend verifyApplicationSend=new VerifyApplicationSend(projectId,reviewResult,rejectResason);
+        VerifyApplicationSend verifyApplicationSend=new VerifyApplicationSend(applicationId,reviewResult,rejectResason);
         Call<InfoUser> dataCall=api.verifyApplication(token,verifyApplicationSend);
 
         dataCall.enqueue(new Callback<InfoUser>() {
