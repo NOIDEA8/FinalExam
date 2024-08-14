@@ -25,6 +25,7 @@ import com.example.finalexam.presenter.UserPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ProjectDetailActivity extends BaseActivity implements UserDataShowInterface {
     private ProjectData data = new ProjectData();
@@ -137,6 +138,8 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
         readWeekView.setText(readWeek);
         errorWeekView.setText(errorWeek);
 
+        //此处为曲线图
+
         logNumView.setText(log.getTotal());
     }
 
@@ -225,15 +228,14 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void logDataListByGroup(int STATUS) {
         if (STATUS == UserPresenter.STATUS_SUCCESS) {
             log = UserPresenter.getInstance(this).getLogDataListByGroup();
-        }
-
-        if (++requestNum == 3) {
-            requestNum = 0;
-            showData();
+            logList.clear();
+            logList.addAll(log.getData());
+            Objects.requireNonNull(logRV.getAdapter()).notifyDataSetChanged();
         }
     }
 
@@ -244,7 +246,7 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
             weekList.addAll(UserPresenter.getInstance(this).getLogDataList());
         }
 
-        if (++requestNum == 3) {
+        if (++requestNum == 2) {
             requestNum = 0;
             showData();
         }
@@ -317,7 +319,7 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
             data = UserPresenter.getInstance(this).getProjectDetail();
         }
 
-        if (++requestNum == 3) {
+        if (++requestNum == 2) {
             requestNum = 0;
             showData();
         }
