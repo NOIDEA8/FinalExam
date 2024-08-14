@@ -147,7 +147,7 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:gravity="center"
-                android:text="允许"
+                android:text="申请"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/project_apply_no_button"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -157,7 +157,7 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:gravity="center"
-                android:text="拒绝"
+                android:text="取消"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/project_apply_yes_button" />

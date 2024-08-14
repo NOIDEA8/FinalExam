@@ -21,6 +21,7 @@ import com.example.finalexam.helper.UserDataShowInterface;
 import com.example.finalexam.model.AllLog;
 import com.example.finalexam.model.LogData;
 import com.example.finalexam.model.ProjectData;
+import com.example.finalexam.overrideview.EditButton;
 import com.example.finalexam.presenter.UserPresenter;
 
 import java.util.ArrayList;
@@ -31,7 +32,11 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
     private ProjectData data = new ProjectData();
     private int requestNum = 0;
     private TextView projectName;
+    private TextView projectUrl;
     private TextView projectId;
+
+    private EditButton editButton;
+
     private TextView descriptionView;
 
     private TextView readWeekView;
@@ -91,6 +96,11 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
     }
 
     private void initListener() {
+        //编辑按钮
+        editButton.setOnClickListener(v -> {
+
+        });
+
         //选择查看前端后台
         frontOption.setOnClickListener(v -> {
             MorF = UserPresenter.FRONT_LOG;
@@ -129,6 +139,7 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
     @SuppressLint("SetTextI18n")
     private void showData() {
         projectName.setText(data.getProjectName());
+        projectUrl.setText("url: " + data.getProjectUrl());
         projectId.setText("id: " + ProjectAdapter.clickId);
         descriptionView.setText(data.getDescription());
 
@@ -156,7 +167,11 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
 
     private void initView() {
         projectName = findViewById(R.id.detail_project_name);
+        projectUrl = findViewById(R.id.detail_project_url);
         projectId = findViewById(R.id.detail_project_id);
+
+        editButton = findViewById(R.id.detail_project_edit_button);
+
         descriptionView = findViewById(R.id.detail_project_description);
 
         readWeekView = findViewById(R.id.detail_read_week);

@@ -7,6 +7,8 @@ import java.util.Random;
 
 public class ColorHelper {
 
+    public static final int TEXT_GREY = Color.parseColor("#969696");
+
     public static String createColorHex(String seed) {
         long mSeed = ((long) seed.hashCode() << 32) | (seed.hashCode() & 0xFFFFFFFFL);
         return createColorHex(mSeed);
