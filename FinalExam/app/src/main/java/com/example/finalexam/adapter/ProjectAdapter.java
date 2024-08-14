@@ -54,15 +54,23 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHold
         selfNum = self.size();
         monitorNum = monitor.size();
 
-        monitor.removeAll(self);
+        all.removeAll(monitor);
+        if(selfNum != 0) {
+            String creator = self.get(0).getCreator();
+            for (int i = 0; i < all.size(); i++) {
+                if (creator.equals(all.get(i).getCreator())){
+                    all.remove(i);
+                    i--;
+                }
+            }
+        }
         tempList.addAll(self);
         tempList.addAll(monitor);
-        all.removeAll(self);
-        all.removeAll(monitor);
         tempList.addAll(all);
         all.clear();
         all.addAll(tempList);
         tempList.clear();
+
         return new ItemHolder(itemView);
     }
 
