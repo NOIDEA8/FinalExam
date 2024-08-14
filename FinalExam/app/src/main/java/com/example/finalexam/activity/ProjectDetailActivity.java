@@ -58,6 +58,7 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
     private static final List<LogData> logList = new ArrayList<>();
     private int MorF = UserPresenter.FRONT_LOG;
     private int page = 1;
+    private int pages = 1;
     private boolean canChangePage = true;
 
     @Override
@@ -74,7 +75,7 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
         initView();
         initListener();
         initRV();
-        //requestData();
+        requestData();
     }
 
     public static void callLogLayout() {
@@ -112,6 +113,7 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
         });
         nextButton.setOnClickListener(v -> {
             if (!canChangePage) return;
+            else if (page == pages) return;
             page++;
             UserPresenter.getInstance(this).fetchLogForGroup(MorF, 30, page, ProjectAdapter.clickId, 2);
             canChangePage = false;
@@ -138,15 +140,15 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
             errorWeek += logData.getErrorNumber();
             errorDay.add(logData.getErrorNumber());
         }
-        readWeekView.setText(readWeek);
-        errorWeekView.setText(errorWeek);
+        readWeekView.setText(String.valueOf(readWeek));
+        errorWeekView.setText(String.valueOf(errorWeek));
 
         //此处为曲线图
 
-        logNumView.setText(log.getTotal());
     }
 
     private void requestData() {
+        UserPresenter.getInstance(this).increaseVisits(ProjectAdapter.clickId);
         UserPresenter.getInstance(this).fetchProjectDetail(ProjectAdapter.clickId);
         UserPresenter.getInstance(this).fetchProjectPresentationDateOneWeek(ProjectAdapter.clickId);//一周数据
         UserPresenter.getInstance(this).fetchLogForGroup(MorF, 30, page, ProjectAdapter.clickId, 2);//日志
@@ -231,7 +233,7 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
 
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+    @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
     @Override
     public void logDataListByGroup(int STATUS) {
         if (STATUS == UserPresenter.STATUS_SUCCESS) {
@@ -239,6 +241,15 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
             logList.clear();
             logList.addAll(log.getData());
             Objects.requireNonNull(logRV.getAdapter()).notifyDataSetChanged();
+
+            int total = log.getTotal();
+            pages = total % 30 == 0 ? total / 30 : total / 30 + 1;
+            logNumView.setText(page + " / " + pages);
+        }
+
+        if (++requestNum == 3) {
+            requestNum = 0;
+            showData();
         }
     }
 
@@ -249,7 +260,7 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
             weekList.addAll(UserPresenter.getInstance(this).getLogDataList());
         }
 
-        if (++requestNum == 2) {
+        if (++requestNum == 3) {
             requestNum = 0;
             showData();
         }
@@ -322,7 +333,7 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
             data = UserPresenter.getInstance(this).getProjectDetail();
         }
 
-        if (++requestNum == 2) {
+        if (++requestNum == 3) {
             requestNum = 0;
             showData();
         }
