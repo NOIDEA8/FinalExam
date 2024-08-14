@@ -48,7 +48,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class UserPresenter {
     private static final String TAG = "UserPresenter";
-    private static final String baseUrl="http://47.113.224.195:8080/";
+    private static final String baseUrl="http://47.113.224.195:31101/api/";
     public UserDataShowInterface activity;
     private String token;
     private static UserPresenter presenter=new UserPresenter();
@@ -117,7 +117,7 @@ public class UserPresenter {
 
         Api userApi = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
-
+        resetPresenter();
 
         Call<InfoUserLogin> dataCall = userApi.log(account,password);
         dataCall.enqueue(new Callback<InfoUserLogin>() {
