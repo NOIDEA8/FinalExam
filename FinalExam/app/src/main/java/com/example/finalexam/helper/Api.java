@@ -3,7 +3,6 @@ package com.example.finalexam.helper;
 import com.example.finalexam.info.InfoLog;
 import com.example.finalexam.info.InfoLogList;
 import com.example.finalexam.info.InfoProject;
-import com.example.finalexam.info.InfoProjectList;
 import com.example.finalexam.info.InfoShowAllLog;
 import com.example.finalexam.info.InfoShowAllProject;
 import com.example.finalexam.info.InfoString;
@@ -53,14 +52,14 @@ public interface Api {
     //获取我申请过监控的项目
 
     @GET("user/myApplicationOnMonitorProject")
-    Call<InfoProjectList> getApplyingMonitorProject(@Header ("token") String token,@Query("userId") int useId,@Query("page")int page,@Query("pageSize")int pageSize);
+    Call<InfoShowAllProject> getApplyingMonitorProject(@Header ("token") String token,@Query("userId") int useId,@Query("page")int page,@Query("pageSize")int pageSize);
 
     //获取我发布或更改的项目
     @GET("user/myApplicationProject")
     Call<InfoShowAllProject> getMyApplicationProject(@Header ("token") String token,@Query("userId") int useId,@Query("page")int page,@Query("pageSize")int pageSize);
     //收到的申请
     @GET("user/receivedMonitorApplication")
-    Call<InfoProjectList> getApplication(@Header ("token") String token,@Query("userId") int useId,@Query("page")int page,@Query("pageSize")int pageSize);
+    Call<InfoShowAllProject> getApplication(@Header ("token") String token,@Query("userId") int useId,@Query("page")int page,@Query("pageSize")int pageSize);
     //用户同意别人的申请
     @POST("user/verifyMonitorApplication")
     Call<InfoUser> verifyMonitorApplication(@Header ("token") String token, @Body VertifyMonitorSend jsonObject);
