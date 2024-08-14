@@ -89,6 +89,7 @@ public class AddProjectActivity extends BaseActivity implements UserDataShowInte
                     password
             );
             pushOver = false;
+            finish();
         });
     }
 
