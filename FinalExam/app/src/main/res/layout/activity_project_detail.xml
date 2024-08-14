@@ -71,6 +71,81 @@
                 app:layout_constraintTop_toBottomOf="@id/detail_project_id" />
 
             <TextView
+                android:id="@+id/detail_read_week_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="周访问量"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="@id/detail_project_description"
+                app:layout_constraintTop_toBottomOf="@id/detail_project_description" />
+
+            <TextView
+                android:id="@+id/detail_read_week"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/square_all"
+                android:backgroundTint="@color/green"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="123"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@id/detail_read_week_hint"
+                app:layout_constraintStart_toEndOf="@id/detail_read_week_hint"
+                app:layout_constraintTop_toTopOf="@id/detail_read_week_hint" />
+
+            <TextView
+                android:id="@+id/detail_error_week_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="周报错数"
+                android:textSize="17sp"
+                android:layout_marginStart="20dp"
+                app:layout_constraintTop_toTopOf="@id/detail_read_week_hint"
+                app:layout_constraintStart_toEndOf="@id/detail_read_week"/>
+
+            <TextView
+                android:id="@+id/detail_error_week"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/square_all"
+                android:backgroundTint="@color/red"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="321"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@id/detail_read_week_hint"
+                app:layout_constraintStart_toEndOf="@id/detail_error_week_hint"
+                app:layout_constraintTop_toTopOf="@id/detail_read_week_hint" />
+
+            <TextView
+                android:id="@+id/detail_graph_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="七天的日访问与日报错"
+                android:textColor="@color/text_grey"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="@id/detail_project_name"
+                app:layout_constraintTop_toBottomOf="@id/detail_read_week" />
+
+            <com.example.finalexam.overrideview.DoubleGraphView
+                android:id="@+id/detail_graph"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/square_all_4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/detail_graph_hint" />
+
+            <TextView
                 android:id="@+id/detail_log_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -79,7 +154,7 @@
                 android:textColor="@color/black"
                 android:textSize="17sp"
                 app:layout_constraintStart_toStartOf="@id/detail_project_name"
-                app:layout_constraintTop_toBottomOf="@id/detail_project_description" />
+                app:layout_constraintTop_toBottomOf="@id/detail_graph" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/detail_options_layout"

@@ -32,14 +32,22 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
     private TextView projectName;
     private TextView projectId;
     private TextView descriptionView;
+
+    private TextView readWeekView;
+    private TextView errorWeekView;
+
     private ConstraintLayout optionsLayout;
     private TextView frontOption;
     private TextView mobileOption;
+
     private RecyclerView logRV;
     private TextView logNumView;
     private TextView lastButton;
     private TextView nextButton;
+
     private static final List<LogData> weekList = new ArrayList<>();
+    public static final List<Integer> readDay = new ArrayList<>();
+    public static final List<Integer> errorDay = new ArrayList<>();
     private static AllLog log;
     private int MorF = UserPresenter.FRONT_LOG;
     private int page = 1;
@@ -59,7 +67,7 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
         initView();
         initListener();
         initRV();
-        requestData();
+        //requestData();
     }
 
     private void initRV() {
@@ -67,11 +75,16 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
     }
 
     private void initListener() {
+        //选择查看前端后台
         frontOption.setOnClickListener(v -> {
             MorF = UserPresenter.FRONT_LOG;
+            page = 1;
+            UserPresenter.getInstance(this).fetchLogForGroup(MorF, 30, page, ProjectAdapter.clickId, 2);
         });
         mobileOption.setOnClickListener(v -> {
             MorF = UserPresenter.MOBILE_LOG;
+            page = 1;
+            UserPresenter.getInstance(this).fetchLogForGroup(MorF, 30, page, ProjectAdapter.clickId, 2);
         });
 
         //翻页按钮
@@ -95,12 +108,23 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
         projectName.setText(data.getProjectName());
         projectId.setText("id: " + ProjectAdapter.clickId);
         descriptionView.setText(data.getDescription());
+
+        int readWeek = 0;
+        int errorWeek = 0;
+        for (LogData logData : weekList) {
+            readWeek += logData.getVisits();
+            readDay.add(logData.getVisits());
+            errorWeek += logData.getErrorNumber();
+            errorDay.add(logData.getErrorNumber());
+        }
+        readWeekView.setText(readWeek);
+        errorWeekView.setText(errorWeek);
     }
 
     private void requestData() {
         UserPresenter.getInstance(this).fetchProjectDetail(ProjectAdapter.clickId);
         UserPresenter.getInstance(this).fetchProjectPresentationDateOneWeek(ProjectAdapter.clickId);//一周数据
-        UserPresenter.getInstance(this).fetchLogForGroup(MorF, 30, page, ProjectAdapter.clickId, 2);
+        UserPresenter.getInstance(this).fetchLogForGroup(MorF, 30, page, ProjectAdapter.clickId, 2);//日志
     }
 
     private void initView() {
@@ -178,7 +202,7 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
             log = UserPresenter.getInstance(this).getLogDataListByGroup();
         }
 
-        if (++requestNum == 3){
+        if (++requestNum == 3) {
             requestNum = 0;
             showData();
         }
@@ -188,10 +212,10 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
     public void projectPresentationDateOneWeek(int STATUS) {
         if (STATUS == UserPresenter.STATUS_SUCCESS) {
             weekList.clear();
-            UserPresenter.getInstance(this).getLogDataList();
+            weekList.addAll(UserPresenter.getInstance(this).getLogDataList());
         }
 
-        if (++requestNum == 3){
+        if (++requestNum == 3) {
             requestNum = 0;
             showData();
         }
@@ -264,7 +288,7 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
             data = UserPresenter.getInstance(this).getProjectDetail();
         }
 
-        if (++requestNum == 3){
+        if (++requestNum == 3) {
             requestNum = 0;
             showData();
         }
