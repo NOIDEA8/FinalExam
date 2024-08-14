@@ -163,11 +163,7 @@ public class UserPresenter {
             return;
         }
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        Api userApi = retrofit.create(Api.class);
+        Api userApi = getRetrofit().create(Api.class);
 
 
         RegisterSend registerSend=new RegisterSend();
@@ -218,6 +214,9 @@ public class UserPresenter {
                     projectList =new ArrayList<>();
                     activity.briefProjectList(STATUS_NO_DATA);
                 } else{
+                    if (projectList!=null) {
+                        projectList.clear();
+                    }
                     projectList =info.getData().getData();
                     activity.briefProjectList(STATUS_SUCCESS);
                 }
@@ -250,6 +249,9 @@ public class UserPresenter {
                     projectDetail=new ProjectData();
                     activity.projectDetail(STATUS_FAILED);
                 } else{
+                    if (projectList!=null) {
+                        projectList.clear();
+                    }
                     projectDetail=info.getData();
                     activity.projectDetail(STATUS_SUCCESS);
                 }
@@ -281,6 +283,9 @@ public class UserPresenter {
                     projectList =new ArrayList<>();
                     activity.selfProjectList(STATUS_NO_DATA);
                 } else{
+                    if (projectList!=null) {
+                        projectList.clear();
+                    }
                     projectList=info.getData().getData();
                     activity.selfProjectList(STATUS_SUCCESS);
                 }
@@ -312,6 +317,9 @@ public class UserPresenter {
                     projectList =new ArrayList<>();
                     activity.application(STATUS_NO_DATA);
                 } else{
+                    if (projectList!=null) {
+                        projectList.clear();
+                    }
                     projectList=info.getData().getData();
                     activity.application(STATUS_SUCCESS);
                 }
@@ -369,6 +377,9 @@ public class UserPresenter {
                     projectList =new ArrayList<>();
                     activity.monitorProjectList(STATUS_NO_DATA);
                 } else{
+                    if (projectList!=null) {
+                        projectList.clear();
+                    }
                     projectList=info.getData().getData();
                     activity.monitorProjectList(STATUS_SUCCESS);
                 }
@@ -399,6 +410,9 @@ public class UserPresenter {
                     projectList =new ArrayList<>();
                     activity.applyingMonitorProjectList(STATUS_NO_DATA);
                 } else{
+                    if (projectList!=null) {
+                        projectList.clear();
+                    }
                     projectList=info.getData().getData();
                     activity.applyingMonitorProjectList(STATUS_SUCCESS);
                 }
@@ -433,6 +447,9 @@ public class UserPresenter {
                     projectList =new ArrayList<>();
                     activity.applyingProjectList(STATUS_NO_DATA);
                 } else{
+                    if (projectList!=null) {
+                        projectList.clear();
+                    }
                     projectList=info.getData().getData();
                     activity.applyingProjectList(STATUS_SUCCESS);
                 }
@@ -564,6 +581,9 @@ public class UserPresenter {
                     logDataListByGroup=new AllLog();
                     activity.logDataListByGroup(STATUS_NO_DATA);
                 }else{
+                    if(logDataListByGroup!=null){
+
+                    }
                     logDataListByGroup=info.getData();
                     activity.logDataListByGroup(STATUS_SUCCESS);
                 }
@@ -593,6 +613,9 @@ public class UserPresenter {
                     logDataList=new ArrayList<>();
                     activity.projectPresentationDateOneWeek(STATUS_NO_DATA);
                 }else {
+                    if(logDataList!=null){
+                        logDataList.clear();
+                    }
                     logDataList=info.getData();
                     activity.projectPresentationDateOneWeek(STATUS_SUCCESS);
                 }
@@ -622,6 +645,9 @@ public class UserPresenter {
                     logDataList=new ArrayList<>();
                     activity.ViewProjectOperateLog(STATUS_NO_DATA);
                 }else {
+                    if(logDataList!=null){
+                        logDataList.clear();
+                    }
                     logDataList=info.getData();
                     activity.ViewProjectOperateLog(STATUS_SUCCESS);
                 }
@@ -651,6 +677,9 @@ public class UserPresenter {
                     userList=new ArrayList<>();
                     activity.monitorUserListResult(STATUS_NO_DATA);
                 }else{
+                    if(userList!=null){
+                        userList.clear();
+                    }
                     userList=info.getData();
                     activity.monitorUserListResult(STATUS_SUCCESS);
                 }
@@ -771,6 +800,9 @@ public class UserPresenter {
                     projectList=new ArrayList<>();
                     activity.freezeOrNotProjectList(STATUS_NO_DATA);
                 }else{
+                    if(projectList!=null){
+                        projectList.clear();
+                    }
                     projectList=info.getData().getData();
                     activity.freezeOrNotProjectList(STATUS_SUCCESS);
                 }
@@ -802,6 +834,9 @@ public class UserPresenter {
                     projectList=new ArrayList<>();
                     activity.applyOrNotProjectList(STATUS_NO_DATA);
                 }else{
+                    if(projectList!=null){
+                        projectList.clear();
+                    }
                     projectList=info.getData().getData();
                     activity.applyOrNotProjectList(STATUS_SUCCESS);
                 }
@@ -945,6 +980,9 @@ public class UserPresenter {
                     logDataList=new ArrayList<>();
                     activity.attackServerLogList(STATUS_NO_DATA);
                 }else {
+                    if(logDataList!=null){
+                        logDataList.clear();
+                    }
                     logDataList=info.getData();
                     activity.attackServerLogList(STATUS_SUCCESS);
                 }
@@ -974,6 +1012,9 @@ public class UserPresenter {
                     logDataList=new ArrayList<>();
                     activity.allUserOperationLogList(STATUS_NO_DATA);
                 }else {
+                    if(logDataList!=null){
+                        logDataList.clear();
+                    }
                     logDataList=info.getData();
                     activity.allUserOperationLogList(STATUS_SUCCESS);
                 }
@@ -1055,6 +1096,7 @@ public class UserPresenter {
                     logDetail=new LogData();
                     activity.logDetail(STATUS_FAILED);
                 }else{
+
                     logDetail=info.getData();
                     activity.logDetail(STATUS_SUCCESS);
                 }
