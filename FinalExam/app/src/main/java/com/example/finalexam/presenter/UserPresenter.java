@@ -50,9 +50,9 @@ public class UserPresenter {
     private static final String TAG = "UserPresenter";
     private static final String baseUrl="http://47.113.224.195:31101/api/";
     public UserDataShowInterface activity;
-    private String token;
+    private static String token ;
     private static UserPresenter presenter=new UserPresenter();
-    private UserData user =new UserData();//一个用户一个presenter
+    private static UserData user=new UserData();//一个用户一个presenter
     private List<ProjectData> projectList;
     private List<UserData> userList;
     private List<LogData> logDataList;//正常日志列
@@ -106,6 +106,7 @@ public class UserPresenter {
     //获取唯一present
     public static UserPresenter getInstance(UserDataShowInterface activity) {
         presenter.activity = activity;
+        Log.d(TAG, "getInstance: "+presenter);
         return presenter;
     }
 
@@ -140,7 +141,8 @@ public class UserPresenter {
                     SPPresenter.accordLoggedStatus(context, true);
                     user.setUsername(account);
                     user.setPassword(password);
-                    user.setUserId(tempData.getUserId());
+                    int id=tempData.getUserId();
+                    user.setUserId(id);
                     token=tempData.getToken();
                     Log.d(TAG, "onResponse: "+token);
                     Log.d(TAG,"useData已在log方法中赋值");
@@ -266,7 +268,7 @@ public class UserPresenter {
         Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
-        Call<InfoProjectList> dataCall = api.getSelfProjects(token,user.getUserId(),1,0);
+        Call<InfoProjectList> dataCall = api.getSelfProjects(token,getUserId(),1,0);
         dataCall.enqueue(new Callback<InfoProjectList>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
@@ -297,7 +299,7 @@ public class UserPresenter {
         Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
-        Call<InfoProjectList> dataCall = api.getApplication(token,user.getUserId(),1,0);
+        Call<InfoProjectList> dataCall = api.getApplication(token,getUserId(),1,0);
         dataCall.enqueue(new Callback<InfoProjectList>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
@@ -354,7 +356,7 @@ public class UserPresenter {
         Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
-        Call<InfoProjectList> dataCall = api.getHaveMonitorProjects(token,user.getUserId(),1,0);
+        Call<InfoProjectList> dataCall = api.getHaveMonitorProjects(token,getUserId(),1,0);
         dataCall.enqueue(new Callback<InfoProjectList>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
@@ -384,7 +386,7 @@ public class UserPresenter {
         Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
-        Call<InfoProjectList> dataCall = api.getApplyingMonitorProject(token,user.getUserId(),1,0);
+        Call<InfoProjectList> dataCall = api.getApplyingMonitorProject(token,getUserId(),1,0);
         dataCall.enqueue(new Callback<InfoProjectList>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
@@ -414,7 +416,7 @@ public class UserPresenter {
         Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
-        Call<InfoShowAllProject> dataCall = api.getMyApplicationProject(token,user.getUserId(),1,0);
+        Call<InfoShowAllProject> dataCall = api.getMyApplicationProject(token,getUserId(),1,0);
         dataCall.enqueue(new Callback<InfoShowAllProject>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
@@ -448,7 +450,8 @@ public class UserPresenter {
         PublishSend publishData=new PublishSend();
         publishData.setDescription(description);
         publishData.setProjectName(projectName);
-        publishData.setUserId(presenter.getUserId());
+        int id=getUserId();
+        publishData.setUserId(id);
         publishData.setProjectUrl(projectUrl);
         publishData.setProjectPassword(projectPassword);
 
@@ -807,6 +810,7 @@ public class UserPresenter {
 
         Api api = getRetrofit().create(Api.class);
         VerifyApplicationSend verifyApplicationSend=new VerifyApplicationSend(applicationId,reviewResult,rejectResason);
+        Log.d(TAG, "verifyApplication: "+token);
         Call<InfoUser> dataCall=api.verifyApplication(token,verifyApplicationSend);
 
         dataCall.enqueue(new Callback<InfoUser>() {
@@ -1096,6 +1100,8 @@ public class UserPresenter {
         }
         return false;
     }
+
+
     //获取账号名
     public String getUserName(Context context) {
         SharedPreferences sp = context.getSharedPreferences("User", Context.MODE_PRIVATE);

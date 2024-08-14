@@ -1,13 +1,13 @@
 package com.example.finalexam.model.sendmodel;
 
 public class VerifyApplicationSend {
-    private int projectId;
-    private int reviewResult;
-    private String rejectResason;
+    private int applicationId;
+    private int status;
+    private String rejectReason;
 
-    public VerifyApplicationSend(int projectId, int reviewResult, String rejectResason) {
-        this.projectId = projectId;
-        this.reviewResult = reviewResult;
-        this.rejectResason = rejectResason;
+    public VerifyApplicationSend(int applicationId, int status, String rejectReason) {
+        this.applicationId = applicationId;
+        this.status = status;
+        this.rejectReason = rejectReason;
     }
 }
