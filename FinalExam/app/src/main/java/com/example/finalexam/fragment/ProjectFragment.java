@@ -29,12 +29,11 @@ import java.util.Objects;
 public class ProjectFragment extends Fragment implements UserDataShowInterface {
     private static final String TAG = "ProjectFragment";
     private View view;
-
-    private int requestNum = 0;
     private static final List<ProjectData> allProjectList = new ArrayList<>();
     private static final List<ProjectData> selfProjectList = new ArrayList<>();
     private static final List<ProjectData> monitorProjectList = new ArrayList<>();//监管的且非自己发布的项目
     private RecyclerView projectListView;
+    private ProjectAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,7 +78,8 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
 
     private void initRV() {
         projectListView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        projectListView.setAdapter(new ProjectAdapter(requireContext(), allProjectList, selfProjectList, monitorProjectList));
+        adapter = new ProjectAdapter(requireContext(), allProjectList, selfProjectList, monitorProjectList);
+        projectListView.setAdapter(adapter);
     }
 
     private void initView() {
@@ -218,7 +218,7 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
             monitorProjectList.addAll(UserPresenter.getInstance(this).getProjectList());
             ProjectListSortHelper.sortWithCreator(monitorProjectList);
         }
-        Objects.requireNonNull(projectListView.getAdapter()).notifyDataSetChanged();
+        adapter.resetList();
     }
 
     @Override
