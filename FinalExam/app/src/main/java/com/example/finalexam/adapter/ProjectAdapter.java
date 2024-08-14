@@ -1,5 +1,6 @@
 package com.example.finalexam.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -47,10 +48,8 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHold
         this.monitor = monitor;
     }
 
-    @NonNull
-    @Override
-    public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(context).inflate(R.layout.project_rv_item, parent, false);
+    @SuppressLint("NotifyDataSetChanged")
+    public void resetList(){
         selfNum = self.size();
         monitorNum = monitor.size();
 
@@ -71,6 +70,13 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHold
         all.addAll(tempList);
         tempList.clear();
 
+        notifyDataSetChanged();
+    }
+
+    @NonNull
+    @Override
+    public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(context).inflate(R.layout.project_rv_item, parent, false);
         return new ItemHolder(itemView);
     }
 
