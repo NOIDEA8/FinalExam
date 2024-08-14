@@ -62,7 +62,7 @@ public class DealAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHolder>
     private void showProjectData(ProjectAdapter.ItemHolder holder, ProjectData data) {
         //获取项目名字和发布者名字
         String projectName = data.getProjectName();
-        String creatorName = data.getCreator();
+        String creatorName = data.getApplicant();
         projectName = projectName == null ? "projectName" : projectName;
         creatorName = creatorName == null ? "You" : creatorName;
 
