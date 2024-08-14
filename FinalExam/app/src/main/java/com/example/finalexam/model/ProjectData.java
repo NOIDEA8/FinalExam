@@ -1,13 +1,14 @@
 package com.example.finalexam.model;
 
 public class ProjectData {
-    private String applyTime;//申请时间
+    private String applicationTime;//申请时间
     private String applicationStatus;//审核、待审核
     private String applicationType;//这个项目是更新还是发布
 
     private int applicationId;//申请id
 
     private int applyMonitorProjectId;//申请id
+    private String applicant;
 
     private String createTime;//申请通过时间
     private String creator;
@@ -17,6 +18,14 @@ public class ProjectData {
     private String projectPassword;
     private String rejectedReason;
     private String projectUrl;
+
+    public String getApplicant() {
+        return applicant;
+    }
+
+    public void setApplicant(String applicant) {
+        this.applicant = applicant;
+    }
 
     public int getApplicationId() {
         return applicationId;
@@ -42,12 +51,12 @@ public class ProjectData {
     }
 
 
-    public String getApplyTime() {
-        return applyTime;
+    public String getApplicationTime() {
+        return applicationTime;
     }
 
-    public void setApplyTime(String applyTime) {
-        this.applyTime = applyTime;
+    public void setApplicationTime(String applicationTime) {
+        this.applicationTime = applicationTime;
     }
 
     public String getApplicationStatus() {
