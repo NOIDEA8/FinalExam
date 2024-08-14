@@ -425,7 +425,11 @@ public class UserPresenter {
                 if(info==null){
                     projectList=new ArrayList<>();
                     activity.applyingProjectList(STATUS_NO_INTERNET);
-                } else if (info.getData().getData()==null) {
+                }else if (info.getData() == null){
+                    projectList =new ArrayList<>();
+                    activity.applyingProjectList(STATUS_NO_DATA);
+                }
+                else if (info.getData().getData()==null) {
                     projectList =new ArrayList<>();
                     activity.applyingProjectList(STATUS_NO_DATA);
                 } else{
