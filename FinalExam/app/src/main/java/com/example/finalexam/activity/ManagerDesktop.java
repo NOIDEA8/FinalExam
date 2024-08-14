@@ -25,6 +25,7 @@ import com.example.finalexam.fragment.ProjectOverviewFragment;
 import com.example.finalexam.fragment.UserOverviewFragment;
 import com.example.finalexam.helper.UserDataShowInterface;
 import com.example.finalexam.model.UserData;
+import com.example.finalexam.presenter.UserPresenter;
 
 public class ManagerDesktop extends BaseActivity implements UserDataShowInterface, View.OnClickListener {
 
@@ -121,7 +122,9 @@ public class ManagerDesktop extends BaseActivity implements UserDataShowInterfac
         } else if (id == R.id.enabled_background)
             enabledBackground.setVisibility(View.INVISIBLE);
         else if (id == R.id.enabled_button) {
-
+            int day = enabledDayView.getValue();
+            int hour = enabledHourView.getValue();
+            UserPresenter.getInstance(this).freezeUser(data.getUserId(), day * 24 + hour);
         }
     }
 

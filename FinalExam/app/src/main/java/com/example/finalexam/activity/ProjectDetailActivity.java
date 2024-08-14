@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +40,7 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
     private TextView projectUrl;
     private TextView projectId;
 
+    private ImageView freezeButton;
     private EditButton editButton;
 
     private TextView descriptionView;
@@ -66,6 +69,12 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
     private EditText editUrlView;
     private EditText editPasswordView;
     private TextView editSaveButton;
+
+    private ConstraintLayout freezeBackground;
+    private ConstraintLayout freezeLayout;
+    private NumberPicker freezeDayView;
+    private NumberPicker freezeHourView;
+    private TextView freezeSaveButton;
 
     private static final List<LogData> weekList = new ArrayList<>();
     public static final List<Integer> readDay = new ArrayList<>();
@@ -175,6 +184,19 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
         editLayout.setOnClickListener(v -> {
             //占位
         });
+
+        //冻结弹窗
+        freezeButton.setOnClickListener(v->freezeBackground.setVisibility(View.VISIBLE));
+        freezeBackground.setOnClickListener(v -> freezeBackground.setVisibility(View.INVISIBLE));
+        freezeSaveButton.setOnClickListener(v -> {
+            int day = freezeDayView.getValue();
+            int hour = freezeHourView.getValue();
+            UserPresenter.getInstance(this).freezeProject(data.getProjectId(), day * 24 + hour);
+            freezeBackground.setVisibility(View.INVISIBLE);
+        });
+        freezeLayout.setOnClickListener(v -> {
+            //占位
+        });
     }
 
     @SuppressLint("SetTextI18n")
@@ -211,6 +233,7 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
         projectUrl = findViewById(R.id.detail_project_url);
         projectId = findViewById(R.id.detail_project_id);
 
+        freezeButton = findViewById(R.id.detail_project_freeze_button);
         editButton = findViewById(R.id.detail_project_edit_button);
         if (!ProjectAdapter.canBeEdited) editButton.setVisibility(View.INVISIBLE);
 
@@ -240,6 +263,16 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
         editUrlView = findViewById(R.id.edit_url);
         editPasswordView = findViewById(R.id.edit_password);
         editSaveButton = findViewById(R.id.edit_save_button);
+
+        freezeBackground = findViewById(R.id.freeze_background);
+        freezeLayout = findViewById(R.id.freeze_layout);
+        freezeDayView = findViewById(R.id.freeze_day);
+        freezeHourView = findViewById(R.id.freeze_hour);
+        freezeSaveButton = findViewById(R.id.freeze_button);
+        freezeDayView.setMinValue(0);
+        freezeDayView.setMaxValue(3650);
+        freezeHourView.setMinValue(0);
+        freezeHourView.setMaxValue(24);
     }
 
 
