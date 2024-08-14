@@ -2,6 +2,7 @@ package com.example.finalexam.activity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.finalexam.R;
+import com.example.finalexam.adapter.LogAdapter;
 import com.example.finalexam.adapter.ProjectAdapter;
 import com.example.finalexam.baseappcompatactivity.BaseActivity;
 import com.example.finalexam.helper.UserDataShowInterface;
@@ -25,8 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProjectDetailActivity extends BaseActivity implements UserDataShowInterface {
-    private static final String TAG = "ProjectDetailActivity";
-
     private ProjectData data = new ProjectData();
     private int requestNum = 0;
     private TextView projectName;
@@ -36,7 +36,7 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
     private TextView readWeekView;
     private TextView errorWeekView;
 
-    private ConstraintLayout optionsLayout;
+    private ConstraintLayout optionsLayout;//测量用
     private TextView frontOption;
     private TextView mobileOption;
 
@@ -45,10 +45,16 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
     private TextView lastButton;
     private TextView nextButton;
 
+    private static ConstraintLayout logBackground;
+    private static ConstraintLayout logLayout;
+    private static TextView logId;
+    private static TextView logInfo;
+
     private static final List<LogData> weekList = new ArrayList<>();
     public static final List<Integer> readDay = new ArrayList<>();
     public static final List<Integer> errorDay = new ArrayList<>();
     private static AllLog log;
+    private static final List<LogData> logList = new ArrayList<>();
     private int MorF = UserPresenter.FRONT_LOG;
     private int page = 1;
     private boolean canChangePage = true;
@@ -70,8 +76,13 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
         //requestData();
     }
 
+    public static void callLogLayout() {
+        LogData logData = LogAdapter.data;
+    }
+
     private void initRV() {
         logRV.setLayoutManager(new LinearLayoutManager(this));
+        logRV.setAdapter(new LogAdapter(this, logList));
     }
 
     private void initListener() {
@@ -101,6 +112,12 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
             UserPresenter.getInstance(this).fetchLogForGroup(MorF, 30, page, ProjectAdapter.clickId, 2);
             canChangePage = false;
         });
+
+        //LogInfo弹窗
+        logBackground.setOnClickListener(v -> logBackground.setVisibility(View.INVISIBLE));
+        logLayout.setOnClickListener(v -> {
+            //你没看错，就是用来占位而已
+        });
     }
 
     @SuppressLint("SetTextI18n")
@@ -119,6 +136,8 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
         }
         readWeekView.setText(readWeek);
         errorWeekView.setText(errorWeek);
+
+        logNumView.setText(log.getTotal());
     }
 
     private void requestData() {
@@ -131,13 +150,23 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
         projectName = findViewById(R.id.detail_project_name);
         projectId = findViewById(R.id.detail_project_id);
         descriptionView = findViewById(R.id.detail_project_description);
+
+        readWeekView = findViewById(R.id.detail_read_week);
+        errorWeekView = findViewById(R.id.detail_error_week);
+
         optionsLayout = findViewById(R.id.detail_options_layout);
         frontOption = findViewById(R.id.detail_option_front);
         mobileOption = findViewById(R.id.detail_option_mobile);
+
         logRV = findViewById(R.id.detail_log);
         logNumView = findViewById(R.id.detail_log_num);
         lastButton = findViewById(R.id.detail_log_last);
         nextButton = findViewById(R.id.detail_log_next);
+
+        logBackground = findViewById(R.id.detail_log_background);
+        logLayout = findViewById(R.id.detail_log_layout);
+        logId = findViewById(R.id.detail_log_id);
+        logInfo = findViewById(R.id.detail_log_info);
     }
 
 
