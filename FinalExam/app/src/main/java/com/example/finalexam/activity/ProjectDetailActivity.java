@@ -3,7 +3,9 @@ package com.example.finalexam.activity;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -56,6 +58,14 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
     private static TextView logId;
     private static TextView logInfo;
 
+    private ConstraintLayout editBackground;
+    private ConstraintLayout editLayout;
+    private EditText editNameView;
+    private EditText editDescriptionView;
+    private EditText editUrlView;
+    private EditText editPasswordView;
+    private TextView editSaveButton;
+
     private static final List<LogData> weekList = new ArrayList<>();
     public static final List<Integer> readDay = new ArrayList<>();
     public static final List<Integer> errorDay = new ArrayList<>();
@@ -96,11 +106,6 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
     }
 
     private void initListener() {
-        //编辑按钮
-        editButton.setOnClickListener(v -> {
-
-        });
-
         //选择查看前端后台
         frontOption.setOnClickListener(v -> {
             MorF = UserPresenter.FRONT_LOG;
@@ -133,6 +138,40 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
         logBackground.setOnClickListener(v -> logBackground.setVisibility(View.INVISIBLE));
         logLayout.setOnClickListener(v -> {
             //你没看错，就是用来占位而已
+        });
+
+        //编辑弹窗
+        editButton.setOnClickListener(v -> {
+            editNameView.setText(data.getProjectName());
+            editDescriptionView.setText(data.getDescription());
+            editUrlView.setText(data.getProjectUrl());
+            editBackground.setVisibility(View.VISIBLE);
+        });
+        editBackground.setOnClickListener(v -> editBackground.setVisibility(View.INVISIBLE));
+        editSaveButton.setOnClickListener(v -> {
+            String password = editPasswordView.getText().toString();
+            if (!password.equals(data.getProjectPassword())) {
+                Toast.makeText(this, "密码错误", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            String name = editNameView.getText().toString();
+            String description = editDescriptionView.getText().toString();
+            String url = editUrlView.getText().toString();
+            UserPresenter.getInstance(this).updateProject(url, data.getProjectId(), description, password);
+
+            data.setProjectName(name);
+            data.setDescription(description);
+            data.setProjectUrl(url);
+
+            projectName.setText(name);
+            descriptionView.setText(description);
+            projectUrl.setText(url);
+
+            editBackground.setVisibility(View.INVISIBLE);
+        });
+        editLayout.setOnClickListener(v -> {
+            //占位
         });
     }
 
@@ -171,6 +210,7 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
         projectId = findViewById(R.id.detail_project_id);
 
         editButton = findViewById(R.id.detail_project_edit_button);
+        if (!ProjectAdapter.canBeEdited) editButton.setVisibility(View.INVISIBLE);
 
         descriptionView = findViewById(R.id.detail_project_description);
 
@@ -190,6 +230,14 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
         logLayout = findViewById(R.id.detail_log_layout);
         logId = findViewById(R.id.detail_log_id);
         logInfo = findViewById(R.id.detail_log_info);
+
+        editBackground = findViewById(R.id.detail_edit_background);
+        editLayout = findViewById(R.id.detail_edit_layout);
+        editNameView = findViewById(R.id.edit_name);
+        editDescriptionView = findViewById(R.id.edit_description);
+        editUrlView = findViewById(R.id.edit_url);
+        editPasswordView = findViewById(R.id.edit_password);
+        editSaveButton = findViewById(R.id.edit_save_button);
     }
 
 
