@@ -268,12 +268,12 @@ public class UserPresenter {
         Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
-        Call<InfoProjectList> dataCall = api.getSelfProjects(token,getUserId(),1,0);
-        dataCall.enqueue(new Callback<InfoProjectList>() {
+        Call<InfoShowAllProject> dataCall = api.getSelfProjects(token,getUserId(),1,0);
+        dataCall.enqueue(new Callback<InfoShowAllProject>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
-            public void onResponse(Call<InfoProjectList> call, Response<InfoProjectList> response) {
-                InfoProjectList info= response.body();
+            public void onResponse(Call<InfoShowAllProject> call, Response<InfoShowAllProject> response) {
+                InfoShowAllProject info= response.body();
                 if(info==null){
                     projectList=new ArrayList<>();
                     activity.selfProjectList(STATUS_NO_INTERNET);
@@ -281,13 +281,13 @@ public class UserPresenter {
                     projectList =new ArrayList<>();
                     activity.selfProjectList(STATUS_NO_DATA);
                 } else{
-                    projectList=info.getData();
+                    projectList=info.getData().getData();
                     activity.selfProjectList(STATUS_SUCCESS);
                 }
             }
 
             @Override
-            public void onFailure(Call<InfoProjectList> call, Throwable t) {
+            public void onFailure(Call<InfoShowAllProject> call, Throwable t) {
                 projectList=new ArrayList<>();
                 activity.selfProjectList(STATUS_NO_INTERNET);
             }
@@ -356,12 +356,12 @@ public class UserPresenter {
         Api api = getRetrofit().create(Api.class);
         Log.d(TAG, "baseUrl = " + baseUrl);
 
-        Call<InfoProjectList> dataCall = api.getHaveMonitorProjects(token,getUserId(),1,0);
-        dataCall.enqueue(new Callback<InfoProjectList>() {
+        Call<InfoShowAllProject> dataCall = api.getHaveMonitorProjects(token,getUserId(),1,0);
+        dataCall.enqueue(new Callback<InfoShowAllProject>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
-            public void onResponse(Call<InfoProjectList> call, Response<InfoProjectList> response) {
-                InfoProjectList info= response.body();
+            public void onResponse(Call<InfoShowAllProject> call, Response<InfoShowAllProject> response) {
+                InfoShowAllProject info= response.body();
                 if(info==null){
                     projectList=new ArrayList<>();
                     activity.monitorProjectList(STATUS_NO_INTERNET);
@@ -369,13 +369,13 @@ public class UserPresenter {
                     projectList =new ArrayList<>();
                     activity.monitorProjectList(STATUS_NO_DATA);
                 } else{
-                    projectList=info.getData();
+                    projectList=info.getData().getData();
                     activity.monitorProjectList(STATUS_SUCCESS);
                 }
             }
 
             @Override
-            public void onFailure(Call<InfoProjectList> call, Throwable t) {
+            public void onFailure(Call<InfoShowAllProject> call, Throwable t) {
                 projectList=new ArrayList<>();
                 activity.monitorProjectList(STATUS_NO_INTERNET);
             }

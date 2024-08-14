@@ -44,11 +44,11 @@ public interface Api {
     Call<InfoUser> register(@Body RegisterSend user);
 
     @GET("user/showSelfProjects")//page为分几页，pageSize是一页多少个
-    Call<InfoProjectList> getSelfProjects(@Header ("token") String token,@Query("userId") int useId,@Query("page")int page,@Query("pageSize")int pageSize);
+    Call<InfoShowAllProject> getSelfProjects(@Header ("token") String token,@Query("userId") int useId,@Query("page")int page,@Query("pageSize")int pageSize);
 
 
     @GET("user/showHaveMonitorPermissionProjects")
-    Call<InfoProjectList> getHaveMonitorProjects(@Header ("token") String token,@Query("userId") int useId,@Query("page")int page,@Query("pageSize")int pageSize);
+    Call<InfoShowAllProject> getHaveMonitorProjects(@Header ("token") String token,@Query("userId") int useId,@Query("page")int page,@Query("pageSize")int pageSize);
 
     //获取我申请过监控的项目
 
