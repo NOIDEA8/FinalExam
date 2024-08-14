@@ -15,6 +15,7 @@ import com.example.finalexam.R;
 import com.example.finalexam.activity.OtherApplyActivity;
 import com.example.finalexam.helper.ColorHelper;
 import com.example.finalexam.model.ProjectData;
+import com.example.finalexam.presenter.UserPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +64,7 @@ public class DealAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHolder>
         String projectName = data.getProjectName();
         String creatorName = data.getCreator();
         projectName = projectName == null ? "projectName" : projectName;
-        creatorName = creatorName == null ? "creatorName" : creatorName;
+        creatorName = creatorName == null ? "You" : creatorName;
 
         //获取颜色
         String creatorColor;

@@ -19,7 +19,9 @@ public class ProjectListSortHelper {
             for (int i = 0; i < list.size(); i++) {
                 ProjectData tempData = list.get(i);
                 String tempCreator = tempData.getCreator();
-                if (creator.equals(tempCreator))
+                if(creator == null)
+                    tempList.add(tempData);
+                else if (creator.equals(tempCreator))
                     tempList.add(tempData);
             }
             list.removeAll(tempList);

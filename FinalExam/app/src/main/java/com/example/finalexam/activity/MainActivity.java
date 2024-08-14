@@ -50,7 +50,7 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface 
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             } finally {
-                                startActivity(new Intent(MainActivity.this, UserDesktop.class));
+                               // startActivity(new Intent(MainActivity.this, UserDesktop.class));
                                 //startActivity(new Intent(MainActivity.this, ManagerDesktop.class));
                                 finish();
                             }
@@ -100,11 +100,7 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface 
                client.connect();
                Log.d("MainActivity","UserLog中websocket连接");
            }
-            if (userName.equals("admin")) {
-                startActivity(new Intent(MainActivity.this,ManagerDesktop.class));
-            }else{
-                startActivity(new Intent(MainActivity.this,UserDesktop.class));
-            }
+            startActivity(new Intent(this,LogActivity.class));
             finish();
         }
     }

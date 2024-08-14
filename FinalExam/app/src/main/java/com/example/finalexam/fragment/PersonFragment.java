@@ -53,7 +53,7 @@ public class PersonFragment extends Fragment implements UserDataShowInterface {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_person, container, false);
 
-        addTestData();
+        //addTestData();
         initView();
         initListener();
         requestData();
@@ -183,6 +183,7 @@ public class PersonFragment extends Fragment implements UserDataShowInterface {
     @Override
     public void applyingProjectList(int STATUS) {
         if (STATUS == UserPresenter.STATUS_SUCCESS) {
+            List<ProjectData> data=UserPresenter.getInstance(this).getProjectList();
             myProjects.addAll(UserPresenter.getInstance(this).getProjectList());
             ProjectListSortHelper.sortWithCreator(myProjects);
         }
