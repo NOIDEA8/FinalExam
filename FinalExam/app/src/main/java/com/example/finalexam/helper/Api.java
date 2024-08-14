@@ -103,7 +103,7 @@ public interface Api {
 
     //获取不同冻结状态的项目
     @GET("admin/pagedQueryPublishedProject")
-    Call<InfoShowAllProject> getFrezonOrNotProject(@Header ("token") String token,@Query("projectStatus") int projectStatus,@Query("page") int page, @Query("pagesize") int pageSize);//0冻结，1未冻结
+    Call<InfoShowAllProject> getFrezonOrNotProject(@Header ("token") String token,@Query("projectStatus") int projectStatus,@Query("page") int page, @Query("pageSize") int pageSize,@Query("keyWord")String keyWord);//0冻结，1未冻结
 
     //获取不同审核状态的项目
     @GET("admin/pagedQueryProjectApplication")

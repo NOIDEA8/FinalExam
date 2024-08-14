@@ -745,7 +745,7 @@ public class UserPresenter {
 
         Api api = getRetrofit().create(Api.class);
 
-        Call<InfoShowAllProject> dataCall=api.getFrezonOrNotProject(token,projectType,1,0);
+        Call<InfoShowAllProject> dataCall=api.getFrezonOrNotProject(token,projectType,1,0,"");
 
         dataCall.enqueue(new Callback<InfoShowAllProject>() {
             UserDataShowInterface activity = UserPresenter.this.activity;

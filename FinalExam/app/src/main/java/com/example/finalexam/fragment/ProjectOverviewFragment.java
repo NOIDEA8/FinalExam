@@ -35,7 +35,7 @@ public class ProjectOverviewFragment extends Fragment implements UserDataShowInt
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_project_overview, container, false);
-        addTestData();
+       // addTestData();
         initView();
         initRV();
         requestData();
