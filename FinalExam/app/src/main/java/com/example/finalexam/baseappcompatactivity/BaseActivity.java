@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -54,6 +55,7 @@ class ForceOfflineReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(final Context context, Intent Intent) {
         ActivityCollector.finishAll();
+        Toast.makeText(context.getApplicationContext(), "您因管理员操作而下线，请联系管理员进行相关操作",Toast.LENGTH_SHORT).show();
         context.startActivity(new Intent(context, LogActivity.class));
     }
 }

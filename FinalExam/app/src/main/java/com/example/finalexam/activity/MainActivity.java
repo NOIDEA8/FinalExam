@@ -22,6 +22,7 @@ import com.example.finalexam.presenter.WebSocketPresenter;
 import org.java_websocket.client.WebSocketClient;
 
 import java.util.List;
+import java.util.TimerTask;
 
 public class MainActivity extends BaseActivity implements UserDataShowInterface {
     private static final String TAG = "MainActivity";
@@ -55,7 +56,7 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface 
                             } finally {
                                // startActivity(new Intent(MainActivity.this, UserDesktop.class));
                                 startActivity(new Intent(MainActivity.this, LogActivity.class));
-                                //finish();
+                                finish();
                             }
                         }
                     }).start();
@@ -113,9 +114,17 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface 
                 .getWebSocketClient(userId);
         try {
             client.connectBlocking();
+            WebSocketPresenter.startHeart(new TimerTask() {
+                @Override
+                public void run() {
+                    if (client.isOpen())
+                        client.send("heartbeat");
+                }
+            });
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+
         if(!client.isOpen()){
             Log.d(TAG, "websocket未连接");
         }

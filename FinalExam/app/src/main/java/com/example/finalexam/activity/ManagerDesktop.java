@@ -91,6 +91,7 @@ public class ManagerDesktop extends BaseActivity implements UserDataShowInterfac
     }
 
     private void toLog() {
+        WebSocketPresenter.stopHeart();
         WebSocketPresenter.getInstance(this).getWebSocketClient(-1).close();
         startActivity(new Intent(this, LogActivity.class));
         finish();

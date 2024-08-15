@@ -4,9 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 
+import com.example.finalexam.activity.UserDesktop;
 import com.example.finalexam.fragment.UserOverviewFragment;
 import com.example.finalexam.info.InfoUser;
 import com.example.finalexam.info.InfoUserList;
+import com.example.finalexam.info.WebsocketInfo;
 import com.example.finalexam.model.UserData;
 import com.example.finalexam.presenter.SPPresenter;
 import com.example.finalexam.presenter.UserPresenter;
@@ -37,18 +39,19 @@ public class MyWebSocketClient extends WebSocketClient {
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onMessage(String message) {
-        InfoUserList info=gson.fromJson(message,InfoUserList.class);
+        WebsocketInfo info=gson.fromJson(message,WebsocketInfo.class);
 
-        if(info.getMsg().equals("offline")||info.getMsg().equals("账号被冻结,有疑问联系管理员")) {
+        if(info.getType().equals("offline")||info.getType().equals("账号被冻结,有疑问联系管理员")){
             context.sendBroadcast(new Intent("com.example.FinalExam.FORCE_OFFSET"));
             SPPresenter.accordLoggedStatus(context.getApplicationContext(), false);
-        }
-        else {
+        } else if (info.getType().equals("warning")) {
+            UserDesktop.callErrorLayout(Integer.getInteger(info.getData()),info.getMsg());
+        } else {
             if(info!=null){//msg?
                 if(!info.getData().isEmpty()){
                     List<UserData> list=UserOverviewFragment.list;
                     list.clear();
-                    list.addAll(info.getData());
+                    list.addAll(info.getUserList());
                     Objects.requireNonNull(UserOverviewFragment.usersRV.getAdapter()).notifyDataSetChanged();
                 }
             }
