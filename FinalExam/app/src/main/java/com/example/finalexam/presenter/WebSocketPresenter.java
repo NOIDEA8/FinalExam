@@ -79,6 +79,10 @@ public class WebSocketPresenter {
         webSocketClient.send(sendJson);
     }
 
+    public void receiveWarning(int id){
+
+    }
+
     public List<UserData> getUserList() {
         return userList;
     }

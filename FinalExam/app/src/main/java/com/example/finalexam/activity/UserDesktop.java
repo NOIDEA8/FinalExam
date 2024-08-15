@@ -47,8 +47,8 @@ public class UserDesktop extends BaseActivity implements UserDataShowInterface, 
     private static ConstraintLayout errorBackground;
     private static ConstraintLayout errorLayout;
     private static TextView errorMessageView;
-
-    public static boolean canBack = false;
+    private TextView errorOKButton;
+    private static int errorId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +77,8 @@ public class UserDesktop extends BaseActivity implements UserDataShowInterface, 
                 if (applyBackground.getVisibility() == View.VISIBLE)
                     applyBackground.setVisibility(View.INVISIBLE);
                 else {
-                    int id=UserPresenter.getInstance(UserDesktop.this).getUserId();
-                    if(id!=0){
+                    int id = UserPresenter.getInstance(UserDesktop.this).getUserId();
+                    if (id != 0) {
                         WebSocketPresenter.stopHeart();
                         WebSocketPresenter.getInstance(getApplicationContext()).getWebSocketClient(id).close();
                     }
@@ -93,6 +93,7 @@ public class UserDesktop extends BaseActivity implements UserDataShowInterface, 
     public static void callErrorLayout(int id, String name) {
         errorBackground.setVisibility(View.VISIBLE);
         errorMessageView.setText("项目“" + name + "”的报错数量已经超过设定阈值，请注意");
+        errorId = id;
     }
 
     public static void callApplyLayout() {
@@ -117,8 +118,10 @@ public class UserDesktop extends BaseActivity implements UserDataShowInterface, 
             Toast.makeText(this, "已发送申请", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.project_apply_no_button)
             applyBackground.setVisibility(View.INVISIBLE);
-        else if (id == R.id.error_toast_background)
+        else if (id == R.id.error_toast_ok) {
+            WebSocketPresenter.getInstance(this).receiveWarning(errorId);
             errorBackground.setVisibility(View.INVISIBLE);
+        }
     }
 
     @SuppressLint("CommitTransaction")
@@ -144,6 +147,7 @@ public class UserDesktop extends BaseActivity implements UserDataShowInterface, 
         noButton.setOnClickListener(this);
         errorBackground.setOnClickListener(this);
         errorLayout.setOnClickListener(this);
+        errorOKButton.setOnClickListener(this);
     }
 
     private void initView() {
@@ -161,6 +165,7 @@ public class UserDesktop extends BaseActivity implements UserDataShowInterface, 
         errorBackground = findViewById(R.id.error_toast_background);
         errorLayout = findViewById(R.id.error_toast_layout);
         errorMessageView = findViewById(R.id.error_toast_message);
+        errorOKButton = findViewById(R.id.error_toast_ok);
     }
 
     private void changePageTo(int pagePosition) {
