@@ -15,22 +15,28 @@ import com.example.finalexam.presenter.UserPresenter;
 import com.google.gson.Gson;
 
 import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.handshake.ClientHandshakeBuilder;
 import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 public class MyWebSocketClient extends WebSocketClient {
     //网址：ws://47.113.224.195:31110/websocket/admin(管理员的话)
     private Context context;
     Gson gson=new Gson();
 
-    public MyWebSocketClient(URI serverUri,Context context) {
-        super(serverUri);
-        this.context=context;
-    }
 
+
+     public MyWebSocketClient(URI serverUri,Context context, Map<String, String> httpHeaders) {
+         //super(serverUri);
+         super(serverUri, httpHeaders);
+         this.context=context;
+     }
     @Override
     public void onOpen(ServerHandshake handshakedata) {
 
@@ -42,11 +48,15 @@ public class MyWebSocketClient extends WebSocketClient {
         WebsocketInfo info=gson.fromJson(message,WebsocketInfo.class);
 
         if(info.getType()!=null){
-            if(info.getType().equals("offline")||info.getType().equals("账号被冻结,有疑问联系管理员")){
+            if(info.getType().equals("offline")){
                 context.sendBroadcast(new Intent("com.example.FinalExam.FORCE_OFFSET"));
                 SPPresenter.accordLoggedStatus(context.getApplicationContext(), false);
+            } else if (info.getType().equals("账号被冻结,有疑问联系管理员")) {
+                context.sendBroadcast(new Intent("com.example.FinalExam.USER_FROZEN"));
             } else if (info.getType().equals("warning")) {
                 UserDesktop.callErrorLayout(Integer.getInteger(info.getData()),info.getMsg());
+            } else if (info.getType().equals("multiLog")) {
+                context.sendBroadcast(new Intent("com.example.FinalExam.MULTILOG"));
             }
         } else {
             List<UserData> list=UserOverviewFragment.list;

@@ -24,6 +24,7 @@ import com.example.finalexam.model.LogData;
 import com.example.finalexam.model.ProjectData;
 import com.example.finalexam.model.sendmodel.FreezeProjectSend;
 import com.example.finalexam.model.sendmodel.FreezeUserSend;
+import com.example.finalexam.model.sendmodel.IncreaseVisits;
 import com.example.finalexam.model.sendmodel.MonitorSend;
 import com.example.finalexam.model.sendmodel.PublishSend;
 import com.example.finalexam.model.sendmodel.RegisterSend;
@@ -320,7 +321,12 @@ public class UserPresenter {
                     if (projectList!=null) {
                         projectList.clear();
                     }
-                    projectList=info.getData().getData();
+                    List<ProjectData> templist =info.getData().getData();
+                    for (int i = 0; i < templist.size(); i++) {
+                        if(templist.get(i).getApplicationStatus().equals("待办")){
+                            projectList.add(templist.get(i));
+                        }
+                    }
                     activity.application(STATUS_SUCCESS);
                 }
             }
@@ -413,7 +419,12 @@ public class UserPresenter {
                     if (projectList!=null) {
                         projectList.clear();
                     }
-                    projectList=info.getData().getData();
+                    List<ProjectData> templist =info.getData().getData();
+                    for (int i = 0; i < templist.size(); i++) {
+                        if(templist.get(i).getApplicationStatus().equals("待办")){
+                            projectList.add(templist.get(i));
+                        }
+                    }
                     activity.applyingMonitorProjectList(STATUS_SUCCESS);
                 }
             }
@@ -1025,10 +1036,8 @@ public class UserPresenter {
     }
     //用户查看项目发送请求，项目访问量加一,InfoUser任意,projectData只包含id
     public void increaseVisits(int projectId){
-        Api api=getRetrofit().create(Api.class);
-        ProjectData send=new ProjectData();
-        send.setProjectId(projectId);
-        Call<InfoUser> dataCall=api.increaseVisits(token,send);
+       /* Api api=getRetrofit().create(Api.class);
+        Call<InfoUser> dataCall=api.increaseVisits(token,new IncreaseVisits(projectId));
         dataCall.enqueue(new Callback<InfoUser>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
@@ -1049,7 +1058,7 @@ public class UserPresenter {
                 activity.increaseView(STATUS_NO_INTERNET);
 
             }
-        });
+        });*/
     }
 
     public void setErrorRate(int projectId,double errorRate){
@@ -1161,6 +1170,9 @@ public class UserPresenter {
     }
     //获取user的id
     public int getUserId(){return user.getUserId();}
+    //获取user的token
+    public static String getToken(){return token;}
+
 
     //先调用相应接口再调用这个方法
     public ProjectData getProjectDetail(){return projectDetail;}
