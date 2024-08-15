@@ -130,6 +130,7 @@ public class LogActivity extends BaseActivity implements UserDataShowInterface{
 
             if(UserPresenter.getInstance(this).getUserName(this).equals("admin")){
                 startActivity(new Intent(this,ManagerDesktop.class));
+                Toast.makeText(this,"按返回以退至登录页",Toast.LENGTH_SHORT).show();
 
             }else{
                 startActivity(new Intent(this,UserDesktop.class));
