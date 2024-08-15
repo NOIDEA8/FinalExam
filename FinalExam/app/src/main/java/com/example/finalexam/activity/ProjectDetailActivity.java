@@ -161,10 +161,6 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
         editSaveButton.setOnClickListener(v -> {
             String password = editPasswordView.getText().toString();
             Log.d("Password", "input = " + password + ", truePwd = " + data.getProjectPassword());
-           /* if (!password.equals(data.getProjectPassword())) {
-                Toast.makeText(this, "密码错误", Toast.LENGTH_SHORT).show();
-                return;
-            }*/
 
             String name = editNameView.getText().toString();
             String description = editDescriptionView.getText().toString();
