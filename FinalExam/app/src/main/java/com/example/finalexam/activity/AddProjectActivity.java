@@ -14,7 +14,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.finalexam.R;
 import com.example.finalexam.baseappcompatactivity.BaseActivity;
+import com.example.finalexam.fragment.PersonFragment;
 import com.example.finalexam.helper.UserDataShowInterface;
+import com.example.finalexam.model.ProjectData;
 import com.example.finalexam.model.UserData;
 import com.example.finalexam.presenter.UserPresenter;
 
@@ -88,6 +90,10 @@ public class AddProjectActivity extends BaseActivity implements UserDataShowInte
                     url,
                     password
             );
+            ProjectData add = new ProjectData();
+            add.setCreator(UserPresenter.getUserName(this));
+            add.setProjectName(name);
+            PersonFragment.addMyProject(add);
             pushOver = false;
             finish();
         });
