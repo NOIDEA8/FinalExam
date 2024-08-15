@@ -58,7 +58,8 @@ public class WebSocketPresenter {
     }
 
     public void adminSendOffset(int userId){
-        OffsetSend send=new OffsetSend(userId,"logoutUser");
+        String id=String.valueOf(userId);
+        OffsetSend send=new OffsetSend(id,"logoutUser");
         Gson gson=new Gson();
         String sendJson=gson.toJson(send);
         webSocketClient.send(sendJson);

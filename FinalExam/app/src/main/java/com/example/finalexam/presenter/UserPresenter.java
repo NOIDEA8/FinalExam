@@ -577,13 +577,10 @@ public class UserPresenter {
                 if(info==null){
                     logDataListByGroup=new AllLog();
                     activity.logDataListByGroup(STATUS_NO_INTERNET);
-                } else if (info.getData()==null) {
+                } else if (info.getData()==null||info.getData().getData().isEmpty()) {
                     logDataListByGroup=new AllLog();
                     activity.logDataListByGroup(STATUS_NO_DATA);
                 }else{
-                    if(logDataListByGroup!=null){
-
-                    }
                     logDataListByGroup=info.getData();
                     activity.logDataListByGroup(STATUS_SUCCESS);
                 }

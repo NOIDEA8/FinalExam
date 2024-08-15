@@ -11,7 +11,7 @@ public class LogData {
     private String logType;
     private String logTime;
     private String logInfo;
-    private String logId;
+    private int logId;
     private String date;
     private int totalVisit;//总访问量
     private int visits;//日访问量
@@ -174,11 +174,11 @@ public class LogData {
         this.description = description;
     }
 
-    public String getLogId() {
+    public int getLogId() {
         return logId;
     }
 
-    public void setLogId(String logId) {
+    public void setLogId(int logId) {
         this.logId = logId;
     }
 }

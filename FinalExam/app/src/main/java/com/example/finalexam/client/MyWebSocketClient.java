@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.example.finalexam.fragment.UserOverviewFragment;
+import com.example.finalexam.info.InfoUser;
 import com.example.finalexam.info.InfoUserList;
 import com.example.finalexam.model.UserData;
 import com.example.finalexam.presenter.UserPresenter;
@@ -18,6 +19,7 @@ import java.util.List;
 public class MyWebSocketClient extends WebSocketClient {
     //网址：ws://47.113.224.195:31110/websocket/admin(管理员的话)
     private Context context;
+    Gson gson=new Gson();
 
     public MyWebSocketClient(URI serverUri,Context context) {
         super(serverUri);
@@ -31,11 +33,10 @@ public class MyWebSocketClient extends WebSocketClient {
 
     @Override
     public void onMessage(String message) {
-        if(message.equals("offSet")){
-            context.sendBroadcast(new Intent("com.example.FinalExam.FORCE_OFFSET"));
-        } else {
-            Gson gson=new Gson();
-            InfoUserList info=gson.fromJson(message,InfoUserList.class);
+        InfoUserList info=gson.fromJson(message,InfoUserList.class);
+
+        if(info.getMsg().equals("offline")) context.sendBroadcast(new Intent("com.example.FinalExam.FORCE_OFFSET"));
+        else {
             if(info!=null){//msg?
                 if(!info.getData().isEmpty()){
                     List<UserData> list=UserOverviewFragment.list;
