@@ -144,12 +144,11 @@ public class LogActivity extends BaseActivity implements UserDataShowInterface{
         MyWebSocketClient client= WebSocketPresenter.getInstance(getApplicationContext())
                 .getWebSocketClient(userId);
         try {
-            client.closeBlocking();
+            client.connectBlocking();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
         if(!client.isOpen()){
-            client.connect();
             Log.d(TAG, "userLog: "+client.isOpen());
         }
     }

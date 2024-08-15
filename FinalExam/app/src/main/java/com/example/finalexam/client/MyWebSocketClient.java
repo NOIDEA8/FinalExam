@@ -6,6 +6,7 @@ import android.content.Intent;
 import com.example.finalexam.fragment.UserOverviewFragment;
 import com.example.finalexam.info.InfoUserList;
 import com.example.finalexam.model.UserData;
+import com.example.finalexam.presenter.UserPresenter;
 import com.google.gson.Gson;
 
 import org.java_websocket.client.WebSocketClient;
@@ -40,6 +41,7 @@ public class MyWebSocketClient extends WebSocketClient {
                     List<UserData> list=UserOverviewFragment.list;
                     list.clear();
                     list.addAll(info.getData());
+                    UserOverviewFragment.usersRV.getAdapter().notifyDataSetChanged();
                 }
             }
         }

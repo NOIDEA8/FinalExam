@@ -25,13 +25,13 @@ import java.util.List;
 public class UserOverviewFragment extends Fragment {
     private View view;
     public static final List<UserData> list = new ArrayList<>();
-    private RecyclerView usersRV;
+    public static RecyclerView usersRV;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.fragment_user_overview, container, false);
-        addTestData();
+       // addTestData();
         initView();
         initRV();
         return view;
@@ -57,4 +57,5 @@ public class UserOverviewFragment extends Fragment {
     private void initView() {
         usersRV = view.findViewById(R.id.user_overview_list);
     }
+
 }
