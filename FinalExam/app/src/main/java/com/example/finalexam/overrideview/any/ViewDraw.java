@@ -13,6 +13,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class ViewDraw {
+    private final int WHITE = Color.WHITE;
+    private final int BLACK = Color.BLACK;
+    private final int TEXT_GREY = Color.parseColor("#969696");
+    private final int PINK = Color.parseColor("#F4B9BB");
     private static final ViewDraw viewDraw = new ViewDraw();
 
     public static void draw(@NonNull Canvas canvas, Path path, Paint paint, float x, float y, String drawMethod) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
@@ -46,7 +50,7 @@ public class ViewDraw {
         paint.setStrokeCap(Paint.Cap.ROUND);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(7);
-        paint.setColor(ColorHelper.TEXT_GREY);
+        paint.setColor(TEXT_GREY);
 
         path.moveTo(3f, y - 3f);
         path.lineTo(x - 3f, y - 3f);
@@ -93,5 +97,111 @@ public class ViewDraw {
         path.moveTo(x / 2, y / 1.5f);
         path.lineTo(x / 2, y / 1.2f);
         canvas.drawPath(path, paint);
+    }
+
+    private void projectIconStroke(@NonNull Canvas canvas, Path path, Paint paint, float x, float y) {
+        paint.setStrokeCap(Paint.Cap.ROUND);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(7);
+        paint.setColor(Color.BLACK);
+
+        path.moveTo(x - x / 7 - x / 4, 3);
+        path.lineTo(x / 7, 3);
+        path.lineTo(x / 7, y - 3);
+        path.lineTo(x - x / 7, y - 3);
+        path.lineTo(x - x / 7, 3 + y / 4);
+        canvas.drawPath(path, paint);
+
+        paint.setColor(TEXT_GREY);
+        path.reset();
+        path.moveTo(x - x / 7 - x / 4, 3);
+        path.lineTo(x - x / 7, 3 + y / 4);
+        canvas.drawPath(path, paint);
+
+        path.reset();
+        paint.setColor(Color.BLACK);
+        path.moveTo(x - x / 7 - x / 4, 3);
+        path.lineTo(x - x / 7 - x / 4, 3 + y / 4);
+        path.lineTo(x - x / 7, 3 + y / 4);
+        canvas.drawPath(path, paint);
+
+        path.reset();
+        paint.setColor(TEXT_GREY);
+        path.moveTo(x / 3, y / 2);
+        path.lineTo(x - x / 3, y / 2);
+        canvas.drawPath(path, paint);
+
+        path.reset();
+        path.moveTo(x / 3, y - y / 3);
+        path.lineTo(x - x / 3 - x / 6, y - y / 3);
+        canvas.drawPath(path, paint);
+    }
+
+    private void projectIconPink(@NonNull Canvas canvas, Path path, Paint paint, float x, float y) {
+        paint.setStrokeCap(Paint.Cap.ROUND);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(7);
+        paint.setColor(PINK);
+
+        path.moveTo(x - x / 7 - x / 4, 3);
+        path.lineTo(x / 7, 3);
+        path.lineTo(x / 7, y - 3);
+        path.lineTo(x - x / 7, y - 3);
+        path.lineTo(x - x / 7, 3 + y / 4);
+        canvas.drawPath(path, paint);
+
+        path.reset();
+        path.moveTo(x - x / 7 - x / 4, 3);
+        path.lineTo(x - x / 7, 3 + y / 4);
+        canvas.drawPath(path, paint);
+
+        path.reset();
+        path.moveTo(x - x / 7 - x / 4, 3);
+        path.lineTo(x - x / 7 - x / 4, 3 + y / 4);
+        path.lineTo(x - x / 7, 3 + y / 4);
+        canvas.drawPath(path, paint);
+
+        path.reset();
+        path.moveTo(x / 3, y / 2);
+        path.lineTo(x - x / 3, y / 2);
+        canvas.drawPath(path, paint);
+
+        path.reset();
+        path.moveTo(x / 3, y - y / 3);
+        path.lineTo(x - x / 3 - x / 6, y - y / 3);
+        canvas.drawPath(path, paint);
+    }
+
+    private void personIconStroke(@NonNull Canvas canvas, Path path, Paint paint, float x, float y) {
+        paint.setStrokeCap(Paint.Cap.ROUND);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(7);
+        paint.setColor(Color.BLACK);
+
+        path.moveTo(x - x / 7f, y - 3);
+        path.lineTo(x / 7f, y - 3);
+        path.quadTo(x / 6f, y / 1.5f, x / 2f, y / 1.5f);
+        path.quadTo(x - x / 6f, y / 1.5f, x - x / 7f, y - 3);
+        canvas.drawPath(path, paint);
+
+        path.reset();
+        paint.setColor(TEXT_GREY);
+        canvas.drawCircle(x / 2f, (y / 1.5f) / 2f, y / 5f, paint);
+    }
+
+    private void personIconPink(@NonNull Canvas canvas, Path path, Paint paint, float x, float y) {
+        paint.setStrokeCap(Paint.Cap.ROUND);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(7);
+        paint.setColor(PINK);
+
+        path.moveTo(x - x / 7f, y - 3);
+        path.lineTo(x / 7f, y - 3);
+        path.quadTo(x / 6f, y / 1.5f, x / 2f, y / 1.5f);
+        path.quadTo(x - x / 6f, y / 1.5f, x - x / 7f, y - 3);
+        canvas.drawPath(path, paint);
+
+        path.reset();
+        canvas.drawCircle(x / 2f, (y / 1.5f) / 2f, y / 5f, paint);
     }
 }

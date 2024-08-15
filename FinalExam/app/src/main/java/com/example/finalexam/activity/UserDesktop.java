@@ -2,6 +2,7 @@ package com.example.finalexam.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -35,8 +36,16 @@ public class UserDesktop extends BaseActivity implements UserDataShowInterface, 
     private int pagePosition = 0;
 
     private AnyView addButton;
+
     private ConstraintLayout projectPageButton;
+    private AnyView projectIcon;
+    private AnyView projectIcon2;
+    private TextView projectTip;
+
     private ConstraintLayout personPageButton;
+    private AnyView personIcon;
+    private AnyView personIcon2;
+    private TextView personTip;
 
     private static ConstraintLayout applyBackground;
     private static ConstraintLayout applyLayout;
@@ -153,15 +162,30 @@ public class UserDesktop extends BaseActivity implements UserDataShowInterface, 
     private void initView() {
         projectContainer = findViewById(R.id.user_project_container);
         personContainer = findViewById(R.id.user_person_container);
+
         addButton = findViewById(R.id.add_button);
-        addButton.setViewByName("addButton");
+        addButton.setIconByName("addButton");
+
         projectPageButton = findViewById(R.id.user_project_page_button);
+        projectIcon = findViewById(R.id.user_project_icon);
+        projectIcon.setIconByName("projectIconStroke");
+        projectIcon2 = findViewById(R.id.user_project_icon2);
+        projectIcon2.setIconByName("projectIconPink");
+        projectTip = findViewById(R.id.user_project_tip);
+
         personPageButton = findViewById(R.id.user_person_page_button);
+        personIcon = findViewById(R.id.user_person_icon);
+        personIcon.setIconByName("personIconStroke");
+        personIcon2 = findViewById(R.id.user_person_icon2);
+        personIcon2.setIconByName("personIconPink");
+        personTip = findViewById(R.id.user_person_tip);
+
         applyBackground = findViewById(R.id.project_apply_background);
         applyLayout = findViewById(R.id.project_apply_layout);
         applyProject = findViewById(R.id.project_apply_project);
         yesButton = findViewById(R.id.project_apply_yes_button);
         noButton = findViewById(R.id.project_apply_no_button);
+
         errorBackground = findViewById(R.id.error_toast_background);
         errorLayout = findViewById(R.id.error_toast_layout);
         errorMessageView = findViewById(R.id.error_toast_message);
@@ -176,9 +200,19 @@ public class UserDesktop extends BaseActivity implements UserDataShowInterface, 
         if (pagePosition == 0) {
             projectContainer.setVisibility(View.VISIBLE);
             personContainer.setVisibility(View.INVISIBLE);
+
+            projectTip.setTextColor(getColor(R.color.pink));
+            projectIcon2.setVisibility(View.VISIBLE);
+            personTip.setTextColor(Color.BLACK);
+            personIcon2.setVisibility(View.INVISIBLE);
         } else {
             projectContainer.setVisibility(View.INVISIBLE);
             personContainer.setVisibility(View.VISIBLE);
+
+            projectTip.setTextColor(Color.BLACK);
+            projectIcon2.setVisibility(View.INVISIBLE);
+            personTip.setTextColor(getColor(R.color.pink));
+            personIcon2.setVisibility(View.VISIBLE);
         }
     }
 

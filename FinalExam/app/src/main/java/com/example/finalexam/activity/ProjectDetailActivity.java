@@ -229,10 +229,10 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
         projectId = findViewById(R.id.detail_project_id);
 
         freezeButton = findViewById(R.id.detail_project_freeze_button);
-        freezeButton.setViewByName("freezeIcon");
+        freezeButton.setIconByName("freezeIcon");
 
         editButton = findViewById(R.id.detail_project_edit_button);
-        editButton.setViewByName("editIcon");
+        editButton.setIconByName("editIcon");
         if (!ProjectAdapter.canBeEdited) editButton.setVisibility(View.INVISIBLE);
 
         descriptionView = findViewById(R.id.detail_project_description);
