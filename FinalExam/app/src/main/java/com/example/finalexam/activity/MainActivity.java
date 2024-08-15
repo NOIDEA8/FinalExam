@@ -95,15 +95,23 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface 
             Toast.makeText(this,"账号被冻结，请联系管理员",Toast.LENGTH_SHORT).show();
         } else if (STATUS==UserPresenter.STATUS_SUCCESS) {
             Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
-            WebSocketClient client= WebSocketPresenter.getInstance(getApplicationContext())
-                    .getWebSocketClient(UserPresenter.getInstance(this).getUserId());
-            if(client!=null&&client.isClosed()){
-               client.connect();
-               Log.d("MainActivity","UserLog中websocket连接");
-            }
+            connectWebsocket(UserPresenter.getInstance(this).getUserId());
 
             startActivity(new Intent(this,UserDesktop.class));
             finish();
+        }
+    }
+
+    private void connectWebsocket(int userId) {
+        WebSocketClient client= WebSocketPresenter.getInstance(getApplicationContext())
+                .getWebSocketClient(userId);
+        try {
+            client.connectBlocking();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        if(!client.isOpen()){
+            Log.d(TAG, "websocket未连接");
         }
     }
 
