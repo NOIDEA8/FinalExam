@@ -130,11 +130,11 @@ public class UserPresenter {
                     activity.userLog(STATUS_NO_INTERNET);
                 } else if (info.getMsg().equals("账号不存在")) {
                     activity.userLog(STATUS_ACCOUNT_NOT_EXIST);
-                } else if (info.getMsg().equals("账号被冻结")) {
+                } else if (info.getMsg().equals("账号被冻结,有疑问联系管理员")) {
                     activity.userLog(STATUS_ACCOUNT_FROZEN);
                 } else if (info.getMsg().equals("密码错误")) {
                     activity.userLog(STATUS_PASSWORD_INCORRECT);
-                }else {
+                }else{
                     UserLoginData tempData=info.getData();
                     SPPresenter.accordUsername(context, account);
                     SPPresenter.accordPassword(context, password);

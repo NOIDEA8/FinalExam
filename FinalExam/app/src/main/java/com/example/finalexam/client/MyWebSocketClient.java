@@ -8,6 +8,7 @@ import com.example.finalexam.fragment.UserOverviewFragment;
 import com.example.finalexam.info.InfoUser;
 import com.example.finalexam.info.InfoUserList;
 import com.example.finalexam.model.UserData;
+import com.example.finalexam.presenter.SPPresenter;
 import com.example.finalexam.presenter.UserPresenter;
 import com.google.gson.Gson;
 
@@ -38,7 +39,10 @@ public class MyWebSocketClient extends WebSocketClient {
     public void onMessage(String message) {
         InfoUserList info=gson.fromJson(message,InfoUserList.class);
 
-        if(info.getMsg().equals("offline")) context.sendBroadcast(new Intent("com.example.FinalExam.FORCE_OFFSET"));
+        if(info.getMsg().equals("offline")||info.getMsg().equals("账号被冻结,有疑问联系管理员")) {
+            context.sendBroadcast(new Intent("com.example.FinalExam.FORCE_OFFSET"));
+            SPPresenter.accordLoggedStatus(context.getApplicationContext(), false);
+        }
         else {
             if(info!=null){//msg?
                 if(!info.getData().isEmpty()){

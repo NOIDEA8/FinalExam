@@ -93,6 +93,7 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface 
             startActivity(new Intent(this,LogActivity.class));
         } else if (STATUS==UserPresenter.STATUS_ACCOUNT_FROZEN) {
             Toast.makeText(this,"账号被冻结，请联系管理员",Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this,LogActivity.class));
         } else if (STATUS==UserPresenter.STATUS_SUCCESS) {
             Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
             connectWebsocket(UserPresenter.getInstance(this).getUserId());
