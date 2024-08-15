@@ -9,7 +9,7 @@ public class WebsocketInfo {
     private String data;
     private String msg;
     private String type;
-    private int code;
+
 
     public List<UserData> getUserList() {
         return userList;
@@ -19,13 +19,6 @@ public class WebsocketInfo {
         this.userList = userList;
     }
 
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
 
     public String getData() {
         return data;

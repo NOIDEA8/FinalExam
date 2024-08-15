@@ -935,7 +935,6 @@ public class UserPresenter {
     public void freezeProject(int projectId,int freezeHour){
 
         Api api = getRetrofit().create(Api.class);
-        JSONObject jsonObject=new JSONObject();
         FreezeProjectSend freezeProjectSend=new FreezeProjectSend();
         freezeProjectSend.setProjectId(projectId);
         freezeProjectSend.setFreezeHour(freezeHour);
