@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,7 @@ public class PersonFragment extends Fragment implements UserDataShowInterface {
     private TextView mineNumView;
     private ConstraintLayout toOtherButton;
     private TextView otherNumView;
+    private static final String TAG="personFragment";
 
     private int requestNum = 0;
     public static final List<ProjectData> myProjects = new ArrayList<>();
@@ -114,6 +116,7 @@ public class PersonFragment extends Fragment implements UserDataShowInterface {
             startActivity(new Intent(UserPresenter.getContext(), LogActivity.class));
             int userId = UserPresenter.getInstance(this).getUserId();//关闭WebSocket
             WebSocketPresenter.getInstance(UserPresenter.getContext()).getWebSocketClient(userId).close();
+            Log.d(TAG, "initListener: "+WebSocketPresenter.getInstance(UserPresenter.getContext()).getWebSocketClient(userId).isOpen());
             requireActivity().finish();
         });
         toMineButton.setOnClickListener(v -> startActivity(new Intent(UserPresenter.getContext(), MyApplyActivity.class)));

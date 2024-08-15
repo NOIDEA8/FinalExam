@@ -34,6 +34,7 @@ public class LogActivity extends BaseActivity implements UserDataShowInterface{
     private ManagerLogFragment managerLogFragment;
     private TextView toRegister;
     private Button logButton;
+    MyWebSocketClient client;
     private ImageView logo;
     private int clickToManager=0;
     private int totalClick=5;//5次进入管理员口令界面
@@ -130,18 +131,16 @@ public class LogActivity extends BaseActivity implements UserDataShowInterface{
                 startActivity(new Intent(this,ManagerDesktop.class));
                 Toast.makeText(this,"按返回以退至登录页",Toast.LENGTH_SHORT).show();
             }else{
-               connectWebSocket(UserPresenter.getInstance(LogActivity.this).getUserId());
+                connectWebSocket(UserPresenter.getInstance(LogActivity.this).getUserId());
                 startActivity(new Intent(this,UserDesktop.class));
-
             }
-            Log.d(TAG,"in userLog:finish()活动");
             finish();//这一套下来要是能到达这一步的话应该Presenter的Userdata应该是有值的
             //这里的finish是为了自动结束活动到主页面
         }
     }
 
     private void connectWebSocket(int userId) {
-        MyWebSocketClient client= WebSocketPresenter.getInstance(getApplicationContext())
+        client= WebSocketPresenter.getInstance(getApplicationContext())
                 .getWebSocketClient(userId);
         try {
             client.connectBlocking();
@@ -149,7 +148,7 @@ public class LogActivity extends BaseActivity implements UserDataShowInterface{
             throw new RuntimeException(e);
         }
         if(!client.isOpen()){
-            Log.d(TAG, "userLog: "+client.isOpen());
+            Log.d(TAG, "websocket未连接");
         }
     }
 
