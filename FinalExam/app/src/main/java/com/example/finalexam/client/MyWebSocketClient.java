@@ -41,20 +41,18 @@ public class MyWebSocketClient extends WebSocketClient {
     public void onMessage(String message) {
         WebsocketInfo info=gson.fromJson(message,WebsocketInfo.class);
 
-        if(info.getType().equals("offline")||info.getType().equals("账号被冻结,有疑问联系管理员")){
-            context.sendBroadcast(new Intent("com.example.FinalExam.FORCE_OFFSET"));
-            SPPresenter.accordLoggedStatus(context.getApplicationContext(), false);
-        } else if (info.getType().equals("warning")) {
-            UserDesktop.callErrorLayout(Integer.getInteger(info.getData()),info.getMsg());
-        } else {
-            if(info!=null){//msg?
-                if(!info.getData().isEmpty()){
-                    List<UserData> list=UserOverviewFragment.list;
-                    list.clear();
-                    list.addAll(info.getUserList());
-                    Objects.requireNonNull(UserOverviewFragment.usersRV.getAdapter()).notifyDataSetChanged();
-                }
+        if(info.getType()!=null){
+            if(info.getType().equals("offline")||info.getType().equals("账号被冻结,有疑问联系管理员")){
+                context.sendBroadcast(new Intent("com.example.FinalExam.FORCE_OFFSET"));
+                SPPresenter.accordLoggedStatus(context.getApplicationContext(), false);
+            } else if (info.getType().equals("warning")) {
+                UserDesktop.callErrorLayout(Integer.getInteger(info.getData()),info.getMsg());
             }
+        } else {
+            List<UserData> list=UserOverviewFragment.list;
+            list.clear();
+            list.addAll(info.getUserList());
+            Objects.requireNonNull(UserOverviewFragment.usersRV.getAdapter()).notifyDataSetChanged();
         }
     }
 
