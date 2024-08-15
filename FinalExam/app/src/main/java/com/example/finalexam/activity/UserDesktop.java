@@ -26,6 +26,7 @@ import com.example.finalexam.fragment.ProjectFragment;
 import com.example.finalexam.helper.UserDataShowInterface;
 import com.example.finalexam.overrideview.AddButton;
 import com.example.finalexam.presenter.UserPresenter;
+import com.example.finalexam.presenter.WebSocketPresenter;
 
 public class UserDesktop extends BaseActivity implements UserDataShowInterface, View.OnClickListener {
 
@@ -75,7 +76,13 @@ public class UserDesktop extends BaseActivity implements UserDataShowInterface, 
             public void handleOnBackPressed() {
                 if (applyBackground.getVisibility() == View.VISIBLE)
                     applyBackground.setVisibility(View.INVISIBLE);
-                else finish();
+                else {
+                    int id=UserPresenter.getInstance(UserDesktop.this).getUserId();
+                    if(id!=0){
+                        WebSocketPresenter.getInstance(getApplicationContext()).getWebSocketClient(id).close();
+                    }
+                    finish();
+                }
             }
         };
         dispatcher.addCallback(callback);

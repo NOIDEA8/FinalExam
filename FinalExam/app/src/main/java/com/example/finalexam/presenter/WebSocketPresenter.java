@@ -31,7 +31,7 @@ public class WebSocketPresenter {
 
     public MyWebSocketClient getWebSocketClient(int userId){
         String url;
-        if(oldUserId==userId){
+        if(oldUserId==userId&&webSocketClient.isOpen()){
             Log.d("websocket", "getWebSocketClient: "+webSocketClient);
             return webSocketClient;
         }

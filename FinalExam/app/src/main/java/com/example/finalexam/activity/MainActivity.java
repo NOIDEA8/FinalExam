@@ -3,9 +3,12 @@ package com.example.finalexam.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -60,9 +63,11 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface 
                     userName = userPresenter.getUserName(MainActivity.this);
                     password = userPresenter.getPassword(MainActivity.this);
                     if(userName.equals("admin")){
+
                         startActivity(new Intent(MainActivity.this, LogActivity.class));
                         finish();
                     }else{
+
                         userPresenter.userLog(MainActivity.this,userName,password);
                     }
 
@@ -94,10 +99,10 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface 
         } else if (STATUS==UserPresenter.STATUS_ACCOUNT_FROZEN) {
             Toast.makeText(this,"账号被冻结，请联系管理员",Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this,LogActivity.class));
+            finish();
         } else if (STATUS==UserPresenter.STATUS_SUCCESS) {
             Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
             connectWebsocket(UserPresenter.getInstance(this).getUserId());
-
             startActivity(new Intent(this,UserDesktop.class));
             finish();
         }
