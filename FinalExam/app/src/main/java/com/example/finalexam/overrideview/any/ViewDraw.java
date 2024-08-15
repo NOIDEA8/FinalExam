@@ -67,8 +67,8 @@ public class ViewDraw {
         canvas.drawPath(path, paint);
 
         path.reset();
-        path.moveTo(x - x / 3, y / 3 - y / 4);
-        path.lineTo(x - x / 3 + x / 4, y / 3);
+        path.moveTo(x - x / 2.3f, y / 2.3f - y / 4);
+        path.lineTo(x - x / 2.3f + x / 4, y / 2.3f);
         canvas.drawPath(path, paint);
     }
 
@@ -87,13 +87,14 @@ public class ViewDraw {
 
         path.reset();
         path.moveTo(x / 4, y / 2);
-        path.lineTo(x / 4, y / 2);
-        path.quadTo(x / 4, 3, x / 2, 3);
-        path.quadTo(x - x / 4, 3, x - x / 4, y / 4);
+        path.lineTo(x / 4, y / 3);
+        path.quadTo(x / 4, 5, x / 2, 5);
+        path.quadTo(x - x / 4, 5, x - x / 4, y / 3);
         path.lineTo(x - x / 4, y / 2);
         canvas.drawPath(path, paint);
 
         path.reset();
+        paint.setColor(TEXT_GREY);
         path.moveTo(x / 2, y / 1.5f);
         path.lineTo(x / 2, y / 1.2f);
         canvas.drawPath(path, paint);
