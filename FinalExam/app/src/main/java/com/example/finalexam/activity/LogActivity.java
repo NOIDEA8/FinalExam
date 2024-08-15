@@ -22,6 +22,8 @@ import com.example.finalexam.R;
 import com.example.finalexam.presenter.WebSocketPresenter;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Objects;
 
 public class LogActivity extends BaseActivity implements UserDataShowInterface{
@@ -122,24 +124,33 @@ public class LogActivity extends BaseActivity implements UserDataShowInterface{
         } else if (STATUS==UserPresenter.STATUS_SUCCESS) {
             Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
 
-            MyWebSocketClient client= WebSocketPresenter.getInstance(getApplicationContext())
-                    .getWebSocketClient(UserPresenter.getInstance(LogActivity.this).getUserId());
-            if(!client.isOpen()){
-                client.connect();
-            }
 
             if(UserPresenter.getInstance(this).getUserName(this).equals("admin")){
+                connectWebSocket(-1);
                 startActivity(new Intent(this,ManagerDesktop.class));
                 Toast.makeText(this,"按返回以退至登录页",Toast.LENGTH_SHORT).show();
-
             }else{
+               connectWebSocket(UserPresenter.getInstance(LogActivity.this).getUserId());
                 startActivity(new Intent(this,UserDesktop.class));
 
             }
-
             Log.d(TAG,"in userLog:finish()活动");
             finish();//这一套下来要是能到达这一步的话应该Presenter的Userdata应该是有值的
             //这里的finish是为了自动结束活动到主页面
+        }
+    }
+
+    private void connectWebSocket(int userId) {
+        MyWebSocketClient client= WebSocketPresenter.getInstance(getApplicationContext())
+                .getWebSocketClient(userId);
+        try {
+            client.closeBlocking();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        if(!client.isOpen()){
+            client.connect();
+            Log.d(TAG, "userLog: "+client.isOpen());
         }
     }
 

@@ -25,7 +25,13 @@ public class WebSocketPresenter {
 
 
     public MyWebSocketClient getWebSocketClient(int userId){
-        String url="ws://47.113.224.195:31110/websocket/"+userId;
+        String url;
+        if(userId!=-1){
+            url="ws://47.113.224.195:31111/websocket/"+userId;
+        }else{
+            url="ws://47.113.224.195:31111/websocket/admin";
+        }
+
         try {
             webSocketClient=new MyWebSocketClient(new URI(url),context);
         } catch (URISyntaxException e) {
