@@ -133,7 +133,11 @@ public class ProjectOverviewFragment extends Fragment implements UserDataShowInt
         if (STATUS == UserPresenter.STATUS_SUCCESS) {
             list.addAll(UserPresenter.getInstance(this).getProjectList());
             ProjectListSortHelper.sortWithCreator(list);
-            tempList.addAll(list);
+            for (ProjectData data : list) {
+                if (data.getCreator() == null)
+                    data.setCreator("冻结");
+            }
+            tempList.addAll(UserPresenter.getInstance(this).getProjectList());
         }
         if (requestNum == 2)
             adapter.resetList(2);

@@ -53,7 +53,7 @@
                 app:layout_constraintStart_toStartOf="@id/detail_project_name"
                 app:layout_constraintTop_toBottomOf="@id/detail_project_url" />
 
-            <com.example.finalexam.overrideview.EditButton
+            <com.example.finalexam.overrideview.any.AnyView
                 android:id="@+id/detail_project_edit_button"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -64,12 +64,11 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/detail_project_name" />
 
-            <ImageView
+            <com.example.finalexam.overrideview.any.AnyView
                 android:id="@+id/detail_project_freeze_button"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginEnd="20dp"
-                android:src="@drawable/test"
                 app:layout_constraintEnd_toStartOf="@id/detail_project_edit_button"
                 app:layout_constraintTop_toTopOf="@id/detail_project_edit_button" />
 

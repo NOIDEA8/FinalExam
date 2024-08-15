@@ -24,13 +24,9 @@ import com.example.finalexam.baseappcompatactivity.BaseActivity;
 import com.example.finalexam.fragment.PersonFragment;
 import com.example.finalexam.fragment.ProjectFragment;
 import com.example.finalexam.helper.UserDataShowInterface;
-import com.example.finalexam.overrideview.AddButton;
 import com.example.finalexam.overrideview.any.AnyView;
 import com.example.finalexam.presenter.UserPresenter;
 import com.example.finalexam.presenter.WebSocketPresenter;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class UserDesktop extends BaseActivity implements UserDataShowInterface, View.OnClickListener {
 
@@ -154,7 +150,7 @@ public class UserDesktop extends BaseActivity implements UserDataShowInterface, 
         projectContainer = findViewById(R.id.user_project_container);
         personContainer = findViewById(R.id.user_person_container);
         addButton = findViewById(R.id.add_button);
-        addButton.setViewByMethod("addButton");
+        addButton.setViewByName("addButton");
         projectPageButton = findViewById(R.id.user_project_page_button);
         personPageButton = findViewById(R.id.user_person_page_button);
         applyBackground = findViewById(R.id.project_apply_background);

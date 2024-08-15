@@ -30,7 +30,7 @@ public class AnyView extends View {
         }
     }
 
-    public void setViewByMethod(String drawMethod) {
+    public void setViewByName(String drawMethod) {
         this.drawMethod = drawMethod;
         canDraw = true;
         invalidate();

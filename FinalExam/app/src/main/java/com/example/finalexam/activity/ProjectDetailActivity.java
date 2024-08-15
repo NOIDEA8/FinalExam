@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,7 +25,7 @@ import com.example.finalexam.helper.UserDataShowInterface;
 import com.example.finalexam.model.AllLog;
 import com.example.finalexam.model.LogData;
 import com.example.finalexam.model.ProjectData;
-import com.example.finalexam.overrideview.EditButton;
+import com.example.finalexam.overrideview.any.AnyView;
 import com.example.finalexam.presenter.UserPresenter;
 
 import java.util.ArrayList;
@@ -40,8 +39,8 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
     private TextView projectUrl;
     private TextView projectId;
 
-    private ImageView freezeButton;
-    private EditButton editButton;
+    private AnyView freezeButton;
+    private AnyView editButton;
 
     private TextView descriptionView;
 
@@ -230,7 +229,10 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
         projectId = findViewById(R.id.detail_project_id);
 
         freezeButton = findViewById(R.id.detail_project_freeze_button);
+        freezeButton.setViewByName("freezeIcon");
+
         editButton = findViewById(R.id.detail_project_edit_button);
+        editButton.setViewByName("editIcon");
         if (!ProjectAdapter.canBeEdited) editButton.setVisibility(View.INVISIBLE);
 
         descriptionView = findViewById(R.id.detail_project_description);
