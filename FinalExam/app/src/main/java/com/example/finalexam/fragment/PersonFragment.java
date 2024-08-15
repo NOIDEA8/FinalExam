@@ -23,7 +23,6 @@ import com.example.finalexam.helper.ColorHelper;
 import com.example.finalexam.helper.ProjectListSortHelper;
 import com.example.finalexam.helper.UserDataShowInterface;
 import com.example.finalexam.model.ProjectData;
-import com.example.finalexam.model.UserData;
 import com.example.finalexam.presenter.SPPresenter;
 import com.example.finalexam.presenter.UserPresenter;
 import com.example.finalexam.presenter.WebSocketPresenter;
@@ -32,6 +31,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressLint("StaticFieldLeak")
 public class PersonFragment extends Fragment implements UserDataShowInterface {
     private View view;
 
@@ -40,41 +40,91 @@ public class PersonFragment extends Fragment implements UserDataShowInterface {
     private TextView nameView;
     private TextView logoutButton;
     private ConstraintLayout toMineButton;
-    private TextView mineNumView;
+    private static TextView mineNumView;
     private ConstraintLayout toOtherButton;
-    private TextView otherNumView;
+    private static TextView otherNumView;
     private static final String TAG="personFragment";
 
     private int requestNum = 0;
     public static final List<ProjectData> myProjects = new ArrayList<>();
     public static final List<ProjectData> myApplications = new ArrayList<>();
     public static final List<ProjectData> otherApplications = new ArrayList<>();
+    public static final List<ProjectData> tempList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_person, container, false);
-
-        //addTestData();
         initView();
         initListener();
         requestData();
-
         return view;
     }
 
-    private void addTestData() {
-        ProjectData test1 = new ProjectData();
-        test1.setCreator("Poria");
-        myProjects.add(test1);
+    @SuppressLint("SetTextI18n")
+    public static void addMyProject(List<ProjectData> adds) {
+        tempList.clear();
+        tempList.addAll(adds);
+        tempList.addAll(myProjects);
+        myProjects.clear();
+        myProjects.addAll(tempList);
+        int num = myProjects.size() + myApplications.size();
+        mineNumView.setText("共" + num +"条");
+    }
+    @SuppressLint("SetTextI18n")
+    public static void addMyApplication(List<ProjectData> adds) {
+        tempList.clear();
+        tempList.addAll(adds);
+        tempList.addAll(myApplications);
+        myApplications.clear();
+        myApplications.addAll(tempList);
+        int num = myProjects.size() + myApplications.size();
+        mineNumView.setText("共" + num +"条");
+    }
 
-        ProjectData test2 = new ProjectData();
-        test2.setCreator("YOASOBI");
-        myApplications.add(test2);
 
-        ProjectData test3 = new ProjectData();
-        test3.setCreator("たぶん");
-        otherApplications.add(test3);
+    @SuppressLint("SetTextI18n")
+    public static void addOther(List<ProjectData> adds) {
+        tempList.clear();
+        tempList.addAll(adds);
+        tempList.addAll(otherApplications);
+        otherApplications.clear();
+        otherApplications.addAll(tempList);
+        int num = otherApplications.size();
+        mineNumView.setText("共" + num +"条");
+    }
+
+    @SuppressLint("SetTextI18n")
+    public static void addMyProject(ProjectData add) {
+        tempList.clear();
+        tempList.add(add);
+        tempList.addAll(myProjects);
+        myProjects.clear();
+        myProjects.addAll(tempList);
+        int num = myProjects.size() + myApplications.size();
+        mineNumView.setText("共" + num +"条");
+    }
+    @SuppressLint("SetTextI18n")
+    public static void addMyApplication(ProjectData add) {
+        tempList.clear();
+        tempList.add(add);
+        tempList.addAll(myApplications);
+        myApplications.clear();
+        myApplications.addAll(tempList);
+        int num = myProjects.size() + myApplications.size();
+        mineNumView.setText("共" + num +"条");
+    }
+
+
+    @SuppressLint("SetTextI18n")
+    public static void addOther(ProjectData add) {
+        tempList.clear();
+        tempList.add(add);
+        tempList.addAll(otherApplications);
+        otherApplications.clear();
+        otherApplications.addAll(tempList);
+        int num = otherApplications.size();
+        mineNumView.setText("共" + num +"条");
     }
 
     @SuppressLint("SetTextI18n")
@@ -90,7 +140,7 @@ public class PersonFragment extends Fragment implements UserDataShowInterface {
         greetView.setText(greet);
 
         //名字，以及头像
-        String name = UserPresenter.getInstance(this).getUserName(UserPresenter.getContext());
+        String name = UserPresenter.getUserName(UserPresenter.getContext());
         name = name == null ? "Null" : name;
         nameView.setText(name);
         int color = Color.parseColor(ColorHelper.createColorHex(name));
