@@ -13,6 +13,8 @@ import com.google.gson.Gson;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class WebSocketPresenter {
@@ -21,6 +23,7 @@ public class WebSocketPresenter {
     private List<UserData> userList;
     private static Context context;
     private static int oldUserId;
+    private static Timer timer;
 
     public static WebSocketPresenter getInstance(Context context) {
         WebSocketPresenter.context = context;
@@ -52,6 +55,17 @@ public class WebSocketPresenter {
             return webSocketClient;
         }
     }
+    public static void startHeart(TimerTask timerTask){
+        if (timer==null) {
+            timer=new Timer();
+            timer.schedule(timerTask,1000,2000);
+        }
+    }
+    public static void stopHeart(){
+        if(timer!=null){
+            timer.cancel();
+        }
+    }
 
     public static Context getContext() {
         return context;
@@ -72,5 +86,7 @@ public class WebSocketPresenter {
     public void setUserList(List<UserData> userList) {
         this.userList = userList;
     }
-
+    public static Timer getTimer() {
+        return timer;
+    }
 }

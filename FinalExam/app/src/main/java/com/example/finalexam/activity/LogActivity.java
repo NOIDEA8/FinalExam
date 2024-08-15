@@ -25,6 +25,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Objects;
+import java.util.TimerTask;
 
 public class LogActivity extends BaseActivity implements UserDataShowInterface{
 
@@ -145,9 +146,19 @@ public class LogActivity extends BaseActivity implements UserDataShowInterface{
                 .getWebSocketClient(userId);
         try {
             client.connectBlocking();
+            if(userId!=-1){
+                WebSocketPresenter.startHeart(new TimerTask() {
+                    @Override
+                    public void run() {
+                        if (client.isOpen())
+                        client.send("heartbeat");
+                    }
+                });
+            }
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+
         if(!client.isOpen()){
             Log.d(TAG, "websocket未连接");
         }

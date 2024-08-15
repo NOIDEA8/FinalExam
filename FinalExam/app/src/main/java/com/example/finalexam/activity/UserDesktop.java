@@ -28,6 +28,9 @@ import com.example.finalexam.overrideview.AddButton;
 import com.example.finalexam.presenter.UserPresenter;
 import com.example.finalexam.presenter.WebSocketPresenter;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class UserDesktop extends BaseActivity implements UserDataShowInterface, View.OnClickListener {
 
     private FrameLayout projectContainer;
@@ -79,6 +82,7 @@ public class UserDesktop extends BaseActivity implements UserDataShowInterface, 
                 else {
                     int id=UserPresenter.getInstance(UserDesktop.this).getUserId();
                     if(id!=0){
+                        WebSocketPresenter.stopHeart();
                         WebSocketPresenter.getInstance(getApplicationContext()).getWebSocketClient(id).close();
                     }
                     finish();
