@@ -168,8 +168,9 @@ public class PersonFragment extends Fragment implements UserDataShowInterface {
 
     @Override
     public void applyingMonitorProjectList(int STATUS) {
+        myApplications.clear();
         if (STATUS == UserPresenter.STATUS_SUCCESS) {
-            myApplications.clear();
+
             myApplications.addAll(UserPresenter.getInstance(this).getProjectList());
             ProjectListSortHelper.sortWithCreator(myApplications);
         }
@@ -182,8 +183,9 @@ public class PersonFragment extends Fragment implements UserDataShowInterface {
 
     @Override
     public void applyingProjectList(int STATUS) {
+        myProjects.clear();
         if (STATUS == UserPresenter.STATUS_SUCCESS) {
-            myProjects.clear();
+
             myProjects.addAll(UserPresenter.getInstance(this).getProjectList());
             ProjectListSortHelper.sortWithCreator(myProjects);
         }
@@ -251,8 +253,8 @@ public class PersonFragment extends Fragment implements UserDataShowInterface {
 
     @Override
     public void application(int STATUS) {
+        otherApplications.clear();
         if (STATUS == UserPresenter.STATUS_SUCCESS) {
-            otherApplications.clear();
             otherApplications.addAll(UserPresenter.getInstance(this).getProjectList());
             ProjectListSortHelper.sortWithCreator(otherApplications);
         }
