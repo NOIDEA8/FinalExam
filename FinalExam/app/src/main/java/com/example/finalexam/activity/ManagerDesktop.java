@@ -26,6 +26,7 @@ import com.example.finalexam.fragment.UserOverviewFragment;
 import com.example.finalexam.helper.UserDataShowInterface;
 import com.example.finalexam.model.UserData;
 import com.example.finalexam.presenter.UserPresenter;
+import com.example.finalexam.presenter.WebSocketPresenter;
 
 public class ManagerDesktop extends BaseActivity implements UserDataShowInterface, View.OnClickListener {
 
@@ -105,9 +106,7 @@ public class ManagerDesktop extends BaseActivity implements UserDataShowInterfac
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == 0) {
-
-        } else if (id == R.id.manager_project_page_button)
+        if (id == R.id.manager_project_page_button)
             changePageTo(0);
         else if (id == R.id.manager_apply_page_button)
             changePageTo(1);
@@ -118,6 +117,8 @@ public class ManagerDesktop extends BaseActivity implements UserDataShowInterfac
         else if (id == R.id.user_enabled_button)
             enabledBackground.setVisibility(View.VISIBLE);
         else if (id == R.id.user_online_button) {
+            WebSocketPresenter.getInstance(this).adminSendOffset(data.getUserId());
+            data.setIsOnline("offline");
 
         } else if (id == R.id.enabled_background)
             enabledBackground.setVisibility(View.INVISIBLE);

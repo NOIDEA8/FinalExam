@@ -29,6 +29,8 @@ public class UsersAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHolder
         this.list = list;
     }
 
+
+
     @NonNull
     @Override
     public ProjectAdapter.ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

@@ -1,5 +1,6 @@
 package com.example.finalexam.client;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 
@@ -15,6 +16,7 @@ import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 
 public class MyWebSocketClient extends WebSocketClient {
     //网址：ws://47.113.224.195:31110/websocket/admin(管理员的话)
@@ -31,6 +33,7 @@ public class MyWebSocketClient extends WebSocketClient {
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onMessage(String message) {
         InfoUserList info=gson.fromJson(message,InfoUserList.class);
@@ -42,7 +45,7 @@ public class MyWebSocketClient extends WebSocketClient {
                     List<UserData> list=UserOverviewFragment.list;
                     list.clear();
                     list.addAll(info.getData());
-                    UserOverviewFragment.usersRV.getAdapter().notifyDataSetChanged();
+                    Objects.requireNonNull(UserOverviewFragment.usersRV.getAdapter()).notifyDataSetChanged();
                 }
             }
         }

@@ -31,22 +31,9 @@ public class UserOverviewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.fragment_user_overview, container, false);
-       // addTestData();
         initView();
         initRV();
         return view;
-    }
-
-    private void addTestData() {
-        UserData data1 = new UserData();
-        data1.setEnabled("冻结");
-        data1.setUsername("刀酱");
-        data1.setIsOnline("offline");
-        UserData data2 = new UserData();
-        data2.setUsername("Zoki");
-
-        list.add(data1);
-        list.add(data2);
     }
 
     private void initRV() {
