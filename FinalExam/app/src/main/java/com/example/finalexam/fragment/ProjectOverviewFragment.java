@@ -135,9 +135,8 @@ public class ProjectOverviewFragment extends Fragment implements UserDataShowInt
             ProjectListSortHelper.sortWithCreator(list);
             tempList.addAll(list);
         }
-
         if (requestNum == 2)
-            adapter.resetList();
+            adapter.resetList(2);
     }
 
     @Override

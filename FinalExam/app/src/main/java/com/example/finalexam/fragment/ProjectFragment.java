@@ -218,7 +218,7 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
             monitorProjectList.addAll(UserPresenter.getInstance(this).getProjectList());
             ProjectListSortHelper.sortWithCreator(monitorProjectList);
         }
-        adapter.resetList();
+        adapter.resetList(1);
     }
 
     @Override

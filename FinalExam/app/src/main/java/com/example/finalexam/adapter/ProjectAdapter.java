@@ -49,18 +49,22 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHold
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void resetList(){
+    public void resetList(int type){//1的话是用户，2的话是管理员
         selfNum = self.size();
         monitorNum = monitor.size();
 
         all.removeAll(monitor);
         if(selfNum != 0) {
-            String creator = self.get(0).getCreator();
-            for (int i = 0; i < all.size(); i++) {
-                if (creator.equals(all.get(i).getCreator())){
-                    all.remove(i);
-                    i--;
+            if (type==1) {
+                String creator = self.get(0).getCreator();
+                for (int i = 0; i < all.size(); i++) {
+                    if (creator.equals(all.get(i).getCreator())){
+                        all.remove(i);
+                        i--;
+                    }
                 }
+            } else if (type==2) {
+                all.removeAll(self);
             }
         }
         tempList.addAll(self);
