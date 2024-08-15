@@ -12,6 +12,7 @@ import com.example.finalexam.info.InfoUserLogin;
 import com.example.finalexam.model.ProjectData;
 import com.example.finalexam.model.sendmodel.FreezeProjectSend;
 import com.example.finalexam.model.sendmodel.FreezeUserSend;
+import com.example.finalexam.model.sendmodel.IncreaseVisits;
 import com.example.finalexam.model.sendmodel.MonitorSend;
 import com.example.finalexam.model.sendmodel.PublishSend;
 import com.example.finalexam.model.sendmodel.RegisterSend;
@@ -149,7 +150,7 @@ public interface Api {
 
     //用户查看项目发送请求，项目访问量加一,InfoUser任意,projectData只包含id
     @POST("log/increaseVisits")
-    Call<InfoUser> increaseVisits(@Header ("token") String token,@Body ProjectData projectData);//multipart？
+    Call<InfoUser> increaseVisits(@Header ("token") String token,@Body IncreaseVisits projectData);//multipart？
 
     //根据日志id查看详细信息
     @POST("log/showDetaliedLog")

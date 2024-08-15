@@ -8,11 +8,14 @@ import com.example.finalexam.activity.LogActivity;
 import com.example.finalexam.client.MyWebSocketClient;
 import com.example.finalexam.model.UserData;
 import com.example.finalexam.model.sendmodel.OffsetSend;
+import com.example.finalexam.model.sendmodel.ReceiveWarningSend;
 import com.google.gson.Gson;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -46,8 +49,12 @@ public class WebSocketPresenter {
                 url="ws://47.113.224.195:31111/websocket/admin";
             }
 
+            String token=UserPresenter.getToken();
+            Map<String, String> httpHeaders = new HashMap<>();
+            httpHeaders.put("token", token);
+
             try {
-                webSocketClient=new MyWebSocketClient(new URI(url),context);
+                webSocketClient=new MyWebSocketClient(new URI(url),context,httpHeaders);
             } catch (URISyntaxException e) {
                 throw new RuntimeException(e);
             }
@@ -80,7 +87,9 @@ public class WebSocketPresenter {
     }
 
     public void receiveWarning(int id){
-
+        Gson gson=new Gson();
+        String sendJson=gson.toJson(new ReceiveWarningSend("checkMessage",id));
+        webSocketClient.send(sendJson);
     }
 
     public List<UserData> getUserList() {

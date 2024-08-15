@@ -33,6 +33,8 @@ public class BaseActivity extends AppCompatActivity {
         super.onResume();
         IntentFilter intentFilter=new IntentFilter();
         intentFilter.addAction("com.example.FinalExam.FORCE_OFFSET");
+        intentFilter.addAction("com.example.FinalExam.USER_FROZEN");
+        intentFilter.addAction("com.example.FinalExam.MULTILOG");
         receiver=new ForceOfflineReceiver();
         registerReceiver(receiver,intentFilter);
     }
@@ -54,9 +56,20 @@ public class BaseActivity extends AppCompatActivity {
 class ForceOfflineReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(final Context context, Intent Intent) {
-        ActivityCollector.finishAll();
-        Toast.makeText(context.getApplicationContext(), "您因管理员操作而下线，请联系管理员进行相关操作",Toast.LENGTH_SHORT).show();
-        context.startActivity(new Intent(context, LogActivity.class));
+        String action = Intent.getAction();
+        if ("com.example.FinalExam.FORCE_OFFSET".equals(action)) {
+            ActivityCollector.finishAll();
+            context.startActivity(new Intent(context, LogActivity.class));
+            Toast.makeText(context.getApplicationContext(),"您被管理员下线", Toast.LENGTH_SHORT).show();
+        } else if ("com.example.FinalExam.USER_FROZEN".equals(action)) {
+            ActivityCollector.finishAll();
+            context.startActivity(new Intent(context, LogActivity.class));
+            Toast.makeText(context.getApplicationContext(),"您被管理员冻结", Toast.LENGTH_SHORT).show();
+        } else if ("com.example.FinalExam.MULTILOG".equals(action)) {
+            ActivityCollector.finishAll();
+            context.startActivity(new Intent(context, LogActivity.class));
+            Toast.makeText(context.getApplicationContext(),"管理员账号已在别处登录", Toast.LENGTH_SHORT).show();
+        }
     }
 }
 
