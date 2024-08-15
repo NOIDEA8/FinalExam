@@ -22,7 +22,7 @@ public class ColorHelper {
         sb.append("#");
 
         Random random = new Random(seed);
-        int padding = 10;
+        int padding = 0;
 
         try {
             for (int i = 0; i < 3; i++) {
@@ -39,7 +39,7 @@ public class ColorHelper {
 
     public static boolean isBrightColor(int colorR, int colorG, int colorB) {
         int brightness = colorR + colorG + colorB;
-        return brightness >= 500;
+        return brightness >= 530;
     }
 
     public static boolean isBrightColor(String RGBHex) {
