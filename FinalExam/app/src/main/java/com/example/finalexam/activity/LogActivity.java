@@ -126,7 +126,7 @@ public class LogActivity extends BaseActivity implements UserDataShowInterface{
             Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
 
 
-            if(UserPresenter.getInstance(this).getUserName(this).equals("admin")){
+            if(UserPresenter.getUserName(this).equals("admin")){
                 connectWebSocket(-1);
                 startActivity(new Intent(this,ManagerDesktop.class));
                 Toast.makeText(this,"按返回以退至登录页",Toast.LENGTH_SHORT).show();
@@ -134,7 +134,8 @@ public class LogActivity extends BaseActivity implements UserDataShowInterface{
                 connectWebSocket(UserPresenter.getInstance(LogActivity.this).getUserId());
                 startActivity(new Intent(this,UserDesktop.class));
             }
-            finish();//这一套下来要是能到达这一步的话应该Presenter的Userdata应该是有值的
+            finish();
+            //这一套下来要是能到达这一步的话应该Presenter的Userdata应该是有值的
             //这里的finish是为了自动结束活动到主页面
         }
     }

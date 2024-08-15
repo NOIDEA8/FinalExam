@@ -2,6 +2,7 @@ package com.example.finalexam.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.NumberPicker;
@@ -126,6 +127,7 @@ public class ManagerDesktop extends BaseActivity implements UserDataShowInterfac
             int day = enabledDayView.getValue();
             int hour = enabledHourView.getValue();
             UserPresenter.getInstance(this).freezeUser(data.getUserId(), day * 24 + hour);
+            enabledBackground.setVisibility(View.INVISIBLE);
         }
     }
 

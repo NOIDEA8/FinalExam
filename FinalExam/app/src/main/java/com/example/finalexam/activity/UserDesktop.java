@@ -43,6 +43,10 @@ public class UserDesktop extends BaseActivity implements UserDataShowInterface, 
     private static TextView yesButton;
     private static TextView noButton;
 
+    private static ConstraintLayout errorBackground;
+    private static ConstraintLayout errorLayout;
+    private static TextView errorMessageView;
+
     public static boolean canBack = false;
 
     @Override
@@ -77,6 +81,12 @@ public class UserDesktop extends BaseActivity implements UserDataShowInterface, 
         dispatcher.addCallback(callback);
     }
 
+    @SuppressLint("SetTextI18n")
+    public static void callErrorLayout(int id, String name) {
+        errorBackground.setVisibility(View.VISIBLE);
+        errorMessageView.setText("项目“" + name + "”的报错数量已经超过设定阈值，请注意");
+    }
+
     public static void callApplyLayout() {
         applyProject.setText(ProjectAdapter.clickName);
         applyBackground.setVisibility(View.VISIBLE);
@@ -99,6 +109,8 @@ public class UserDesktop extends BaseActivity implements UserDataShowInterface, 
             Toast.makeText(this, "已发送申请", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.project_apply_no_button)
             applyBackground.setVisibility(View.INVISIBLE);
+        else if (id == R.id.error_toast_background)
+            errorBackground.setVisibility(View.INVISIBLE);
     }
 
     @SuppressLint("CommitTransaction")
@@ -122,6 +134,8 @@ public class UserDesktop extends BaseActivity implements UserDataShowInterface, 
         applyLayout.setOnClickListener(this);
         yesButton.setOnClickListener(this);
         noButton.setOnClickListener(this);
+        errorBackground.setOnClickListener(this);
+        errorLayout.setOnClickListener(this);
     }
 
     private void initView() {
@@ -135,6 +149,9 @@ public class UserDesktop extends BaseActivity implements UserDataShowInterface, 
         applyProject = findViewById(R.id.project_apply_project);
         yesButton = findViewById(R.id.project_apply_yes_button);
         noButton = findViewById(R.id.project_apply_no_button);
+        errorBackground = findViewById(R.id.error_toast_background);
+        errorLayout = findViewById(R.id.error_toast_layout);
+        errorMessageView = findViewById(R.id.error_toast_message);
     }
 
     private void changePageTo(int pagePosition) {
