@@ -65,6 +65,7 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
     private ConstraintLayout editLayout;
     private EditText editNameView;
     private EditText editDescriptionView;
+    private EditText editErrorView;
     private EditText editUrlView;
     private EditText editPasswordView;
     private TextView editSaveButton;
@@ -161,18 +162,26 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
             String password = editPasswordView.getText().toString();
             Log.d("Password", "input = " + password + ", truePwd = " + data.getProjectPassword());
 
-            String name = editNameView.getText().toString();
             String description = editDescriptionView.getText().toString();
             String url = editUrlView.getText().toString();
+            String errorString = editErrorView.getText().toString();
+            double errorValue = 0;
+            boolean canBeValueOf = true;
+            try {
+                errorValue = Double.parseDouble(errorString);
+            } catch (Throwable e) {
+                canBeValueOf = false;
+            }
+            if (!canBeValueOf) {
+                Toast.makeText(this, "请正确输入阈值", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (errorValue > 100) errorValue = 1;
+            else if (errorValue < 0) errorValue = 0;
+            else errorValue /= 100;
+
             UserPresenter.getInstance(this).updateProject(url, data.getProjectId(), description, password);
-
-            data.setProjectName(name);
-            data.setDescription(description);
-            data.setProjectUrl(url);
-
-            projectName.setText(name);
-            descriptionView.setText(description);
-            projectUrl.setText(url);
+            UserPresenter.getInstance(this).setErrorRate(data.getProjectId(), errorValue);
 
             editBackground.setVisibility(View.INVISIBLE);
         });
@@ -181,7 +190,7 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
         });
 
         //冻结弹窗
-        freezeButton.setOnClickListener(v->freezeBackground.setVisibility(View.VISIBLE));
+        freezeButton.setOnClickListener(v -> freezeBackground.setVisibility(View.VISIBLE));
         freezeBackground.setOnClickListener(v -> freezeBackground.setVisibility(View.INVISIBLE));
         freezeSaveButton.setOnClickListener(v -> {
             int day = freezeDayView.getValue();
@@ -263,6 +272,7 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
         editNameView = findViewById(R.id.edit_name);
         editDescriptionView = findViewById(R.id.edit_description);
         editUrlView = findViewById(R.id.edit_url);
+        editErrorView = findViewById(R.id.edit_error);
         editPasswordView = findViewById(R.id.edit_password);
         editSaveButton = findViewById(R.id.edit_save_button);
 
@@ -441,14 +451,15 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
 
     @Override
     public void updateProject(int STATUS) {
-        if(STATUS==UserPresenter.STATUS_NO_INTERNET){
-            Toast.makeText(this,"无网络",Toast.LENGTH_SHORT).show();
-        }else if(STATUS==UserPresenter.STATUS_APPLICATION_EXITED){
-            Toast.makeText(this,"申请已存在",Toast.LENGTH_SHORT).show();
-        } else if (STATUS==UserPresenter.STATUS_PROJECT_PASSWORD_INCORRECT) {
-            Toast.makeText(this,"口令错误",Toast.LENGTH_SHORT).show();
-        }else if(STATUS==UserPresenter.STATUS_SUCCESS){
-            Toast.makeText(this,"成功",Toast.LENGTH_SHORT).show();
+        if (STATUS == UserPresenter.STATUS_NO_INTERNET) {
+            Toast.makeText(this, "无网络", Toast.LENGTH_SHORT).show();
+        } else if (STATUS == UserPresenter.STATUS_APPLICATION_EXITED) {
+            Toast.makeText(this, "申请已存在", Toast.LENGTH_SHORT).show();
+        } else if (STATUS == UserPresenter.STATUS_PROJECT_PASSWORD_INCORRECT) {
+            Toast.makeText(this, "口令错误", Toast.LENGTH_SHORT).show();
+        } else if (STATUS == UserPresenter.STATUS_SUCCESS) {
+            Toast.makeText(this, "修改成功", Toast.LENGTH_SHORT).show();
+            requestData();
         }
     }
 

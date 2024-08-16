@@ -93,7 +93,6 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface 
             startActivity(new Intent(this,LogActivity.class));
             finish();
         } else if (STATUS==UserPresenter.STATUS_SUCCESS) {
-            Toast.makeText(this, "登录成功,正在准备数据", Toast.LENGTH_SHORT).show();
             connectWebsocket(UserPresenter.getInstance(this).getUserId());
             startActivity(new Intent(this,UserDesktop.class));
             finish();
