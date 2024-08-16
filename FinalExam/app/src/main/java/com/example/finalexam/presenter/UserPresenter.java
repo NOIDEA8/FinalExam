@@ -140,6 +140,7 @@ public class UserPresenter {
                     SPPresenter.accordUsername(context, account);
                     SPPresenter.accordPassword(context, password);
                     SPPresenter.accordLoggedStatus(context, true);
+
                     user.setUsername(account);
                     user.setPassword(password);
                     int id=tempData.getUserId();
@@ -325,10 +326,11 @@ public class UserPresenter {
                     if (templist!=null) {
                         if(templist.isEmpty()){
                             projectList=new ArrayList<>();
-                        }
-                        for (int i = 0; i < templist.size(); i++) {
-                            if(templist.get(i).getApplicationStatus().equals("待办")){
-                                projectList.add(templist.get(i));
+                        }else{
+                            for (int i = 0; i < templist.size(); i++) {
+                                if(templist.get(i).getApplicationStatus().equals("待办")){
+                                    projectList.add(templist.get(i));
+                                }
                             }
                         }
                     }else{
@@ -479,10 +481,11 @@ public class UserPresenter {
                     if (templist!=null) {
                         if(templist.isEmpty()){
                             projectList=new ArrayList<>();
-                        }
-                        for (int i = 0; i < templist.size(); i++) {
-                            if(templist.get(i).getApplicationStatus().equals("待办")){
-                                projectList.add(templist.get(i));
+                        }else{
+                            for (int i = 0; i < templist.size(); i++) {
+                                if(templist.get(i).getApplicationStatus().equals("待办")){
+                                    projectList.add(templist.get(i));
+                                }
                             }
                         }
                     }else{

@@ -43,8 +43,7 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface 
 
         UserPresenter.setContext(getApplicationContext());
 
-/*
-        startActivity(new Intent(MainActivity.this, ManagerDesktop.class));
+      /*  startActivity(new Intent(MainActivity.this, ManagerDesktop.class));
         finish();*/
         new Thread(new Runnable() {
             @Override
