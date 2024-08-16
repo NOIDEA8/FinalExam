@@ -322,10 +322,17 @@ public class UserPresenter {
                         projectList.clear();
                     }
                     List<ProjectData> templist =info.getData().getData();
-                    for (int i = 0; i < templist.size(); i++) {
-                        if(templist.get(i).getApplicationStatus().equals("待办")){
-                            projectList.add(templist.get(i));
+                    if (templist!=null) {
+                        if(templist.isEmpty()){
+                            projectList=new ArrayList<>();
                         }
+                        for (int i = 0; i < templist.size(); i++) {
+                            if(templist.get(i).getApplicationStatus().equals("待办")){
+                                projectList.add(templist.get(i));
+                            }
+                        }
+                    }else{
+                        projectList=new ArrayList<>();
                     }
                     activity.application(STATUS_SUCCESS);
                 }
@@ -420,10 +427,17 @@ public class UserPresenter {
                         projectList.clear();
                     }
                     List<ProjectData> templist =info.getData().getData();
-                    for (int i = 0; i < templist.size(); i++) {
-                        if(templist.get(i).getApplicationStatus().equals("待办")){
-                            projectList.add(templist.get(i));
+                    if (templist!=null) {
+                        if(templist.isEmpty()){
+                            projectList=new ArrayList<>();
                         }
+                        for (int i = 0; i < templist.size(); i++) {
+                            if(templist.get(i).getApplicationStatus().equals("待办")){
+                                projectList.add(templist.get(i));
+                            }
+                        }
+                    }else{
+                        projectList=new ArrayList<>();
                     }
                     activity.applyingMonitorProjectList(STATUS_SUCCESS);
                 }
@@ -462,10 +476,17 @@ public class UserPresenter {
                         projectList.clear();
                     }
                     List<ProjectData> templist =info.getData().getData();
-                    for (int i = 0; i < templist.size(); i++) {
-                        if(templist.get(i).getApplicationStatus().equals("待办")){
-                            projectList.add(templist.get(i));
+                    if (templist!=null) {
+                        if(templist.isEmpty()){
+                            projectList=new ArrayList<>();
                         }
+                        for (int i = 0; i < templist.size(); i++) {
+                            if(templist.get(i).getApplicationStatus().equals("待办")){
+                                projectList.add(templist.get(i));
+                            }
+                        }
+                    }else{
+                        projectList=new ArrayList<>();
                     }
                     activity.applyingProjectList(STATUS_SUCCESS);
                 }
