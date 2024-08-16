@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <TextView
+        android:id="@+id/project_monitor1_color"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="144dp"
+        android:background="@drawable/oval"
+        android:backgroundTint="@color/yellow1"
+        android:gravity="center"
+        android:text="U"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/project_monitor2_color"
+        app:layout_constraintStart_toEndOf="@+id/project_monitor2_color"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/project_monitor2_color"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/oval"
+        android:backgroundTint="@color/yellow1"
+        android:gravity="center"
+        android:text="U"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    />
+</androidx.constraintlayout.widget.ConstraintLayout>
