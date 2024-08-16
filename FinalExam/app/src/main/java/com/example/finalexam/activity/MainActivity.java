@@ -43,10 +43,10 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface 
 
         UserPresenter.setContext(getApplicationContext());
 
-
+/*
         startActivity(new Intent(MainActivity.this, ManagerDesktop.class));
-        finish();
-      /*  new Thread(new Runnable() {
+        finish();*/
+        new Thread(new Runnable() {
             @Override
             public void run() {
 
@@ -66,7 +66,7 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface 
 
                 }
             }
-        }).start();*/
+        }).start();
     }
 
     @Override
