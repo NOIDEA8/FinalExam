@@ -177,7 +177,7 @@ public class ViewDraw {
         paint.setStrokeCap(Paint.Cap.ROUND);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(7);
-        paint.setColor(Color.BLACK);
+        paint.setColor(TEXT_GREY);
 
         path.moveTo(x - x / 7f, y - 3);
         path.lineTo(x / 7f, y - 3);
@@ -186,7 +186,7 @@ public class ViewDraw {
         canvas.drawPath(path, paint);
 
         path.reset();
-        paint.setColor(TEXT_GREY);
+        paint.setColor(BLACK);
         canvas.drawCircle(x / 2f, (y / 1.5f) / 2f, y / 5f, paint);
     }
 
@@ -204,5 +204,69 @@ public class ViewDraw {
 
         path.reset();
         canvas.drawCircle(x / 2f, (y / 1.5f) / 2f, y / 5f, paint);
+    }
+
+    private void verifyIconStroke(@NonNull Canvas canvas, Path path, Paint paint, float x, float y) {
+        paint.setStrokeCap(Paint.Cap.ROUND);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(7);
+        paint.setColor(TEXT_GREY);
+
+        path.moveTo(x - 3, y - 3);
+        path.lineTo(x / 2, y / 2);
+        canvas.drawPath(path, paint);
+
+        paint.setColor(WHITE);
+        paint.setStyle(Paint.Style.FILL);
+        canvas.drawCircle((x - x / 8) / 2, (y - y / 8) / 2, (x - x / 8) / 2 - 4, paint);
+
+        paint.setColor(BLACK);
+        paint.setStyle(Paint.Style.STROKE);
+        canvas.drawCircle((x - x / 8) / 2, (y - y / 8) / 2, (x - x / 8) / 2 - 4, paint);
+
+        path.reset();
+        paint.setColor(WHITE);
+        path.moveTo(x / 2.3f, y / 1.7f-7);
+        path.lineTo(x - 3, 3);
+        canvas.drawPath(path,paint);
+
+        path.reset();
+        paint.setColor(TEXT_GREY);
+        path.moveTo(x / 4, y / 2.5f);
+        path.lineTo(x / 2.3f, y / 1.7f);
+        path.lineTo(x - 3, 10);
+        canvas.drawPath(path,paint);
+    }
+
+    private void verifyIconPink(@NonNull Canvas canvas, Path path, Paint paint, float x, float y) {
+        paint.setStrokeCap(Paint.Cap.ROUND);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(7);
+        paint.setColor(PINK);
+
+        path.moveTo(x - 3, y - 3);
+        path.lineTo(x / 2, y / 2);
+        canvas.drawPath(path, paint);
+
+        paint.setColor(WHITE);
+        paint.setStyle(Paint.Style.FILL);
+        canvas.drawCircle((x - x / 8) / 2, (y - y / 8) / 2, (x - x / 8) / 2 - 4, paint);
+
+        paint.setColor(PINK);
+        paint.setStyle(Paint.Style.STROKE);
+        canvas.drawCircle((x - x / 8) / 2, (y - y / 8) / 2, (x - x / 8) / 2 - 4, paint);
+
+        path.reset();
+        paint.setColor(WHITE);
+        path.moveTo(x / 2.3f, y / 1.7f-7);
+        path.lineTo(x - 3, 3);
+        canvas.drawPath(path,paint);
+
+        path.reset();
+        paint.setColor(PINK);
+        path.moveTo(x / 4, y / 2.5f);
+        path.lineTo(x / 2.3f, y / 1.7f);
+        path.lineTo(x - 3, 10);
+        canvas.drawPath(path,paint);
     }
 }

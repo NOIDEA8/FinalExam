@@ -42,9 +42,12 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface 
         });
 
         UserPresenter.setContext(getApplicationContext());
-        new Thread(new Runnable() {
+        startActivity(new Intent(MainActivity.this, ManagerDesktop.class));
+        finish();
+        /*new Thread(new Runnable() {
             @Override
             public void run() {
+
                 if (userPresenter.isLogged(MainActivity.this)==false) {//SPPresenter为工具类保存原有打开shareprefrence的读取操作
                     new Thread(new Runnable() {
                         @Override
@@ -74,7 +77,7 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface 
 
                 }
             }
-        }).start();
+        }).start();*/
     }
 
     @Override

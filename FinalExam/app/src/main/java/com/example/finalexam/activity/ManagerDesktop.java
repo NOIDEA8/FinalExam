@@ -1,6 +1,7 @@
 package com.example.finalexam.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,6 +27,7 @@ import com.example.finalexam.fragment.ProjectOverviewFragment;
 import com.example.finalexam.fragment.UserOverviewFragment;
 import com.example.finalexam.helper.UserDataShowInterface;
 import com.example.finalexam.model.UserData;
+import com.example.finalexam.overrideview.any.AnyView;
 import com.example.finalexam.presenter.UserPresenter;
 import com.example.finalexam.presenter.WebSocketPresenter;
 
@@ -39,8 +41,19 @@ public class ManagerDesktop extends BaseActivity implements UserDataShowInterfac
     private int pagePosition = 0;
 
     private ConstraintLayout projectButton;
+    private AnyView projectIcon;
+    private AnyView projectIcon2;
+    private TextView projectTip;
+
     private ConstraintLayout applyButton;
+    private AnyView applyIcon;
+    private AnyView applyIcon2;
+    private TextView applyTip;
+
     private ConstraintLayout userButton;
+    private AnyView userIcon;
+    private AnyView userIcon2;
+    private TextView userTip;
 
     private static ConstraintLayout userBackground;
     private static ConstraintLayout userLayout;
@@ -164,9 +177,28 @@ public class ManagerDesktop extends BaseActivity implements UserDataShowInterfac
         projectContainer = findViewById(R.id.manager_project_container);
         applyContainer = findViewById(R.id.manager_apply_container);
         userContainer = findViewById(R.id.manager_user_container);
+
         projectButton = findViewById(R.id.manager_project_page_button);
+        projectIcon = findViewById(R.id.manager_project_icon);
+        projectIcon.setIconByName("projectIconStroke");
+        projectIcon2 = findViewById(R.id.manager_project_icon2);
+        projectIcon2.setIconByName("projectIconPink");
+        projectTip = findViewById(R.id.manager_project_tip);
+
         applyButton = findViewById(R.id.manager_apply_page_button);
+        applyIcon = findViewById(R.id.manager_apply_icon);
+        applyIcon.setIconByName("verifyIconStroke");
+        applyIcon2 = findViewById(R.id.manager_apply_icon2);
+        applyIcon2.setIconByName("verifyIconPink");
+        applyTip = findViewById(R.id.manager_apply_tip);
+
         userButton = findViewById(R.id.manager_user_page_button);
+        userIcon = findViewById(R.id.manager_user_icon);
+        userIcon.setIconByName("personIconStroke");
+        userIcon2 = findViewById(R.id.manager_user_icon2);
+        userIcon2.setIconByName("personIconPink");
+        userTip = findViewById(R.id.manager_user_tip);
+
         userBackground = findViewById(R.id.user_background);
         userLayout = findViewById(R.id.user_layout);
         nameView = findViewById(R.id.user_name);
@@ -175,6 +207,7 @@ public class ManagerDesktop extends BaseActivity implements UserDataShowInterfac
         onlineView = findViewById(R.id.user_online);
         toEnabledButton = findViewById(R.id.user_enabled_button);
         onlineButton = findViewById(R.id.user_online_button);
+
         enabledBackground = findViewById(R.id.enabled_background);
         enabledLayout = findViewById(R.id.enabled_layout);
         enabledButton = findViewById(R.id.enabled_button);
@@ -195,14 +228,35 @@ public class ManagerDesktop extends BaseActivity implements UserDataShowInterfac
             projectContainer.setVisibility(View.VISIBLE);
             applyContainer.setVisibility(View.INVISIBLE);
             userContainer.setVisibility(View.INVISIBLE);
+
+            projectIcon2.setVisibility(View.VISIBLE);
+            projectTip.setTextColor(getColor(R.color.pink));
+            applyIcon2.setVisibility(View.INVISIBLE);
+            applyTip.setTextColor(Color.BLACK);
+            userIcon2.setVisibility(View.INVISIBLE);
+            userTip.setTextColor(Color.BLACK);
         } else if (pagePosition == 1) {
             projectContainer.setVisibility(View.INVISIBLE);
             applyContainer.setVisibility(View.VISIBLE);
             userContainer.setVisibility(View.INVISIBLE);
+
+            projectIcon2.setVisibility(View.INVISIBLE);
+            projectTip.setTextColor(Color.BLACK);
+            applyIcon2.setVisibility(View.VISIBLE);
+            applyTip.setTextColor(getColor(R.color.pink));
+            userIcon2.setVisibility(View.INVISIBLE);
+            userTip.setTextColor(Color.BLACK);
         } else if (pagePosition == 2) {
             projectContainer.setVisibility(View.INVISIBLE);
             applyContainer.setVisibility(View.INVISIBLE);
             userContainer.setVisibility(View.VISIBLE);
+
+            projectIcon2.setVisibility(View.INVISIBLE);
+            projectTip.setTextColor(Color.BLACK);
+            applyIcon2.setVisibility(View.INVISIBLE);
+            applyTip.setTextColor(Color.BLACK);
+            userIcon2.setVisibility(View.VISIBLE);
+            userTip.setTextColor(getColor(R.color.pink));
         }
     }
 

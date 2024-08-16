@@ -34,6 +34,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <!--====-->
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/manager_navigation_bar"
         android:layout_width="match_parent"
@@ -47,11 +49,37 @@
             android:id="@+id/manager_project_page_button"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@color/pink"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/manager_apply_page_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
+            <com.example.finalexam.overrideview.any.AnyView
+                android:id="@+id/manager_project_icon"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                app:layout_constraintBottom_toTopOf="@id/manager_project_tip"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.example.finalexam.overrideview.any.AnyView
+                android:id="@+id/manager_project_icon2"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                app:layout_constraintStart_toStartOf="@id/manager_project_icon"
+                app:layout_constraintTop_toTopOf="@id/manager_project_icon" />
+
+            <TextView
+                android:id="@+id/manager_project_tip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="项目"
+                android:textColor="@color/pink"
+                android:textSize="11sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/manager_project_icon" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -59,11 +87,38 @@
             android:id="@+id/manager_apply_page_button"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@color/pink"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/manager_user_page_button"
             app:layout_constraintStart_toEndOf="@id/manager_project_page_button"
             app:layout_constraintTop_toTopOf="parent">
+
+            <com.example.finalexam.overrideview.any.AnyView
+                android:id="@+id/manager_apply_icon"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                app:layout_constraintBottom_toTopOf="@id/manager_apply_tip"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.example.finalexam.overrideview.any.AnyView
+                android:id="@+id/manager_apply_icon2"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                app:layout_constraintStart_toStartOf="@id/manager_apply_icon"
+                app:layout_constraintTop_toTopOf="@id/manager_apply_icon"
+                android:visibility="invisible"/>
+
+            <TextView
+                android:id="@+id/manager_apply_tip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="审核"
+                android:textColor="@color/black"
+                android:textSize="11sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/manager_apply_icon" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -71,11 +126,38 @@
             android:id="@+id/manager_user_page_button"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@color/pink"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/manager_apply_page_button"
             app:layout_constraintTop_toTopOf="parent">
+
+            <com.example.finalexam.overrideview.any.AnyView
+                android:id="@+id/manager_user_icon"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                app:layout_constraintBottom_toTopOf="@id/manager_user_tip"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.example.finalexam.overrideview.any.AnyView
+                android:id="@+id/manager_user_icon2"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                app:layout_constraintStart_toStartOf="@id/manager_user_icon"
+                app:layout_constraintTop_toTopOf="@id/manager_user_icon"
+                android:visibility="invisible"/>
+
+            <TextView
+                android:id="@+id/manager_user_tip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="用户"
+                android:textColor="@color/black"
+                android:textSize="11sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/manager_user_icon" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
