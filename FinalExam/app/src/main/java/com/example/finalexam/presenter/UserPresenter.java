@@ -461,7 +461,12 @@ public class UserPresenter {
                     if (projectList!=null) {
                         projectList.clear();
                     }
-                    projectList=info.getData().getData();
+                    List<ProjectData> templist =info.getData().getData();
+                    for (int i = 0; i < templist.size(); i++) {
+                        if(templist.get(i).getApplicationStatus().equals("待办")){
+                            projectList.add(templist.get(i));
+                        }
+                    }
                     activity.applyingProjectList(STATUS_SUCCESS);
                 }
             }
