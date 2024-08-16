@@ -453,11 +453,9 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
     public void updateProject(int STATUS) {
         if (STATUS == UserPresenter.STATUS_NO_INTERNET) {
             Toast.makeText(this, "无网络", Toast.LENGTH_SHORT).show();
-        } else if (STATUS == UserPresenter.STATUS_APPLICATION_EXITED) {
-            Toast.makeText(this, "申请已存在", Toast.LENGTH_SHORT).show();
-        } else if (STATUS == UserPresenter.STATUS_PROJECT_PASSWORD_INCORRECT) {
+        }  else if (STATUS == UserPresenter.STATUS_PROJECT_PASSWORD_INCORRECT) {
             Toast.makeText(this, "口令错误", Toast.LENGTH_SHORT).show();
-        } else if (STATUS == UserPresenter.STATUS_SUCCESS) {
+        } else if (STATUS == UserPresenter.STATUS_SUCCESS||STATUS == UserPresenter.STATUS_APPLICATION_EXITED) {
             Toast.makeText(this, "修改成功", Toast.LENGTH_SHORT).show();
             requestData();
         }

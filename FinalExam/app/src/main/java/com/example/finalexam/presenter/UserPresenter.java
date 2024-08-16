@@ -327,6 +327,7 @@ public class UserPresenter {
                         if(templist.isEmpty()){
                             projectList=new ArrayList<>();
                         }else{
+                            projectList=new ArrayList<>();
                             for (int i = 0; i < templist.size(); i++) {
                                 if(templist.get(i).getApplicationStatus().equals("待办")){
                                     projectList.add(templist.get(i));
@@ -432,10 +433,12 @@ public class UserPresenter {
                     if (templist!=null) {
                         if(templist.isEmpty()){
                             projectList=new ArrayList<>();
-                        }
-                        for (int i = 0; i < templist.size(); i++) {
-                            if(templist.get(i).getApplicationStatus().equals("待办")){
-                                projectList.add(templist.get(i));
+                        } else{
+                            projectList=new ArrayList<>();
+                            for (int i = 0; i < templist.size(); i++) {
+                                if(templist.get(i).getApplicationStatus().equals("待办")){
+                                    projectList.add(templist.get(i));
+                                }
                             }
                         }
                     }else{
@@ -482,6 +485,7 @@ public class UserPresenter {
                         if(templist.isEmpty()){
                             projectList=new ArrayList<>();
                         }else{
+                            projectList=new ArrayList<>();
                             for (int i = 0; i < templist.size(); i++) {
                                 if(templist.get(i).getApplicationStatus().equals("待办")){
                                     projectList.add(templist.get(i));
@@ -588,7 +592,7 @@ public class UserPresenter {
                 if(info==null){
                     activity.updateProject(STATUS_NO_INTERNET);
                 } else if (info.getCode()!=1) {
-                    if(info.getMsg().equals("申请已存在")){
+                    if(info.getMsg().equals("该申请已存在")){
                         activity.updateProject(STATUS_APPLICATION_EXITED);
                     } else if (info.getMsg().equals("项目口令错误")) {
                         activity.updateProject(STATUS_PROJECT_PASSWORD_INCORRECT);
