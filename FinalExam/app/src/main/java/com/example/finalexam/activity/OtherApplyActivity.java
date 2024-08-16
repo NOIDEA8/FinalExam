@@ -30,7 +30,7 @@ import java.util.Objects;
 public class OtherApplyActivity extends AppCompatActivity implements UserDataShowInterface, View.OnClickListener {
 
     private RecyclerView otherRV;
-    private final List<ProjectData> list = new ArrayList<>();
+    private List<ProjectData> list;
 
     private static ConstraintLayout dealBackground;
     private static ConstraintLayout dealLayout;
@@ -84,11 +84,13 @@ public class OtherApplyActivity extends AppCompatActivity implements UserDataSho
             dealBackground.setVisibility(View.INVISIBLE);
         else if (id == R.id.deal_other_apply_yes_button) {
             list.remove(DealAdapter.tempData);
+            PersonFragment.resetApplicationsNum();
             Objects.requireNonNull(otherRV.getAdapter()).notifyDataSetChanged();
             UserPresenter.getInstance(this).verifyMonitorApplication(DealAdapter.applicationId, 1, null);
             dealBackground.setVisibility(View.INVISIBLE);
         } else if (id == R.id.deal_other_apply_no_button) {
             list.remove(DealAdapter.tempData);
+            PersonFragment.resetApplicationsNum();
             Objects.requireNonNull(otherRV.getAdapter()).notifyDataSetChanged();
             UserPresenter.getInstance(this).verifyMonitorApplication(DealAdapter.applicationId, 2, "哒咩");
             dealBackground.setVisibility(View.INVISIBLE);
@@ -97,8 +99,7 @@ public class OtherApplyActivity extends AppCompatActivity implements UserDataSho
 
     private void initRV() {
         otherRV.setLayoutManager(new LinearLayoutManager(this));
-        list.clear();
-        list.addAll(PersonFragment.otherApplications);
+        list = PersonFragment.otherApplications;
         otherRV.setAdapter(new DealAdapter(this, list, true));
     }
 

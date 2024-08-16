@@ -13,7 +13,7 @@ public class QGApplication extends Application {
         super.onCreate();
         QGExceptionHandler handler = QGExceptionHandler.getInstance();
         handler.install(this);
-        handler.avoidCrash();
+        handler.avoidCrash(true);
         handler.setExceptionToast("有会导致崩溃的错误");
 
         FPSCounter.initFPSCounter();

@@ -25,6 +25,7 @@ import com.example.finalexam.baseappcompatactivity.BaseActivity;
 import com.example.finalexam.fragment.PersonFragment;
 import com.example.finalexam.fragment.ProjectFragment;
 import com.example.finalexam.helper.UserDataShowInterface;
+import com.example.finalexam.model.ProjectData;
 import com.example.finalexam.overrideview.any.AnyView;
 import com.example.finalexam.presenter.UserPresenter;
 import com.example.finalexam.presenter.WebSocketPresenter;
@@ -123,6 +124,10 @@ public class UserDesktop extends BaseActivity implements UserDataShowInterface, 
             applyBackground.setVisibility(View.INVISIBLE);
         else if (id == R.id.project_apply_yes_button) {
             UserPresenter.getInstance(this).applyMonitorPermission(ProjectAdapter.clickId);
+            ProjectData add = new ProjectData();
+            add.setCreator(UserPresenter.getUserName(this));
+            add.setProjectName(ProjectAdapter.clickName);
+            PersonFragment.addMyApplication(add);
             applyBackground.setVisibility(View.INVISIBLE);
             Toast.makeText(this, "已发送申请", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.project_apply_no_button)

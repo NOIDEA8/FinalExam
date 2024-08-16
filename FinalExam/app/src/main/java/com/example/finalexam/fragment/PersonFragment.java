@@ -91,7 +91,7 @@ public class PersonFragment extends Fragment implements UserDataShowInterface {
         otherApplications.clear();
         otherApplications.addAll(tempList);
         int num = otherApplications.size();
-        mineNumView.setText("共" + num +"条");
+        otherNumView.setText("共" + num +"条");
     }
 
     @SuppressLint("SetTextI18n")
@@ -124,7 +124,15 @@ public class PersonFragment extends Fragment implements UserDataShowInterface {
         otherApplications.clear();
         otherApplications.addAll(tempList);
         int num = otherApplications.size();
+        otherNumView.setText("共" + num +"条");
+    }
+
+    @SuppressLint("SetTextI18n")
+    public static void resetApplicationsNum(){
+        int num = myProjects.size() + myApplications.size();
         mineNumView.setText("共" + num +"条");
+        num = otherApplications.size();
+        otherNumView.setText("共" + num +"条");
     }
 
     @SuppressLint("SetTextI18n")
