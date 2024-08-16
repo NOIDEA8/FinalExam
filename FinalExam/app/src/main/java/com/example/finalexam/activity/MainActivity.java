@@ -42,27 +42,17 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface 
         });
 
         UserPresenter.setContext(getApplicationContext());
+
+
         startActivity(new Intent(MainActivity.this, ManagerDesktop.class));
         finish();
-        /*new Thread(new Runnable() {
+      /*  new Thread(new Runnable() {
             @Override
             public void run() {
 
                 if (userPresenter.isLogged(MainActivity.this)==false) {//SPPresenter为工具类保存原有打开shareprefrence的读取操作
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            } finally {
-                               // startActivity(new Intent(MainActivity.this, UserDesktop.class));
-                                startActivity(new Intent(MainActivity.this, LogActivity.class));
-                                finish();
-                            }
-                        }
-                    }).start();
+                    startActivity(new Intent(MainActivity.this, LogActivity.class));
+                    finish();
                 } else {
                     userName = userPresenter.getUserName(MainActivity.this);
                     password = userPresenter.getPassword(MainActivity.this);
@@ -71,7 +61,6 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface 
                         startActivity(new Intent(MainActivity.this, LogActivity.class));
                         finish();
                     }else{
-
                         userPresenter.userLog(MainActivity.this,userName,password);
                     }
 
@@ -105,7 +94,7 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface 
             startActivity(new Intent(this,LogActivity.class));
             finish();
         } else if (STATUS==UserPresenter.STATUS_SUCCESS) {
-            Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "登录成功,正在准备数据", Toast.LENGTH_SHORT).show();
             connectWebsocket(UserPresenter.getInstance(this).getUserId());
             startActivity(new Intent(this,UserDesktop.class));
             finish();
