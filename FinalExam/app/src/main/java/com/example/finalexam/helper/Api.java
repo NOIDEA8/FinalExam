@@ -9,7 +9,6 @@ import com.example.finalexam.info.InfoString;
 import com.example.finalexam.info.InfoUser;
 import com.example.finalexam.info.InfoUserList;
 import com.example.finalexam.info.InfoUserLogin;
-import com.example.finalexam.model.ProjectData;
 import com.example.finalexam.model.sendmodel.FreezeProjectSend;
 import com.example.finalexam.model.sendmodel.FreezeUserSend;
 import com.example.finalexam.model.sendmodel.IncreaseVisits;
@@ -129,11 +128,11 @@ public interface Api {
 
     //获取攻击服务器日志
     @GET("log/queryAttackServerLog")
-    Call<InfoLogList> queryAttackServerLog(@Header ("Authorization") String token,@Query("page") int page,@Query("pageSize") int pageSize);
+    Call<InfoShowAllLog> queryAttackServerLog(@Header ("Authorization") String token,@Query("page") int page,@Query("pageSize") int pageSize);
 
     //获取所有用户操作的日志
     @GET("log/queryAllUserOperationLog")
-    Call<InfoLogList> queryAllUserOperationLog(@Header ("Authorization") String token,@Query("page") int page,@Query("pageSize") int pageSize);
+    Call<InfoShowAllLog> queryAllUserOperationLog(@Header ("Authorization") String token,@Query("page") int page,@Query("pageSize") int pageSize);
 
     //查看的不同组的日志（页面、服务器、移动app）jsonObject包含groupType（后台0、前端1、移动2）、pageSize、page、projectId、logType日志类型(0异常/1其他包括性能，正常日志/2后台自定义日志)
     @GET("log/viewLogForGroup")
