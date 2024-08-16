@@ -1006,30 +1006,26 @@ public class UserPresenter {
     //查看服务器攻击日志
     public void fetchAttackServerLog(int page,int pageSize){//得到记录条数是page*pageSize
         Api api=getRetrofit().create(Api.class);
-        Call<InfoLogList> dataCall=api.queryAttackServerLog(token,page,pageSize);
-        dataCall.enqueue(new Callback<InfoLogList>() {
+        Call<InfoShowAllLog> dataCall=api.queryAttackServerLog(token,page,pageSize);
+        dataCall.enqueue(new Callback<InfoShowAllLog>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
-            public void onResponse(Call<InfoLogList> call, Response<InfoLogList> response) {
-                InfoLogList info=response.body();
-                if (info==null){
-                    logDataList=new ArrayList<>();
+            public void onResponse(Call<InfoShowAllLog> call, Response<InfoShowAllLog> response) {
+                InfoShowAllLog info= response.body();
+                if(info==null){
+                    logDataListByGroup=new AllLog();
                     activity.attackServerLogList(STATUS_NO_INTERNET);
-                    
-                } else if (info.getData()==null) {
-                    logDataList=new ArrayList<>();
+                } else if (info.getData()==null||info.getData().getData().isEmpty()) {
+                    logDataListByGroup=new AllLog();
                     activity.attackServerLogList(STATUS_NO_DATA);
-                }else {
-                    if(logDataList!=null){
-                        logDataList.clear();
-                    }
-                    logDataList=info.getData();
+                }else{
+                    logDataListByGroup=info.getData();
                     activity.attackServerLogList(STATUS_SUCCESS);
                 }
             }
 
             @Override
-            public void onFailure(Call<InfoLogList> call, Throwable t) {
+            public void onFailure(Call<InfoShowAllLog> call, Throwable t) {
                 logDataList=new ArrayList<>();
                 activity.attackServerLogList(STATUS_NO_INTERNET);
             }
@@ -1038,30 +1034,26 @@ public class UserPresenter {
     //获取所有用户操作的日志
     public void fetchAllUserOperationLog(int page,int pageSize){//得到记录条数是page*pageSize
         Api api=getRetrofit().create(Api.class);
-        Call<InfoLogList> dataCall=api.queryAttackServerLog(token,page,pageSize);
-        dataCall.enqueue(new Callback<InfoLogList>() {
+        Call<InfoShowAllLog> dataCall=api.queryAllUserOperationLog(token,page,pageSize);
+        dataCall.enqueue(new Callback<InfoShowAllLog>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
-            public void onResponse(Call<InfoLogList> call, Response<InfoLogList> response) {
-                InfoLogList info=response.body();
-                if (info==null){
-                    logDataList=new ArrayList<>();
+            public void onResponse(Call<InfoShowAllLog> call, Response<InfoShowAllLog> response) {
+                InfoShowAllLog info= response.body();
+                if(info==null){
+                    logDataListByGroup=new AllLog();
                     activity.allUserOperationLogList(STATUS_NO_INTERNET);
-
-                } else if (info.getData()==null) {
-                    logDataList=new ArrayList<>();
+                } else if (info.getData()==null||info.getData().getData().isEmpty()) {
+                    logDataListByGroup=new AllLog();
                     activity.allUserOperationLogList(STATUS_NO_DATA);
-                }else {
-                    if(logDataList!=null){
-                        logDataList.clear();
-                    }
-                    logDataList=info.getData();
+                }else{
+                    logDataListByGroup=info.getData();
                     activity.allUserOperationLogList(STATUS_SUCCESS);
                 }
             }
 
             @Override
-            public void onFailure(Call<InfoLogList> call, Throwable t) {
+            public void onFailure(Call<InfoShowAllLog> call, Throwable t) {
                 logDataList=new ArrayList<>();
                 activity.allUserOperationLogList(STATUS_NO_INTERNET);
             }

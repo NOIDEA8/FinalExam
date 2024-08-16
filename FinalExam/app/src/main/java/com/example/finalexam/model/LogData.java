@@ -22,6 +22,8 @@ public class LogData {
     private int mobileErrorNumber;
     private int description;//项目操作描述（项目发布或者更新的描述）
 
+
+
     public String getIllegalRequest() {
         return illegalRequest;
     }
