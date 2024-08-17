@@ -119,8 +119,11 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
     public static void callLogLayout() {
         LogData logData = LogAdapter.data;
         logBackground.setVisibility(View.VISIBLE);
-        logInfo.setText(logData.getLogInfo());
-        logId.setText(logData.getLogId());
+        String info=logData.getLogInfo();
+        int id=logData.getLogId();
+
+        logInfo.setText(info);
+        logId.setText(String.valueOf(id));
 
     }
 
