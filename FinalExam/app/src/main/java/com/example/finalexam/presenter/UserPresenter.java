@@ -49,7 +49,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class UserPresenter {
     private static final String TAG = "UserPresenter";
-    private static final String baseUrl="http://47.113.224.195:31101/api/";
+    private static final String baseUrl="http://47.113.224.195:30210/api/";
     public UserDataShowInterface activity;
     private static String token ;
     private static UserPresenter presenter=new UserPresenter();
