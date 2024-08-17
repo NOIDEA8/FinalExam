@@ -19,6 +19,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/tips_in_managerLog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="bottom"
+        android:text="（近三十条）"
+        android:textColor="@color/text_grey"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/OperateLog_text"
+        app:layout_constraintStart_toEndOf="@+id/OperateLog_text"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/OperateLog_list"
         android:layout_width="match_parent"

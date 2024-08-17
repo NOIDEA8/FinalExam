@@ -38,7 +38,7 @@ public class ManagerLogFragment extends DialogFragment {
         // 使用自定义布局创建对话框
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = requireActivity().getLayoutInflater();
-        view = inflater.inflate(R.layout.fragment_manager_log, null);
+        view = inflater.inflate(R.layout.fragment_manager_login, null);
         builder.setView(view);
         // 这里可以初始化对话框中的控件
         dialog = builder.create();

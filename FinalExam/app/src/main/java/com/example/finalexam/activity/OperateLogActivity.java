@@ -68,16 +68,19 @@ public class OperateLogActivity extends BaseActivity implements UserDataShowInte
                     UserPresenter.getInstance(this).fetchAttackServerLog(1,30);
                 }
                  tips.setText("服务器攻击日志");
-                LogRV.setAdapter(new OperateLogAdapter(UserPresenter.getContext(),serverData));
-                 /*LogRV.getAdapter().notifyDataSetChanged();*/
+                data.clear();
+                data.addAll(serverData);
+                LogRV.getAdapter().notifyDataSetChanged();
             } else if (page==1) {
                 page=0;
                 if(userData.isEmpty()){
                     UserPresenter.getInstance(this).fetchAllUserOperationLog(1,30);
                 }
                 tips.setText("用户操作日志");
-                LogRV.setAdapter(new OperateLogAdapter(UserPresenter.getContext(),userData));
-                /*LogRV.getAdapter().notifyDataSetChanged();*/
+                data.clear();
+                data.addAll(userData);
+                LogRV.getAdapter().notifyDataSetChanged();
+
             }
         });
     }
@@ -201,7 +204,9 @@ public class OperateLogActivity extends BaseActivity implements UserDataShowInte
         if(STATUS==UserPresenter.STATUS_SUCCESS){
             AllLog rawData=UserPresenter.getInstance(this).getLogDataListByGroup();
             serverData =rawData.getData();
-            data=serverData;
+            data.clear();
+            data.addAll(userData);
+            LogRV.getAdapter().notifyDataSetChanged();
         }else if(STATUS==UserPresenter.STATUS_NO_INTERNET){
             Toast.makeText(this,"无网络",Toast.LENGTH_SHORT).show();
         }else if(STATUS==UserPresenter.STATUS_NO_DATA){
@@ -215,7 +220,8 @@ public class OperateLogActivity extends BaseActivity implements UserDataShowInte
         if(STATUS==UserPresenter.STATUS_SUCCESS){
             AllLog rawData=UserPresenter.getInstance(this).getLogDataListByGroup();
             userData=rawData.getData();
-            data=userData;
+            data.clear();
+            data.addAll(userData);
             LogRV.getAdapter().notifyDataSetChanged();
         }else if(STATUS==UserPresenter.STATUS_NO_INTERNET){
             Toast.makeText(this,"无网络",Toast.LENGTH_SHORT).show();
