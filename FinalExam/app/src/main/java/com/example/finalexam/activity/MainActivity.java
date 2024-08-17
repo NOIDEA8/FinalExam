@@ -43,7 +43,8 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface 
 
         UserPresenter.setContext(getApplicationContext());
 
-        /*startActivity(new Intent(MainActivity.this, ManagerDesktop.class));
+
+     /*   startActivity(new Intent(MainActivity.this, OperateLogActivity.class));
         finish();*/
         new Thread(new Runnable() {
             @Override
@@ -88,6 +89,7 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface 
         if(STATUS==UserPresenter.STATUS_NO_INTERNET){
             Toast.makeText(this,"无网络，稍后重试",Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this,LogActivity.class));
+            finish();
         } else if (STATUS==UserPresenter.STATUS_ACCOUNT_FROZEN) {
             Toast.makeText(this,"账号被冻结，请联系管理员",Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this,LogActivity.class));

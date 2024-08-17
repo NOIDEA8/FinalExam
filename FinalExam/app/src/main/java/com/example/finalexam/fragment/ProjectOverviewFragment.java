@@ -1,6 +1,7 @@
 package com.example.finalexam.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,9 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.finalexam.R;
+import com.example.finalexam.activity.ManagerDesktop;
+import com.example.finalexam.activity.OperateLogActivity;
 import com.example.finalexam.adapter.ProjectAdapter;
 import com.example.finalexam.helper.ProjectListSortHelper;
 import com.example.finalexam.helper.UserDataShowInterface;
@@ -31,12 +35,14 @@ public class ProjectOverviewFragment extends Fragment implements UserDataShowInt
     private int requestNum = 0;
     private RecyclerView projectRV;
     private ProjectAdapter adapter;
+    private ImageView logButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_project_overview, container, false);
         initView();
+        initListener();
         initRV();
         requestData();
         return view;
@@ -55,6 +61,13 @@ public class ProjectOverviewFragment extends Fragment implements UserDataShowInt
 
     private void initView() {
         projectRV = view.findViewById(R.id.manager_project_list);
+        logButton=view.findViewById(R.id.manager_log);
+    }
+
+    private void initListener(){
+        logButton.setOnClickListener(v->{
+            startActivity(new Intent(UserPresenter.getContext(), OperateLogActivity.class));
+        });
     }
 
     @Override

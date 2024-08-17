@@ -21,6 +21,9 @@
         android:theme="@style/Theme.FinalExam"
         tools:targetApi="31">
         <activity
+            android:name=".activity.OperateLogActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.VerifyActivity"
             android:exported="false" />
         <activity

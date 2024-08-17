@@ -38,7 +38,7 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.LogHolder> {
     public void onBindViewHolder(@NonNull LogHolder holder, int position) {
         LogData logData = list.get(position);
         holder.logTypeView.setText(logData.getLogType());
-        holder.logTypeView.setText(logData.getLogTime());
+        holder.logTimeView.setText(logData.getLogTime());
         holder.logRVItem.setOnClickListener(v -> {
             data = logData;
             ProjectDetailActivity.callLogLayout();

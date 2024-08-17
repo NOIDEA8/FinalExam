@@ -21,8 +21,15 @@ public class LogData {
     private int backErrorNumber;
     private int mobileErrorNumber;
     private int description;//项目操作描述（项目发布或者更新的描述）
+    private String userName;
 
+    public String getUserName() {
+        return userName;
+    }
 
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     public String getIllegalRequest() {
         return illegalRequest;
