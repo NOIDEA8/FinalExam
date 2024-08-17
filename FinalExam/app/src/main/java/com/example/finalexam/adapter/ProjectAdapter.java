@@ -61,10 +61,10 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ItemHold
         tempList.clear();
         tempList.addAll(self);
         tempList.addAll(monitor);
-        for (int i = 0; i < selfNum + monitorNum; i++) {
+        for (int i = 0; i < selfNum+monitorNum ; i++) {
             ProjectData data = tempList.get(i);
             for (int j = 0; j < all.size(); j++){
-                if (all.get(j).getCreator().equals(data.getCreator())){
+                if (all.get(j).getProjectName().equals(data.getProjectName())){
                     all.remove(j);
                     break;
                 }

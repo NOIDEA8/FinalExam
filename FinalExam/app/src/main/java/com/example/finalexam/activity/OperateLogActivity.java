@@ -67,19 +67,21 @@ public class OperateLogActivity extends BaseActivity implements UserDataShowInte
                 if(serverData.isEmpty()){
                     UserPresenter.getInstance(this).fetchAttackServerLog(1,30);
                 }
-                 tips.setText("服务器攻击日志");
+
                 data.clear();
                 data.addAll(serverData);
                 LogRV.getAdapter().notifyDataSetChanged();
+                tips.setText("服务器攻击日志");
             } else if (page==1) {
                 page=0;
                 if(userData.isEmpty()){
                     UserPresenter.getInstance(this).fetchAllUserOperationLog(1,30);
                 }
-                tips.setText("用户操作日志");
+
                 data.clear();
                 data.addAll(userData);
                 LogRV.getAdapter().notifyDataSetChanged();
+                tips.setText("用户操作日志");
 
             }
         });
