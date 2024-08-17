@@ -14,6 +14,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,6 +23,7 @@ import com.example.finalexam.R;
 import com.example.finalexam.adapter.LogAdapter;
 import com.example.finalexam.adapter.ProjectAdapter;
 import com.example.finalexam.baseappcompatactivity.BaseActivity;
+import com.example.finalexam.fragment.MonitorUserFragment;
 import com.example.finalexam.helper.UserDataShowInterface;
 import com.example.finalexam.model.AllLog;
 import com.example.finalexam.model.LogData;
@@ -96,11 +99,21 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
+        getWindow().setNavigationBarColor(getColor(R.color.grey));
         initView();
         initListener();
         initRV();
+        initMonitorFragment();
         requestData();
+    }
+
+    @SuppressLint("CommitTransaction")
+    private void initMonitorFragment() {
+        MonitorUserFragment fragment = new MonitorUserFragment();
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.add(R.id.detail_project_monitor_container, fragment);
+        transaction.commit();
     }
 
     public static void callLogLayout() {
