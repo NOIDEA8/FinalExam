@@ -246,6 +246,8 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
 
         int readWeek = 0;
         int errorWeek = 0;
+        readDay.clear();
+        errorDay.clear();
         for (LogData logData : weekList) {
             readWeek += logData.getVisits();
             readDay.add(logData.getVisits());

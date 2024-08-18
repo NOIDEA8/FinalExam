@@ -49,7 +49,7 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface 
             public void run() {
                 request();
             }
-        },1100);
+        },1200);
         //startActivity(new Intent(this, ManagerDesktop.class));
     }
 

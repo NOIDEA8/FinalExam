@@ -35,6 +35,8 @@ import com.example.finalexam.model.sendmodel.UpdataProjectSend;
 import com.example.finalexam.model.sendmodel.VerifyApplicationSend;
 import com.example.finalexam.model.sendmodel.VertifyMonitorSend;
 import com.example.finalexam.model.sendmodel.ViewLogForGroupSend;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONObject;
 
@@ -49,7 +51,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class UserPresenter {
     private static final String TAG = "UserPresenter";
-    private static final String baseUrl="http://47.113.224.195:31101/api/";//47.113.224.195:30210
+    private static final String baseUrl="http://47.113.224.195:30210/api/";//47.113.224.195:30210//47.113.224.195:30111
     public UserDataShowInterface activity;
     private static String token ;
     private static UserPresenter presenter=new UserPresenter();
@@ -102,6 +104,7 @@ public class UserPresenter {
     public static final int STATUS_NO_DATA= 32;
     public static final int STATUS_PROJECT_PASSWORD_INCORRECT= 41;
     public static final int STATUS_APPLICATION_EXITED= 42;
+    Gson gson = new GsonBuilder().setLenient().create();
 
 
     //获取唯一present
@@ -155,6 +158,7 @@ public class UserPresenter {
             @Override
             public void onFailure(@NonNull Call<InfoUserLogin> call, @NonNull Throwable throwable) {
                 Log.d(TAG, throwable.toString());
+
                 activity.userLog(STATUS_NO_INTERNET);
             }
         });
@@ -1230,7 +1234,7 @@ public class UserPresenter {
     public Retrofit getRetrofit() {
         Retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         return Retrofit;
     }
