@@ -207,7 +207,7 @@ public class OperateLogActivity extends BaseActivity implements UserDataShowInte
             AllLog rawData=UserPresenter.getInstance(this).getLogDataListByGroup();
             serverData =rawData.getData();
             data.clear();
-            data.addAll(userData);
+            data.addAll(serverData);
             LogRV.getAdapter().notifyDataSetChanged();
         }else if(STATUS==UserPresenter.STATUS_NO_INTERNET){
             Toast.makeText(this,"无网络",Toast.LENGTH_SHORT).show();
@@ -222,6 +222,7 @@ public class OperateLogActivity extends BaseActivity implements UserDataShowInte
         if(STATUS==UserPresenter.STATUS_SUCCESS){
             AllLog rawData=UserPresenter.getInstance(this).getLogDataListByGroup();
             userData=rawData.getData();
+            page=0;
             data.clear();
             data.addAll(userData);
             LogRV.getAdapter().notifyDataSetChanged();
