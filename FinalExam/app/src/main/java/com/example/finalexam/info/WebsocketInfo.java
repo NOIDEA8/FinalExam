@@ -6,7 +6,7 @@ import java.util.List;
 
 public class WebsocketInfo {
     private List<UserData> userList;
-    private String data;
+    private int data;
     private String msg;
     private String type;
 
@@ -20,11 +20,11 @@ public class WebsocketInfo {
     }
 
 
-    public String getData() {
+    public int getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(int data) {
         this.data = data;
     }
 

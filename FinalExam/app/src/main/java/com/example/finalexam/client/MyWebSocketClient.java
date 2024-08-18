@@ -56,7 +56,8 @@ public class MyWebSocketClient extends WebSocketClient {
             } else if (info.getType().equals("账号被冻结,有疑问联系管理员")) {
                 context.sendBroadcast(new Intent("com.example.FinalExam.USER_FROZEN"));
             } else if (info.getType().equals("warning")) {
-                UserDesktop.callErrorLayout(Integer.getInteger(info.getData()),info.getMsg());
+                int id=info.getData();
+                UserDesktop.callErrorLayout(id,info.getMsg());
             } else if (info.getType().equals("multiLog")) {
                 WebSocketPresenter.getInstance(UserPresenter.getContext()).getWebSocketClient(id).close();
                 context.sendBroadcast(new Intent("com.example.FinalExam.MULTILOG"));

@@ -11,6 +11,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.finalexam.activity.LogActivity;
+import com.example.finalexam.activity.UserDesktop;
+import com.example.finalexam.info.WebsocketInfo;
 import com.example.finalexam.presenter.UserPresenter;
 import com.example.finalexam.presenter.WebSocketPresenter;
 
@@ -37,6 +39,7 @@ public class BaseActivity extends AppCompatActivity {
         intentFilter.addAction("com.example.FinalExam.FORCE_OFFSET");
         intentFilter.addAction("com.example.FinalExam.USER_FROZEN");
         intentFilter.addAction("com.example.FinalExam.MULTILOG");
+        intentFilter.addAction("com.example.FinalExam.WARNING");
         receiver=new ForceOfflineReceiver();
         registerReceiver(receiver,intentFilter);
     }
@@ -71,7 +74,6 @@ class ForceOfflineReceiver extends BroadcastReceiver {
             ActivityCollector.finishAll();
             context.startActivity(new Intent(context, LogActivity.class));
             Toast.makeText(context.getApplicationContext(),"账号已在别处登录", Toast.LENGTH_SHORT).show();
-
         }
     }
 }
