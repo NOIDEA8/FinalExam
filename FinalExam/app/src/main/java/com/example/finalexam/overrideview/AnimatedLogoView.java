@@ -14,7 +14,7 @@ import android.view.animation.DecelerateInterpolator;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class LogoView extends View {
+public class AnimatedLogoView extends View {
     Paint outPaint = new Paint();
     Path outPath = new Path();
     Paint upPaint = new Paint();
@@ -120,19 +120,19 @@ public class LogoView extends View {
         set.setDuration(330);
     }
 
-    public LogoView(Context context) {
+    public AnimatedLogoView(Context context) {
         super(context);
     }
 
-    public LogoView(Context context, @Nullable AttributeSet attrs) {
+    public AnimatedLogoView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public LogoView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public AnimatedLogoView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
-    public LogoView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public AnimatedLogoView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 }

@@ -22,6 +22,7 @@ import com.example.finalexam.presenter.WebSocketPresenter;
 import org.java_websocket.client.WebSocketClient;
 
 import java.util.List;
+import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainActivity extends BaseActivity implements UserDataShowInterface {
@@ -42,8 +43,18 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface 
         });
 
         UserPresenter.setContext(getApplicationContext());
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                request();
+            }
+        },1100);
+        //startActivity(new Intent(this, ManagerDesktop.class));
+    }
 
-        /*new Thread(new Runnable() {
+    private void request(){
+        new Thread(new Runnable() {
             @Override
             public void run() {
 
@@ -63,7 +74,7 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface 
 
                 }
             }
-        }).start();*/
+        }).start();
     }
 
     @Override

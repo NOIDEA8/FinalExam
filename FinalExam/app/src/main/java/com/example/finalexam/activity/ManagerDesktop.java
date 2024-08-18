@@ -230,7 +230,7 @@ public class ManagerDesktop extends BaseActivity implements UserDataShowInterfac
             userContainer.setVisibility(View.INVISIBLE);
 
             projectIcon2.setVisibility(View.VISIBLE);
-            projectTip.setTextColor(getColor(R.color.pink));
+            projectTip.setTextColor(getColor(R.color.blue_purple));
             applyIcon2.setVisibility(View.INVISIBLE);
             applyTip.setTextColor(Color.BLACK);
             userIcon2.setVisibility(View.INVISIBLE);
@@ -243,7 +243,7 @@ public class ManagerDesktop extends BaseActivity implements UserDataShowInterfac
             projectIcon2.setVisibility(View.INVISIBLE);
             projectTip.setTextColor(Color.BLACK);
             applyIcon2.setVisibility(View.VISIBLE);
-            applyTip.setTextColor(getColor(R.color.pink));
+            applyTip.setTextColor(getColor(R.color.blue_purple));
             userIcon2.setVisibility(View.INVISIBLE);
             userTip.setTextColor(Color.BLACK);
         } else if (pagePosition == 2) {
@@ -256,7 +256,7 @@ public class ManagerDesktop extends BaseActivity implements UserDataShowInterfac
             applyIcon2.setVisibility(View.INVISIBLE);
             applyTip.setTextColor(Color.BLACK);
             userIcon2.setVisibility(View.VISIBLE);
-            userTip.setTextColor(getColor(R.color.pink));
+            userTip.setTextColor(getColor(R.color.blue_purple));
         }
     }
 

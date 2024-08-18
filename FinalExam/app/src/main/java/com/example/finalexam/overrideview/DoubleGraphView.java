@@ -1,5 +1,6 @@
 package com.example.finalexam.overrideview;
 
+import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -8,98 +9,85 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.example.finalexam.activity.ProjectDetailActivity;
 
 public class DoubleGraphView extends View {
-    private static final String TAG = "DoubleGraphView";
-    private boolean already = false;
-    private Paint paint;
-    private Path path;
-    private ValueAnimator animator;
-    private float viewX;
-    private float viewY;
-
-    private final float MAX_FPS = 160f;
-    private final int DOWN_SPEED = 3;
-    public final List<Integer> targetFPS = new ArrayList<>();
-    public final List<Integer> trackFPS = new ArrayList<>();//动画用
+    private float x;
+    private float y;
+    private float interval;
+    private int readMax = 0;
+    private int errorMax = 0;
+    private final Paint readPaint = new Paint();
+    private final Path readPath = new Path();
+    private final Paint errorPaint = new Paint();
+    private final Path errorPath = new Path();
+    public static final ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
+    private boolean firstStart = true;
+    private boolean firstPlay = true;
 
     @Override
     protected void onDraw(@NonNull Canvas canvas) {
-        if (!already) init();
-        canvas.drawPath(path, paint);
+        if (firstStart) {
+            x = getWidth();
+            y = getHeight();
+            interval = x / 7f;
+            init();
+            firstStart = false;
+            return;
+        }
+        canvas.drawPath(readPath, readPaint);
+        canvas.drawPath(errorPath, errorPaint);
     }
 
     private void init() {
-        paint = new Paint();
-        path = new Path();
+        readPaint.setStyle(Paint.Style.FILL);
+        readPaint.setColor(Color.parseColor("#41b349"));
 
-        viewX = getWidth() - 6f;
-        viewY = getHeight() - 6f;
-
-        paint.setStrokeCap(Paint.Cap.ROUND);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setColor(Color.parseColor("#F2E269"));
-        paint.setStrokeWidth(7);
-
-        path.moveTo(3f, 3f);
-        path.rLineTo(viewX, 0);
-
-        animator = ValueAnimator.ofFloat(0f, 1f);
-        animator.setDuration(1000);
-
-        initTrackFPS();
+        errorPaint.setStyle(Paint.Style.STROKE);
+        errorPaint.setStrokeWidth(7f);
+        errorPaint.setStrokeCap(Paint.Cap.ROUND);
+        errorPaint.setColor(Color.parseColor("#c04851"));
 
         animator.addUpdateListener(animation -> {
-            int num = targetFPS.size();
-            if (num == 0) return;
-
-            //如果只有一个数据。那么就是直线
-            if (num == 1) {
-                path.reset();
-                int fps = targetFPS.get(0);
-                path.moveTo(3, 3 + viewY * (1 - fps / MAX_FPS));
-                path.rLineTo(viewX, 0);
-                return;
+            if (firstPlay) {
+                for (Integer i : ProjectDetailActivity.readDay)
+                    readMax = i > readMax ? i : readMax;
+                for (Integer i : ProjectDetailActivity.errorDay)
+                    errorMax = i > errorMax ? i : errorMax;
+                firstPlay = false;
             }
 
-            //否则为多点曲线
-            path.reset();
-            float interval = viewX / (num - 1);
+            readPath.reset();
+            errorPath.reset();
+            float value = (float) animation.getAnimatedValue();
 
-            for (int i = 0; i < num; i++) {
-                int target = targetFPS.get(i);
-                int track = trackFPS.get(i);
-                if (track < target) {
-                    track += DOWN_SPEED;
-                    trackFPS.set(i, ++track);
-                }
+            int num = 0;
+            for (int i = 0; i < ProjectDetailActivity.readDay.size(); i++) {
+                num = ProjectDetailActivity.readDay.get(i);
+                readPath.moveTo(interval * (7 - i) - 6f, y);
+                readPath.rLineTo(0, -y * num * value / readMax);
+                readPath.rLineTo(-interval + 12f, 0);
+                readPath.lineTo(interval * (7 - i - 1) + 6f, y);
+                readPath.close();
+            }
+            for (int i = 0; i < ProjectDetailActivity.errorDay.size(); i++) {
+                num = ProjectDetailActivity.readDay.get(i);
                 if (i == 0) {
-                    path.moveTo(3, 3 + viewY * (1 - track / MAX_FPS));
-                } else {
-                    path.lineTo(i * interval, 3 + viewY * (1 - track / MAX_FPS));
+                    errorPath.moveTo(interval * 6.5f, y - y * num * value / errorMax);
+                    continue;
                 }
+                errorPath.lineTo(interval * (6.5f - i), y - y * num * value / errorMax);
             }
+
             invalidate();
         });
-        animator.start();
-
-        already = true;
-    }
-
-    private void initTrackFPS() {
-        int num = targetFPS.size();
-        if (num == 0 || num == 1) return;
-
-        trackFPS.addAll(targetFPS);
-        for (int i = 0; i < num; i++) {
-            trackFPS.set(i, 0);
-        }
+        animator.setDuration(500);
+        animator.setInterpolator(new DecelerateInterpolator());
     }
 
     public DoubleGraphView(Context context) {

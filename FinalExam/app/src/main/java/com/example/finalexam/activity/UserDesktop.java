@@ -206,7 +206,7 @@ public class UserDesktop extends BaseActivity implements UserDataShowInterface, 
             projectContainer.setVisibility(View.VISIBLE);
             personContainer.setVisibility(View.INVISIBLE);
 
-            projectTip.setTextColor(getColor(R.color.pink));
+            projectTip.setTextColor(getColor(R.color.blue_purple));
             projectIcon2.setVisibility(View.VISIBLE);
             personTip.setTextColor(Color.BLACK);
             personIcon2.setVisibility(View.INVISIBLE);
@@ -216,7 +216,7 @@ public class UserDesktop extends BaseActivity implements UserDataShowInterface, 
 
             projectTip.setTextColor(Color.BLACK);
             projectIcon2.setVisibility(View.INVISIBLE);
-            personTip.setTextColor(getColor(R.color.pink));
+            personTip.setTextColor(getColor(R.color.blue_purple));
             personIcon2.setVisibility(View.VISIBLE);
         }
     }

@@ -28,14 +28,17 @@ import com.example.finalexam.helper.UserDataShowInterface;
 import com.example.finalexam.model.AllLog;
 import com.example.finalexam.model.LogData;
 import com.example.finalexam.model.ProjectData;
+import com.example.finalexam.overrideview.DoubleGraphView;
 import com.example.finalexam.overrideview.any.AnyView;
 import com.example.finalexam.presenter.UserPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 public class ProjectDetailActivity extends BaseActivity implements UserDataShowInterface {
+    private static final String TAG = "ProjectDetailActivity";
     private ProjectData data = new ProjectData();
     private int requestNum = 0;
     private TextView projectName;
@@ -135,14 +138,28 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
     private void initListener() {
         //选择查看前端后台
         frontOption.setOnClickListener(v -> {
+            if (MorF == UserPresenter.FRONT_LOG) return;
             MorF = UserPresenter.FRONT_LOG;
             page = 1;
             UserPresenter.getInstance(this).fetchLogForGroup(MorF, 30, page, ProjectAdapter.clickId, 2);
+            int fW = frontOption.getWidth();
+            int mW = mobileOption.getWidth();
+            frontOption.setWidth(mW);
+            mobileOption.setWidth(fW);
+            frontOption.setTextColor(getColor(R.color.black));
+            mobileOption.setTextColor(getColor(R.color.text_grey));
         });
         mobileOption.setOnClickListener(v -> {
+            if (MorF == UserPresenter.MOBILE_LOG) return;
             MorF = UserPresenter.MOBILE_LOG;
             page = 1;
             UserPresenter.getInstance(this).fetchLogForGroup(MorF, 30, page, ProjectAdapter.clickId, 2);
+            int fW = frontOption.getWidth();
+            int mW = mobileOption.getWidth();
+            frontOption.setWidth(mW);
+            mobileOption.setWidth(fW);
+            frontOption.setTextColor(getColor(R.color.text_grey));
+            mobileOption.setTextColor(getColor(R.color.black));
         });
 
         //翻页按钮
@@ -235,14 +252,22 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
             errorWeek += logData.getErrorNumber();
             errorDay.add(logData.getErrorNumber());
         }
+        /*Random random = new Random(System.currentTimeMillis());
+        for (int i = 0; i < 7; i++)
+            readDay.add(random.nextInt(30));
+        for (int i = 0; i < 7; i++)
+            errorDay.add(random.nextInt(30));*/
+
         readWeekView.setText(String.valueOf(readWeek));
         errorWeekView.setText(String.valueOf(errorWeek));
 
         //此处为曲线图
-
+        DoubleGraphView.animator.start();
+        Log.d("DoubleGraph", "showData: animator start");
     }
 
     private void requestData() {
+        Log.d(TAG, "requestData");
         UserPresenter.getInstance(this).increaseVisits(ProjectAdapter.clickId);
         UserPresenter.getInstance(this).fetchProjectDetail(ProjectAdapter.clickId);
         UserPresenter.getInstance(this).fetchProjectPresentationDateOneWeek(ProjectAdapter.clickId);//一周数据
@@ -372,6 +397,9 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
             int total = log.getTotal();
             pages = total % 30 == 0 ? total / 30 : total / 30 + 1;
             logNumView.setText(page + " / " + pages);
+        }else {
+            logList.clear();
+            Objects.requireNonNull(logRV.getAdapter()).notifyDataSetChanged();
         }
 
         if (++requestNum == 3) {

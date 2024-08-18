@@ -43,7 +43,7 @@
             android:layout_height="35dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/square_all"
-            android:backgroundTint="@color/pink"
+            android:backgroundTint="@color/blue_purple"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -79,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="项目"
-                android:textColor="@color/pink"
+                android:textColor="@color/blue_purple"
                 android:textSize="11sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/user_project_icon" />

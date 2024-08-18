@@ -17,6 +17,7 @@ public class ViewDraw {
     private final int BLACK = Color.BLACK;
     private final int TEXT_GREY = Color.parseColor("#969696");
     private final int PINK = Color.parseColor("#F4B9BB");
+    private final int BLUE_PURPLE = Color.parseColor("#6979F2");
     private static final ViewDraw viewDraw = new ViewDraw();
 
     public static void draw(@NonNull Canvas canvas, Path path, Paint paint, float x, float y, String drawMethod) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
@@ -67,6 +68,7 @@ public class ViewDraw {
         canvas.drawPath(path, paint);
 
         path.reset();
+        paint.setStrokeCap(Paint.Cap.SQUARE);
         path.moveTo(x - x / 2.3f, y / 2.3f - y / 4);
         path.lineTo(x - x / 2.3f + x / 4, y / 2.3f);
         canvas.drawPath(path, paint);
@@ -142,7 +144,7 @@ public class ViewDraw {
         paint.setStrokeCap(Paint.Cap.ROUND);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(7);
-        paint.setColor(PINK);
+        paint.setColor(BLUE_PURPLE);
 
         path.moveTo(x - x / 7 - x / 4, 3);
         path.lineTo(x / 7, 3);
@@ -194,7 +196,7 @@ public class ViewDraw {
         paint.setStrokeCap(Paint.Cap.ROUND);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(7);
-        paint.setColor(PINK);
+        paint.setColor(BLUE_PURPLE);
 
         path.moveTo(x - x / 7f, y - 3);
         path.lineTo(x / 7f, y - 3);
@@ -242,7 +244,7 @@ public class ViewDraw {
         paint.setStrokeCap(Paint.Cap.ROUND);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(7);
-        paint.setColor(PINK);
+        paint.setColor(BLUE_PURPLE);
 
         path.moveTo(x - 3, y - 3);
         path.lineTo(x / 2, y / 2);
@@ -252,7 +254,7 @@ public class ViewDraw {
         paint.setStyle(Paint.Style.FILL);
         canvas.drawCircle((x - x / 8) / 2, (y - y / 8) / 2, (x - x / 8) / 2 - 4, paint);
 
-        paint.setColor(PINK);
+        paint.setColor(BLUE_PURPLE);
         paint.setStyle(Paint.Style.STROKE);
         canvas.drawCircle((x - x / 8) / 2, (y - y / 8) / 2, (x - x / 8) / 2 - 4, paint);
 
@@ -263,7 +265,7 @@ public class ViewDraw {
         canvas.drawPath(path,paint);
 
         path.reset();
-        paint.setColor(PINK);
+        paint.setColor(BLUE_PURPLE);
         path.moveTo(x / 4, y / 2.5f);
         path.lineTo(x / 2.3f, y / 1.7f);
         path.lineTo(x - 3, 10);

@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="项目"
-                android:textColor="@color/pink"
+                android:textColor="@color/blue_purple"
                 android:textSize="11sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/manager_project_icon" />
