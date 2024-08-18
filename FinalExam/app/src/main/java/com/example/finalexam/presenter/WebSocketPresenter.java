@@ -7,9 +7,13 @@ import android.util.Log;
 import com.example.finalexam.activity.LogActivity;
 import com.example.finalexam.client.MyWebSocketClient;
 import com.example.finalexam.model.UserData;
+import com.example.finalexam.model.sendmodel.HeartbeatSend;
 import com.example.finalexam.model.sendmodel.OffsetSend;
 import com.example.finalexam.model.sendmodel.ReceiveWarningSend;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import org.java_websocket.client.WebSocketClient;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -38,10 +42,9 @@ public class WebSocketPresenter {
     public MyWebSocketClient getWebSocketClient(int userId){
         String url;
         if(oldUserId==userId&&webSocketClient.isOpen()){
-            Log.d("websocket", "getWebSocketClient: "+webSocketClient);
+            Log.d("websocket1", "getWebSocketClient: "+webSocketClient);
             return webSocketClient;
-        }
-        else {
+        } else {
             oldUserId=userId;
             if(userId!=-1){
                 url="ws://47.113.224.195:30210/websocket/"+userId;
@@ -54,7 +57,7 @@ public class WebSocketPresenter {
             httpHeaders.put("token", token);
 
             try {
-                webSocketClient=new MyWebSocketClient(new URI(url),context,httpHeaders);
+                webSocketClient=new MyWebSocketClient(new URI(url),context,httpHeaders,userId);
             } catch (URISyntaxException e) {
                 throw new RuntimeException(e);
             }
@@ -62,10 +65,23 @@ public class WebSocketPresenter {
             return webSocketClient;
         }
     }
-    public static void startHeart(TimerTask timerTask){
+    public static void startHeart(WebSocketClient client){
+
         if (timer==null) {
             timer=new Timer();
-            timer.schedule(timerTask,1000,2000);
+            TimerTask timerTask=new TimerTask() {
+                @Override
+                public void run() {
+                    if(client.isOpen()){
+                        HeartbeatSend send=new HeartbeatSend("heartbeat");
+                        Gson gson=new Gson();
+                        String sendJson=gson.toJson(send);
+                        client.send(sendJson);
+                        Log.e("aaa", "发");
+                    }
+                }
+            };
+            timer.schedule(timerTask,0,1000);
         }
     }
     public static void stopHeart(){
@@ -102,4 +118,6 @@ public class WebSocketPresenter {
     public static Timer getTimer() {
         return timer;
     }
+
 }
+

@@ -3,12 +3,9 @@ package com.example.finalexam.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.activity.OnBackPressedCallback;
-import androidx.activity.OnBackPressedDispatcher;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -21,7 +18,6 @@ import com.example.finalexam.presenter.WebSocketPresenter;
 
 import org.java_websocket.client.WebSocketClient;
 
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -30,6 +26,7 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface 
     private UserPresenter userPresenter = UserPresenter.getInstance(this);
     private String userName;
     private String password;
+    private Timer timer=new Timer();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,23 +109,20 @@ public class MainActivity extends BaseActivity implements UserDataShowInterface 
     private void connectWebsocket(int userId) {
         WebSocketClient client= WebSocketPresenter.getInstance(getApplicationContext())
                 .getWebSocketClient(userId);
+        Log.d(TAG, "connectWebsocket: "+client);
         try {
             client.connectBlocking();
-            WebSocketPresenter.startHeart(new TimerTask() {
-                @Override
-                public void run() {
-                    if (client.isOpen())
-                        client.send("heartbeat");
-                }
-            });
+            WebSocketPresenter.startHeart(client);
+
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-
         if(!client.isOpen()){
             Log.d(TAG, "websocket未连接");
         }
     }
+
+
 
     @Override
     public void userRegister(int STATUS) {

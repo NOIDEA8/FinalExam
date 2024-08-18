@@ -3,6 +3,7 @@ package com.example.finalexam.client;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.example.finalexam.activity.UserDesktop;
 import com.example.finalexam.fragment.UserOverviewFragment;
@@ -12,6 +13,7 @@ import com.example.finalexam.info.WebsocketInfo;
 import com.example.finalexam.model.UserData;
 import com.example.finalexam.presenter.SPPresenter;
 import com.example.finalexam.presenter.UserPresenter;
+import com.example.finalexam.presenter.WebSocketPresenter;
 import com.google.gson.Gson;
 
 import org.java_websocket.client.WebSocketClient;
@@ -23,23 +25,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 
 public class MyWebSocketClient extends WebSocketClient {
     //网址：ws://47.113.224.195:31110/websocket/admin(管理员的话)
     private Context context;
     Gson gson=new Gson();
+    int id=-2;
 
 
-
-     public MyWebSocketClient(URI serverUri,Context context, Map<String, String> httpHeaders) {
-         //super(serverUri);
+     public MyWebSocketClient(URI serverUri,Context context, Map<String, String> httpHeaders,int id) {
          super(serverUri, httpHeaders);
          this.context=context;
+         this.id=id;
      }
     @Override
     public void onOpen(ServerHandshake handshakedata) {
-
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -56,6 +58,7 @@ public class MyWebSocketClient extends WebSocketClient {
             } else if (info.getType().equals("warning")) {
                 UserDesktop.callErrorLayout(Integer.getInteger(info.getData()),info.getMsg());
             } else if (info.getType().equals("multiLog")) {
+                WebSocketPresenter.getInstance(UserPresenter.getContext()).getWebSocketClient(id).close();
                 context.sendBroadcast(new Intent("com.example.FinalExam.MULTILOG"));
             }
         } else {
@@ -68,7 +71,7 @@ public class MyWebSocketClient extends WebSocketClient {
 
     @Override
     public void onClose(int code, String reason, boolean remote) {
-
+        Log.e("aaaaa", "onClose: ");
     }
 
     @Override

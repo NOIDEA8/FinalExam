@@ -11,6 +11,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.finalexam.activity.LogActivity;
+import com.example.finalexam.presenter.UserPresenter;
+import com.example.finalexam.presenter.WebSocketPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +70,8 @@ class ForceOfflineReceiver extends BroadcastReceiver {
         } else if ("com.example.FinalExam.MULTILOG".equals(action)) {
             ActivityCollector.finishAll();
             context.startActivity(new Intent(context, LogActivity.class));
-            Toast.makeText(context.getApplicationContext(),"管理员账号已在别处登录", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context.getApplicationContext(),"账号已在别处登录", Toast.LENGTH_SHORT).show();
+
         }
     }
 }

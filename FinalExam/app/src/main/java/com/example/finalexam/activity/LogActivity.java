@@ -22,10 +22,7 @@ import com.example.finalexam.R;
 import com.example.finalexam.presenter.WebSocketPresenter;
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Objects;
-import java.util.TimerTask;
 
 public class LogActivity extends BaseActivity implements UserDataShowInterface{
 
@@ -147,13 +144,7 @@ public class LogActivity extends BaseActivity implements UserDataShowInterface{
         try {
             client.connectBlocking();
             if(userId!=-1){
-                WebSocketPresenter.startHeart(new TimerTask() {
-                    @Override
-                    public void run() {
-                        if (client.isOpen())
-                        client.send("heartbeat");
-                    }
-                });
+                WebSocketPresenter.startHeart(client);
             }
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
