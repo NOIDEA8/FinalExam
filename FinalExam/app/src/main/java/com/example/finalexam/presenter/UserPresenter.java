@@ -157,8 +157,7 @@ public class UserPresenter {
             }
             @Override
             public void onFailure(@NonNull Call<InfoUserLogin> call, @NonNull Throwable throwable) {
-                Log.d(TAG, throwable.toString());
-
+                Log.d(TAG, throwable.toString()+"失败");
                 activity.userLog(STATUS_NO_INTERNET);
             }
         });

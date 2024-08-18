@@ -59,8 +59,8 @@ public class MyWebSocketClient extends WebSocketClient {
                 int id=info.getData();
                 UserDesktop.callErrorLayout(id,info.getMsg());
             } else if (info.getType().equals("multiLog")) {
-                WebSocketPresenter.getInstance(UserPresenter.getContext()).getWebSocketClient(id).close();
                 context.sendBroadcast(new Intent("com.example.FinalExam.MULTILOG"));
+                WebSocketPresenter.getInstance(UserPresenter.getContext()).getWebSocketClient(id).close();
             }
         } else {
             List<UserData> list=UserOverviewFragment.list;

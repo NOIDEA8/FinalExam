@@ -39,7 +39,6 @@ public class BaseActivity extends AppCompatActivity {
         intentFilter.addAction("com.example.FinalExam.FORCE_OFFSET");
         intentFilter.addAction("com.example.FinalExam.USER_FROZEN");
         intentFilter.addAction("com.example.FinalExam.MULTILOG");
-        intentFilter.addAction("com.example.FinalExam.WARNING");
         receiver=new ForceOfflineReceiver();
         registerReceiver(receiver,intentFilter);
     }
