@@ -251,9 +251,10 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
         for (LogData logData : weekList) {
             readWeek += logData.getVisits();
             readDay.add(logData.getVisits());
-            errorWeek += logData.getErrorNumber();
+            //errorWeek += logData.getErrorNumber();
             errorDay.add(logData.getErrorNumber());
         }
+        errorWeek=weekList.get(0).getErrorNumber();
         /*Random random = new Random(System.currentTimeMillis());
         for (int i = 0; i < 7; i++)
             readDay.add(random.nextInt(30));
