@@ -23,7 +23,6 @@ import com.example.finalexam.model.LogData;
 import com.example.finalexam.model.ProjectData;
 import com.example.finalexam.model.sendmodel.FreezeProjectSend;
 import com.example.finalexam.model.sendmodel.FreezeUserSend;
-import com.example.finalexam.model.sendmodel.GetExplainLogsSend;
 import com.example.finalexam.model.sendmodel.MonitorSend;
 import com.example.finalexam.model.sendmodel.PublishSend;
 import com.example.finalexam.model.sendmodel.RegisterSend;
@@ -50,7 +49,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class UserPresenter {
     private static final String TAG = "UserPresenter";
-    private static final String baseUrl="http://47.113.224.195:30210/api/";//47.113.224.195:30210//47.113.224.195:30111
+    private static final String baseUrl="http://47.113.224.195:31110/";//47.113.224.195:30210/api///47.113.224.195:30111
     public UserDataShowInterface activity;
     private static String token ;
     private static UserPresenter presenter=new UserPresenter();
@@ -1175,7 +1174,7 @@ public class UserPresenter {
     //获取AI分析日志结果
     public void fetchExplainLogs(int groupType,int projectId){
         Api api=getRetrofit().create(Api.class);
-        Call<InfoString> dataCall=api.getExplainLogs(token,new GetExplainLogsSend(groupType,projectId));
+        Call<InfoString> dataCall=api.getExplainLogs(token,groupType,projectId);
 
         dataCall.enqueue(new Callback<InfoString>() {
             UserDataShowInterface activity=UserPresenter.this.activity;
@@ -1184,12 +1183,15 @@ public class UserPresenter {
                 InfoString info=response.body();
                 if(info==null){
                     explainLogs ="";
+                    Log.d("AI",explainLogs);
                     activity.explainLogs(STATUS_NO_INTERNET);
                 } else if (info.getCode()!=1) {
                     explainLogs ="";
+                    Log.d("AI",explainLogs);
                     activity.explainLogs(STATUS_FAILED);
                 }else{
                     explainLogs=info.getData();
+                    Log.d("AI",explainLogs);
                     activity.explainLogs(STATUS_SUCCESS);
                 }
             }
@@ -1197,6 +1199,7 @@ public class UserPresenter {
             @Override
             public void onFailure(Call<InfoString> call, Throwable t) {
                 explainLogs ="";
+                Log.d("AI",explainLogs);
                 activity.explainLogs(STATUS_NO_INTERNET);
             }
         });

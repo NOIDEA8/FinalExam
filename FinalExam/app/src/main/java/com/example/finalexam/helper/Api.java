@@ -11,7 +11,6 @@ import com.example.finalexam.info.InfoUserList;
 import com.example.finalexam.info.InfoUserLogin;
 import com.example.finalexam.model.sendmodel.FreezeProjectSend;
 import com.example.finalexam.model.sendmodel.FreezeUserSend;
-import com.example.finalexam.model.sendmodel.GetExplainLogsSend;
 import com.example.finalexam.model.sendmodel.IncreaseVisits;
 import com.example.finalexam.model.sendmodel.MonitorSend;
 import com.example.finalexam.model.sendmodel.PublishSend;
@@ -161,5 +160,5 @@ public interface Api {
     Call<InfoShowAllLog> showLogNumberOneWeekForGroup(@Header("Authorization") String token,@Body ViewLogForGroupSend viewLogForGroupSend);
     //获取AI分析日志所得的数据
     @GET("log/explainLogs")
-    Call<InfoString> getExplainLogs(@Header("Authorization") String token,@Body GetExplainLogsSend getExplainLogsSend);
+    Call<InfoString> getExplainLogs(@Header("Authorization") String token,@Query("groupType")int groupType,@Query("projectId") int projectId);
 }
