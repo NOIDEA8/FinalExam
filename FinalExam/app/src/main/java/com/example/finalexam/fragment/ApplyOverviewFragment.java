@@ -231,4 +231,9 @@ public class ApplyOverviewFragment extends Fragment implements UserDataShowInter
     public void weekLogNum(int STATUS) {
 
     }
+
+    @Override
+    public void explainLogs(int STATUS) {
+
+    }
 }

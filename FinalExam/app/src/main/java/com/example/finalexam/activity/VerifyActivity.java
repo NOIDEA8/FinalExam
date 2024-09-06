@@ -225,4 +225,9 @@ public class VerifyActivity extends AppCompatActivity implements UserDataShowInt
     public void weekLogNum(int STATUS) {
 
     }
+
+    @Override
+    public void explainLogs(int STATUS) {
+
+    }
 }

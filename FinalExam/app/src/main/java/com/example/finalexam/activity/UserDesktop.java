@@ -375,4 +375,9 @@ public class UserDesktop extends BaseActivity implements UserDataShowInterface, 
     public void weekLogNum(int STATUS) {
 
     }
+
+    @Override
+    public void explainLogs(int STATUS) {
+
+    }
 }

@@ -231,4 +231,9 @@ public class MonitorUserFragment extends Fragment implements UserDataShowInterfa
     public void weekLogNum(int STATUS) {
 
     }
+
+    @Override
+    public void explainLogs(int STATUS) {
+
+    }
 }

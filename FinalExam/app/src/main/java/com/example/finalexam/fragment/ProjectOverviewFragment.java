@@ -240,4 +240,9 @@ public class ProjectOverviewFragment extends Fragment implements UserDataShowInt
     public void weekLogNum(int STATUS) {
 
     }
+
+    @Override
+    public void explainLogs(int STATUS) {
+
+    }
 }

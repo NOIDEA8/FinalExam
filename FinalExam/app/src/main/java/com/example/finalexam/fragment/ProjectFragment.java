@@ -181,6 +181,11 @@ public class ProjectFragment extends Fragment implements UserDataShowInterface {
 
     }
 
+    @Override
+    public void explainLogs(int STATUS) {
+
+    }
+
 
     @Override
     public void projectPublishResult(int STATUS) {

@@ -272,4 +272,9 @@ public class OperateLogActivity extends BaseActivity implements UserDataShowInte
     public void weekLogNum(int STATUS) {
 
     }
+
+    @Override
+    public void explainLogs(int STATUS) {
+
+    }
 }

@@ -379,5 +379,10 @@ public class PersonFragment extends Fragment implements UserDataShowInterface {
 
     }
 
+    @Override
+    public void explainLogs(int STATUS) {
+
+    }
+
 
 }

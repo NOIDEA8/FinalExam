@@ -163,6 +163,11 @@ public class RegisterActivity extends BaseActivity implements UserDataShowInterf
 
     }
 
+    @Override
+    public void explainLogs(int STATUS) {
+
+    }
+
 
     @Override
     public void projectPublishResult(int STATUS) {

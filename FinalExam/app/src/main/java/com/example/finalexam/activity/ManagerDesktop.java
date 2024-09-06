@@ -415,4 +415,9 @@ public class ManagerDesktop extends BaseActivity implements UserDataShowInterfac
     public void weekLogNum(int STATUS) {
 
     }
+
+    @Override
+    public void explainLogs(int STATUS) {
+
+    }
 }

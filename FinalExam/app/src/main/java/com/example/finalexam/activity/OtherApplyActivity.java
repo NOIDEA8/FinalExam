@@ -274,4 +274,9 @@ public class OtherApplyActivity extends AppCompatActivity implements UserDataSho
     public void weekLogNum(int STATUS) {
 
     }
+
+    @Override
+    public void explainLogs(int STATUS) {
+
+    }
 }

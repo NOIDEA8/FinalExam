@@ -454,6 +454,11 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
 
     }
 
+    @Override
+    public void explainLogs(int STATUS) {
+
+    }
+
 
     @Override
     public void projectPublishResult(int STATUS) {
