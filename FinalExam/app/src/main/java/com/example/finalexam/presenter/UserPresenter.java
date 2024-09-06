@@ -1241,6 +1241,7 @@ public class UserPresenter {
     //获取一系列用户数据
     public List<UserData> getUserList(){return userList;}
     public String getCheckResult(){return checkResult;}
+    public String getExplainLogs(){return explainLogs;}
     public List<LogData> getLogDataList() {return logDataList;}
 
     public LogData getLogDetail() {
