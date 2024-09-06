@@ -11,6 +11,7 @@ import com.example.finalexam.info.InfoUserList;
 import com.example.finalexam.info.InfoUserLogin;
 import com.example.finalexam.model.sendmodel.FreezeProjectSend;
 import com.example.finalexam.model.sendmodel.FreezeUserSend;
+import com.example.finalexam.model.sendmodel.GetExplainLogsSend;
 import com.example.finalexam.model.sendmodel.IncreaseVisits;
 import com.example.finalexam.model.sendmodel.MonitorSend;
 import com.example.finalexam.model.sendmodel.PublishSend;
@@ -102,7 +103,7 @@ public interface Api {
 
     //获取不同冻结状态的项目
     @GET("admin/pagedQueryPublishedProject")
-    Call<InfoShowAllProject> getFrezonOrNotProject(@Header ("Authorization") String token,@Query("projectStatus") int projectStatus,@Query("page") int page, @Query("pageSize") int pageSize,@Query("keyWord")String keyWord);//0冻结，1未冻结
+    Call<InfoShowAllProject> getFreezeOrNotProject(@Header ("Authorization") String token, @Query("projectStatus") int projectStatus, @Query("page") int page, @Query("pageSize") int pageSize, @Query("keyWord")String keyWord);//0冻结，1未冻结
 
     //获取不同审核状态的项目
     @GET("admin/pagedQueryProjectApplication")
@@ -158,5 +159,7 @@ public interface Api {
     //根据不同组查询一周的日志数量
     @POST("log/showLogNumberOneWeekForGroup")
     Call<InfoShowAllLog> showLogNumberOneWeekForGroup(@Header("Authorization") String token,@Body ViewLogForGroupSend viewLogForGroupSend);
-
+    //获取AI分析日志所得的数据
+    @GET("log/explainLogs")
+    Call<InfoString> getExplainLogs(@Header("Authorization") String token,@Body GetExplainLogsSend getExplainLogsSend);
 }

@@ -11,7 +11,6 @@ import com.example.finalexam.helper.UserDataShowInterface;
 import com.example.finalexam.info.InfoLog;
 import com.example.finalexam.info.InfoLogList;
 import com.example.finalexam.info.InfoProject;
-import com.example.finalexam.info.InfoProjectList;
 import com.example.finalexam.info.InfoShowAllLog;
 import com.example.finalexam.info.InfoShowAllProject;
 import com.example.finalexam.info.InfoString;
@@ -24,7 +23,7 @@ import com.example.finalexam.model.LogData;
 import com.example.finalexam.model.ProjectData;
 import com.example.finalexam.model.sendmodel.FreezeProjectSend;
 import com.example.finalexam.model.sendmodel.FreezeUserSend;
-import com.example.finalexam.model.sendmodel.IncreaseVisits;
+import com.example.finalexam.model.sendmodel.GetExplainLogsSend;
 import com.example.finalexam.model.sendmodel.MonitorSend;
 import com.example.finalexam.model.sendmodel.PublishSend;
 import com.example.finalexam.model.sendmodel.RegisterSend;
@@ -66,6 +65,7 @@ public class UserPresenter {
     private ProjectData projectDetail;
     private LogData logDetail;
     private String checkResult;
+    private String explainLogs;
     private static Context context;//接cookie用
 
     private Retrofit Retrofit;
@@ -830,7 +830,7 @@ public class UserPresenter {
 
         Api api = getRetrofit().create(Api.class);
 
-        Call<InfoShowAllProject> dataCall=api.getFrezonOrNotProject(token,projectType,1,0,"");
+        Call<InfoShowAllProject> dataCall=api.getFreezeOrNotProject(token,projectType,1,0,"");
 
         dataCall.enqueue(new Callback<InfoShowAllProject>() {
             UserDataShowInterface activity = UserPresenter.this.activity;
@@ -1172,6 +1172,35 @@ public class UserPresenter {
         });
     }
 
+    //获取AI分析日志结果
+    public void fetchExplainLogs(int groupType,int projectId){
+        Api api=getRetrofit().create(Api.class);
+        Call<InfoString> dataCall=api.getExplainLogs(token,new GetExplainLogsSend(groupType,projectId));
+
+        dataCall.enqueue(new Callback<InfoString>() {
+            UserDataShowInterface activity=UserPresenter.this.activity;
+            @Override
+            public void onResponse(Call<InfoString> call, Response<InfoString> response) {
+                InfoString info=response.body();
+                if(info==null){
+                    explainLogs ="";
+                    activity.explainLogs(STATUS_NO_INTERNET);
+                } else if (info.getCode()!=1) {
+                    explainLogs ="";
+                    activity.explainLogs(STATUS_FAILED);
+                }else{
+                    explainLogs=info.getData();
+                    activity.explainLogs(STATUS_SUCCESS);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<InfoString> call, Throwable t) {
+                explainLogs ="";
+                activity.explainLogs(STATUS_NO_INTERNET);
+            }
+        });
+    }
 
 
     //获取登录状态，已登录则返回true

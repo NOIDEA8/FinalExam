@@ -51,4 +51,5 @@ public interface UserDataShowInterface {
     void setErrorRate(int STATUS);///设置报警阈值
     void logDetail(int STATUS);//一条log的详细信息
     void weekLogNum(int STATUS);//一周的Log数量
+    void explainLogs(int STATUS);//获取AI分析的数据
 }
