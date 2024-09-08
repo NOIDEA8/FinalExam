@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.finalexam.R;
 import com.example.finalexam.adapter.LogAdapter;
+import com.example.finalexam.adapter.MonitorUserAdapter;
 import com.example.finalexam.adapter.ProjectAdapter;
 import com.example.finalexam.baseappcompatactivity.BaseActivity;
 import com.example.finalexam.fragment.MonitorUserFragment;
@@ -56,6 +57,7 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
     private ConstraintLayout optionsLayout;//测量用
     private TextView frontOption;
     private TextView mobileOption;
+    private TextView serverOption;
 
     private RecyclerView logRV;
     private TextView logNumView;
@@ -75,6 +77,7 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
     private EditText editUrlView;
     private EditText editPasswordView;
     private TextView editSaveButton;
+    private TextView AIExplain;
 
     private ConstraintLayout freezeBackground;
     private ConstraintLayout freezeLayout;
@@ -138,28 +141,52 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
     private void initListener() {
         //选择查看前端后台
         frontOption.setOnClickListener(v -> {
+            if(MorF == UserPresenter.MOBILE_LOG) mobileOption.setTextColor(getColor(R.color.text_grey));
+            else if (MorF == UserPresenter.SERVER_LOG) serverOption.setTextColor(getColor(R.color.text_grey));
             if (MorF == UserPresenter.FRONT_LOG) return;
             MorF = UserPresenter.FRONT_LOG;
             page = 1;
             UserPresenter.getInstance(this).fetchLogForGroup(MorF, 30, page, ProjectAdapter.clickId, 2);
-            int fW = frontOption.getWidth();
+            UserPresenter.getInstance(this).fetchExplainLogs(MorF,ProjectAdapter.clickId);
+            frontOption.setTextColor(getColor(R.color.black));
+            /*int fW = frontOption.getWidth();
             int mW = mobileOption.getWidth();
             frontOption.setWidth(mW);
             mobileOption.setWidth(fW);
             frontOption.setTextColor(getColor(R.color.black));
-            mobileOption.setTextColor(getColor(R.color.text_grey));
+            mobileOption.setTextColor(getColor(R.color.text_grey));*/
         });
         mobileOption.setOnClickListener(v -> {
+            if(MorF == UserPresenter.FRONT_LOG) frontOption.setTextColor(getColor(R.color.text_grey));
+            else if (MorF == UserPresenter.SERVER_LOG) serverOption.setTextColor(getColor(R.color.text_grey));
             if (MorF == UserPresenter.MOBILE_LOG) return;
             MorF = UserPresenter.MOBILE_LOG;
             page = 1;
             UserPresenter.getInstance(this).fetchLogForGroup(MorF, 30, page, ProjectAdapter.clickId, 2);
-            int fW = frontOption.getWidth();
+            UserPresenter.getInstance(this).fetchExplainLogs(MorF,ProjectAdapter.clickId);
+            mobileOption.setTextColor(getColor(R.color.black));
+           /* int fW = frontOption.getWidth();
             int mW = mobileOption.getWidth();
             frontOption.setWidth(mW);
             mobileOption.setWidth(fW);
             frontOption.setTextColor(getColor(R.color.text_grey));
-            mobileOption.setTextColor(getColor(R.color.black));
+            mobileOption.setTextColor(getColor(R.color.black));*/
+        });
+        serverOption.setOnClickListener(v -> {
+            if(MorF == UserPresenter.MOBILE_LOG) mobileOption.setTextColor(getColor(R.color.text_grey));
+            else if (MorF == UserPresenter.FRONT_LOG) frontOption.setTextColor(getColor(R.color.text_grey));
+            if (MorF == UserPresenter.SERVER_LOG) return;
+            MorF = UserPresenter.SERVER_LOG;
+            page = 1;
+            UserPresenter.getInstance(this).fetchLogForGroup(MorF, 30, page, ProjectAdapter.clickId, 2);
+            UserPresenter.getInstance(this).fetchExplainLogs(MorF,ProjectAdapter.clickId);
+            serverOption.setTextColor(getColor(R.color.black));
+           /* int fW = frontOption.getWidth();
+            int mW = mobileOption.getWidth();
+            frontOption.setWidth(mW);
+            mobileOption.setWidth(fW);
+            frontOption.setTextColor(getColor(R.color.text_grey));
+            mobileOption.setTextColor(getColor(R.color.black));*/
         });
 
         //翻页按钮
@@ -294,6 +321,7 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
         }
 
         descriptionView = findViewById(R.id.detail_project_description);
+        AIExplain=findViewById(R.id.AI_explain);
 
         readWeekView = findViewById(R.id.detail_read_week);
         errorWeekView = findViewById(R.id.detail_error_week);
@@ -301,6 +329,7 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
         optionsLayout = findViewById(R.id.detail_options_layout);
         frontOption = findViewById(R.id.detail_option_front);
         mobileOption = findViewById(R.id.detail_option_mobile);
+        serverOption=findViewById(R.id.detail_option_server);
 
         logRV = findViewById(R.id.detail_log);
         logNumView = findViewById(R.id.detail_log_num);
@@ -456,7 +485,11 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
 
     @Override
     public void explainLogs(int STATUS) {
-
+        if (STATUS==UserPresenter.STATUS_SUCCESS){
+            AIExplain.setText(UserPresenter.getInstance(this).getExplainLogs());
+        }else{
+            Toast.makeText(this,"网络不佳，AI分析失败",Toast.LENGTH_SHORT).show();
+        }
     }
 
 

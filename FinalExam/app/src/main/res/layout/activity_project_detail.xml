@@ -194,17 +194,42 @@
                 app:layout_constraintStart_toStartOf="@id/detail_project_name"
                 app:layout_constraintTop_toBottomOf="@id/detail_graph" />
 
+            <TextView
+                android:id="@+id/AI_explain_tips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:text="AI分析:"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="@id/detail_project_name"
+                app:layout_constraintTop_toBottomOf="@id/detail_log_text" />
+
+            <TextView
+                android:id="@+id/AI_explain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:layout_marginLeft="10dp"
+                android:text="正在分析请稍后……"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="@id/detail_project_name"
+                app:layout_constraintTop_toBottomOf="@id/AI_explain_tips" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/detail_options_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/square_all"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/detail_log_text">
+                app:layout_constraintTop_toBottomOf="@id/AI_explain">
 
                 <TextView
                     android:id="@+id/detail_option_front"
@@ -224,8 +249,25 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/detail_option_server"
+                    android:layout_width="125dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="后台"
+                    android:textColor="@color/text_grey"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/detail_option_mobile"
+                    app:layout_constraintStart_toEndOf="@id/detail_option_front"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
                     android:id="@+id/detail_option_mobile"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
@@ -303,7 +345,6 @@
                 android:text="@string/next"
                 app:layout_constraintStart_toEndOf="@id/detail_log_num"
                 app:layout_constraintTop_toTopOf="@id/detail_log_num" />
-
             <!--====-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
