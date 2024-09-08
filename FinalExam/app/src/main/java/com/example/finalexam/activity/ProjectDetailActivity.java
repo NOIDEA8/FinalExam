@@ -302,6 +302,7 @@ public class ProjectDetailActivity extends BaseActivity implements UserDataShowI
         UserPresenter.getInstance(this).fetchProjectDetail(ProjectAdapter.clickId);
         UserPresenter.getInstance(this).fetchProjectPresentationDateOneWeek(ProjectAdapter.clickId);//一周数据
         UserPresenter.getInstance(this).fetchLogForGroup(MorF, 30, page, ProjectAdapter.clickId, 2);//日志
+        UserPresenter.getInstance(this).fetchExplainLogs(MorF,ProjectAdapter.clickId);//辅助分析
     }
 
     private void initView() {
