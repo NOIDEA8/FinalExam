@@ -47,9 +47,9 @@ public class WebSocketPresenter {
         } else {
             oldUserId=userId;
             if(userId!=-1){
-                url="ws://47.113.224.195:30210/websocket/"+userId;
+                url="ws://47.113.224.195:31111/websocket/"+userId;
             }else{
-                url="ws://47.113.224.195:30210/websocket/admin";
+                url="ws://47.113.224.195:31111/websocket/admin";
             }
 
             String token=UserPresenter.getToken();

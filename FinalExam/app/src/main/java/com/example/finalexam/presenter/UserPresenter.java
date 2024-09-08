@@ -49,7 +49,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class UserPresenter {
     private static final String TAG = "UserPresenter";
-    private static final String baseUrl="http://10.21.56.119:8080/";//47.113.224.195:30210/api///47.113.224.195:30111
+    private static final String baseUrl="http://47.113.224.195:31111/";//47.113.224.195:30210/api///47.113.224.195:30111
     public UserDataShowInterface activity;
     private static String token ;
     private static UserPresenter presenter=new UserPresenter();
@@ -128,6 +128,7 @@ public class UserPresenter {
             UserDataShowInterface activity = UserPresenter.this.activity;
             @Override
             public void onResponse(@NonNull Call<InfoUserLogin> call, @NonNull Response<InfoUserLogin> response) {
+                Log.d(TAG, "onResponse: "+response);
                 InfoUserLogin info = response.body();
                 if(info==null){
                     activity.userLog(STATUS_NO_INTERNET);

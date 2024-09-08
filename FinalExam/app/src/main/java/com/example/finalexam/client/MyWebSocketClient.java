@@ -42,6 +42,7 @@ public class MyWebSocketClient extends WebSocketClient {
      }
     @Override
     public void onOpen(ServerHandshake handshakedata) {
+        Log.e("aaaaa", "onOpen: " );
     }
 
     @SuppressLint("NotifyDataSetChanged")
